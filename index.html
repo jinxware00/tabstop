@@ -1,0 +1,1074 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tabstop – coding typing trainer</title>
+<style>
+:root{--bg:#09090c;--panel:#0f0f14;--line:#22222b;--text:#d6d6de;--mute:#767685;--accent:#a78bfa;--ok:#86efac;--bad:#f87171;--mono:ui-monospace,"JetBrains Mono","Cascadia Code","SF Mono",Consolas,Menlo,monospace}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+button,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.Bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:10px 20px;border-bottom:1px solid var(--line)}
+.Logo{font:600 17px var(--mono);letter-spacing:-.03em}
+.Blk{display:inline-block;width:.55em;height:1.05em;margin-left:3px;background:var(--accent);vertical-align:-.17em}
+[data-motion=full] .Blk{animation:Blink 1.1s steps(2,start) infinite}
+@keyframes Blink{to{visibility:hidden}}
+nav{display:flex;gap:2px}
+.Tab{background:none;border:0;border-radius:6px;padding:6px 12px;cursor:pointer;color:var(--mute);transition:color .15s,background .15s}
+.Tab:hover{color:var(--text)}
+.Tab[aria-current=page]{color:var(--text);background:#1a1a23}
+main{max-width:960px;margin:0 auto;padding:20px}
+h2{font-size:15px;font-weight:600;margin:0 0 4px}
+.Setup{display:flex;flex-wrap:wrap;gap:14px 22px;margin-bottom:16px}
+.Group{display:flex;flex-direction:column;gap:5px}
+.GLbl,.Lbl,.Sub,small{color:var(--mute);font-size:12px}
+.Seg{display:flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.SegBtn{background:none;border:0;border-right:1px solid var(--line);padding:5px 11px;cursor:pointer;color:var(--mute);transition:background .15s,color .15s}
+.SegBtn:last-child{border-right:0}
+.SegBtn:hover{color:var(--text)}
+.SegBtn.On{background:#1d1a2b;color:var(--accent)}
+select{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:5px 8px}
+.Stats{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--line);border-radius:8px;margin-bottom:14px;background:var(--panel)}
+.Stat{padding:9px 12px;border-right:1px solid var(--line)}
+.Stat:last-child{border-right:0}
+.Val{font:600 20px var(--mono);font-variant-numeric:tabular-nums}
+.Code,.Mirror,#Typing{font:13.5px/1.7 var(--mono);tab-size:4;white-space:pre-wrap;overflow-wrap:anywhere;padding:14px 16px;margin:0;letter-spacing:0}
+.Code{background:var(--panel);border:1px solid var(--line);border-radius:8px 8px 0 0;user-select:none;-webkit-user-select:none;cursor:text}
+.Code span{transition:opacity .1s}
+[data-motion=reduce] *{transition:none!important;animation:none!important}
+.TkK{color:#c4a7ff}.TkS{color:#a5d6a7}.TkN{color:#f0b27a}.TkC{color:#6b6b7c;font-style:italic}.TkT{color:#7dcfff}.TkF{color:#8fb0ff}
+.Pend{opacity:.5}.Ctx{opacity:.28}
+.Bad{color:var(--bad)!important;background:rgba(248,113,113,.2);opacity:1}
+.Cur{background:var(--accent);color:#0b0b0e!important;opacity:1}
+.Gap{background:rgba(167,139,250,.09)}
+.Gap.Bad{background:rgba(248,113,113,.2)}.Gap.Cur{background:var(--accent)}
+.Editor{position:relative;border:1px solid var(--line);border-top:0;border-radius:0 0 8px 8px;background:#0c0c10}
+.Editor:focus-within{outline:2px solid var(--accent);outline-offset:1px}
+.Mirror{min-height:7.5em;user-select:none;-webkit-user-select:none;pointer-events:none}
+.Mirror .Bad{background:rgba(248,113,113,.28)}
+.Hint{color:var(--mute);font-family:system-ui,sans-serif;font-size:13px}
+#Typing{position:absolute;inset:0;width:100%;height:100%;background:transparent;color:transparent;caret-color:var(--accent);border:0;resize:none;overflow:hidden;outline:0}
+.Row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}
+.Btn{background:none;border:1px solid var(--line);border-radius:7px;padding:6px 14px;cursor:pointer;transition:border-color .15s,background .15s}
+.Btn:hover{border-color:var(--accent)}
+.Btn.Primary{background:var(--accent);border-color:var(--accent);color:#120d1f;font-weight:600}
+.Btn.Danger:hover{border-color:var(--bad);color:var(--bad)}
+.Btn:disabled{opacity:.4;cursor:default}
+#Prompt{color:var(--mute);font-size:13px}
+#Note{color:var(--accent);font-size:13px;margin-left:auto}
+.Metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:14px 0}
+.Metric{background:var(--panel);padding:12px 14px}
+.Metric .Val{font-size:22px}
+.Metric.Big .Val{color:var(--accent);font-size:30px}
+.Table{width:100%;border-collapse:collapse;margin:8px 0 22px;font-size:13px}
+.Table th{color:var(--mute);font-weight:400;text-align:left}
+.Table th,.Table td{padding:6px 10px 6px 0;border-bottom:1px solid var(--line)}
+.Num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.Head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.Field{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.Field small{flex-basis:100%}
+.Chart{width:100%;height:auto;margin:6px 0 22px}
+.Chart text{fill:var(--mute);font:11px var(--mono)}
+.Chart rect{fill:var(--accent)}
+.Empty{color:var(--mute);padding:30px 0}
+@media(max-width:700px){main{padding:14px}.Stats{grid-template-columns:repeat(3,1fr)}.Stat:nth-child(3n){border-right:0}.Stat:nth-child(-n+3){border-bottom:1px solid var(--line)}.Metrics{grid-template-columns:repeat(2,1fr)}#Note{margin-left:0}.Table{font-size:12px}}
+
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(760px 340px at 50% -90px,color-mix(in srgb,var(--accent) 17%,transparent),transparent 70%)}
+.Logo{text-shadow:0 0 18px color-mix(in srgb,var(--accent) 55%,transparent)}
+.Tab[aria-current=page]{box-shadow:inset 0 -2px 0 var(--accent)}
+.SegBtn.On{background:color-mix(in srgb,var(--accent) 14%,#0f0f14);box-shadow:inset 0 -2px 0 var(--accent)}
+.Btn{transition:border-color .15s,background .15s,transform .15s,box-shadow .2s}
+.Btn:hover{transform:translateY(-1px)}
+.Btn:active{transform:none}
+.Btn.Primary{position:relative;overflow:hidden;box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 60%,transparent),0 6px 22px -6px var(--accent)}
+.Btn.Primary::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.38) 50%,transparent 65%);transform:translateX(-120%);transition:transform .6s}
+.Btn.Primary:hover::after{transform:translateX(120%)}
+.Editor:focus-within{box-shadow:0 14px 50px -16px var(--accent)}
+[data-motion=full] .Cur{animation:Pulse 1s ease-in-out infinite}
+@keyframes Pulse{50%{background:color-mix(in srgb,var(--accent) 45%,transparent)}}
+.Running .Setup,.Running nav{opacity:.3;transition:opacity .3s}
+.Running .Setup:hover,.Running .Setup:focus-within,.Running nav:hover,.Running nav:focus-within{opacity:1}
+.Meters{display:grid;gap:3px;margin:-7px 0 14px}
+.Meter{height:3px;border-radius:3px;background:#17171f;overflow:hidden}
+.Meter i{display:block;height:100%;background:var(--accent);transform-origin:left;transition:transform .1s linear,background .3s}
+.Meter.Low i{background:var(--bad)}
+.Meter.Done i{background:var(--ok)}
+.Metric{position:relative;overflow:hidden}
+.Metric::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .25s;background:radial-gradient(190px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--accent) 22%,transparent),transparent 70%)}
+.Metric:hover::before{opacity:1}
+.Switch{position:relative;width:42px;height:24px;flex:none}
+.Switch input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer;z-index:1}
+.Switch i{position:absolute;inset:0;border-radius:99px;background:#1b1b24;border:1px solid var(--line);transition:background .2s,border-color .2s}
+.Switch i::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--mute);transition:transform .2s,background .2s}
+.Switch input:checked+i{background:color-mix(in srgb,var(--accent) 28%,#0f0f14);border-color:var(--accent)}
+.Switch input:checked+i::after{transform:translateX(18px);background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.Switch input:focus-visible+i{outline:2px solid var(--accent);outline-offset:2px}
+.ResHead{display:flex;align-items:center;gap:20px;margin-bottom:4px}
+.Ring{width:116px;height:116px;flex:none}
+.Ring circle{fill:none;stroke-width:8}
+.Ring .Bg{stroke:#1b1b24}
+.Ring .Fg{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 6px var(--accent))}
+.Ring text{fill:var(--text);font:600 26px var(--mono);text-anchor:middle}
+.Ring .Unit{fill:var(--mute);font:11px var(--mono)}
+.Badge{display:inline-block;margin-top:6px;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;color:#08140d;background:var(--ok);box-shadow:0 0 16px -2px var(--ok)}
+.Chart rect{opacity:.8;transition:opacity .15s}
+.Chart rect:hover{opacity:1}
+.Chart rect.Pb{fill:var(--ok);opacity:1}
+.Chart .Avg{stroke:var(--mute);stroke-dasharray:4 4;stroke-width:1}
+
+main{max-width:1040px}
+.Setup{align-items:flex-end;gap:10px 16px;padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid var(--line)}
+.SegBtn,.Tab{white-space:nowrap}
+.SegBtn{padding:5px 10px}
+.Stats{border:0;background:none;gap:0;margin-bottom:16px}
+.Stat,.Stat:nth-child(n){border:0;padding:4px 14px 8px 0}
+.Stat.Hero .Val{color:var(--accent);font-size:30px;line-height:1.1;text-shadow:0 0 22px color-mix(in srgb,var(--accent) 45%,transparent)}
+.Stats .Meter{grid-column:1/-1;order:9;margin-top:6px}
+.Win{border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden;box-shadow:0 30px 60px -40px #000}
+.WinBar{display:flex;align-items:center;gap:14px;padding:8px 14px;border-bottom:1px solid var(--line);background:#0c0c11}
+.Dots{display:flex;gap:6px}
+.Dots i{width:9px;height:9px;border-radius:50%;background:#262630}
+.File{font:12px var(--mono);padding:3px 10px;border-radius:5px;background:var(--panel);box-shadow:inset 0 -2px 0 var(--accent)}
+.Chip{margin-left:auto;color:var(--mute);font-size:12px}
+.Win .Meter{height:2px;border-radius:0}
+.Win .Code{background:none;border:0;border-radius:0;min-height:9.5em}
+.Divider{display:flex;align-items:center;gap:10px;padding:2px 16px;color:var(--mute);font-size:11px}
+.Divider::before,.Divider::after{content:"";flex:1;border-top:1px dashed var(--line)}
+.Win .Editor{border:0;border-radius:0;background:#0b0b0f}
+.Win .Editor:focus-within{outline:0;box-shadow:inset 3px 0 0 var(--accent),inset 0 0 44px -22px var(--accent)}
+@media(max-width:700px){
+.Setup{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-bottom:12px}
+.Group{flex:none}
+.Stat.Hero .Val{font-size:24px}
+.Dots{display:none}
+.Win .Code{min-height:7em}
+}
+</style>
+</head>
+<body>
+<header class="Bar">
+  <div class="Logo" aria-label="Tabstop">tabstop<i class="Blk"></i></div>
+  <nav id="Nav" aria-label="Main"></nav>
+</header>
+<main>
+  <section id="ViewPractice" aria-label="Practice">
+    <div class="Setup" id="Setup"></div>
+    <div class="Stats" id="Stats"><div class="Meter" aria-hidden="true"><i id="TimeFill"></i></div></div>
+    <div id="Play">
+      <div class="Win">
+      <div class="WinBar"><span class="Dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="File" id="File">main.lua</span><span class="Chip" id="Chip"></span></div>
+      <div class="Meter Done" aria-hidden="true"><i id="DoneFill"></i></div>
+      <pre class="Code" id="Target" aria-label="Code to type"></pre>
+      <div class="Divider" aria-hidden="true">type below</div>
+      <div class="Editor">
+        <div class="Mirror" id="Mirror" aria-hidden="true"></div>
+        <textarea id="Typing" aria-label="Typing area: type the code shown above" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" rows="1"></textarea>
+      </div>
+      </div>
+      <div class="Row">
+        <button class="Btn" id="Restart" type="button">Restart</button>
+        <button class="Btn" id="Another" type="button">New snippet</button>
+        <button class="Btn" id="TabKey" type="button" hidden>Insert tab</button>
+        <span id="Prompt"></span>
+        <span id="Note" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+    <div id="Results" hidden></div>
+  </section>
+  <section id="ViewProgress" aria-label="Progress" hidden></section>
+  <section id="ViewSettings" aria-label="Settings" hidden>
+    <h2>Settings</h2>
+    <label class="Field"><span class="Switch"><input type="checkbox" id="SetSound"><i></i></span> Sound effects <small>Keystroke ticks and a finish chime. Off by default.</small></label>
+    <label class="Field">Accent colour <select id="SetAccent"></select></label>
+    <label class="Field">Reduced motion <select id="SetMotion"><option value="system">Follow system setting</option><option value="on">Always reduce</option><option value="off">Allow motion</option></select></label>
+    <div class="Field"><button class="Btn Danger" id="SetReset" type="button">Reset progress…</button><small>Deletes every saved session and personal best. Settings are kept.</small></div>
+  </section>
+</main>
+<script>
+"use strict";
+const Q=Id=>document.getElementById(Id);
+const El=(Tag,Cls,Text)=>{const N=document.createElement(Tag);if(Cls)N.className=Cls;if(Text!==undefined)N.textContent=Text;return N};
+const R1=X=>Math.round(X*10)/10;
+
+const Langs=["Lua","Python","JavaScript","TypeScript","C++","C#","Rust","Java","Go","SQL"];
+const Durations=[30,60,120],Levels=["Beginner","Intermediate","Advanced"],Types=["Copy Code","Complete Snippet","Error-Free Run"];
+const StrikeLimit=3,MinElapsedMs=3000,SessionsKey="tabstop.sessions",SettingsKey="tabstop.settings";
+const Accents={Violet:"#a78bfa",Indigo:"#818cf8",Teal:"#2dd4bf"};
+const Prompts={"Copy Code":"Type the whole snippet. The timer starts on your first keystroke.","Complete Snippet":"Type only the highlighted missing section. Dimmed code is context.","Error-Free Run":"Type it cleanly. The run ends after "+StrikeLimit+" mistakes, even ones you fix."};
+const Exts={Lua:".lua",Python:".py",JavaScript:".js",TypeScript:".ts","C++":".cpp","C#":".cs",Rust:".rs",Java:".java",Go:".go",SQL:".sql"};
+const Comment={Lua:"--",SQL:"--",Python:"#"};
+const Keywords=new Set(("local function end if then else elseif for in do while return and or not nil true false def class import from as pass None True False const let var async await new typeof interface type extends implements public private static void int string bool boolean float double char fn mut pub impl struct enum match use self package func range go defer chan map foreach switch case break continue try catch throw readonly namespace using override final super this "+
+"SELECT FROM WHERE GROUP BY ORDER JOIN ON AS AND OR NOT NULL LIMIT DESC ASC COUNT SUM HAVING WITH INNER LEFT").split(" "));
+
+const Snippets={
+Lua:{Beginner:[
+`local name = "Ada"
+local score = 42
+⟦if score > 40 then
+  print(name .. " passed")
+end⟧`,
+`local width, height = 8, 5
+local area = width * height
+⟦print("area:", area)⟧`],
+Intermediate:[`local function average(items)
+  local total = 0
+  ⟦for _, value in ipairs(items) do
+    total = total + value
+  end⟧
+  return total / #items
+end
+
+local scores = { 82, 91, 76 }
+print(average(scores))`],
+Advanced:[`local function binarySearch(list, target)
+  local low, high = 1, #list
+  while low <= high do
+    local mid = (low + high) // 2
+    ⟦if list[mid] == target then
+      return mid
+    elseif list[mid] < target then
+      low = mid + 1
+    else
+      high = mid - 1
+    end⟧
+  end
+  return nil
+end`]},
+Python:{Beginner:[
+`price = 24.5
+quantity = 3
+⟦total = price * quantity
+print(f"Total: {total}")⟧`,
+`age = 17
+⟦if age >= 18:
+    print("adult")
+else:
+    print("minor")⟧`],
+Intermediate:[`def word_counts(text):
+    counts = {}
+    ⟦for word in text.lower().split():
+        counts[word] = counts.get(word, 0) + 1⟧
+    return counts
+
+print(word_counts("the cat and the hat"))`],
+Advanced:[`from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def count_paths(row, col):
+    if row == 0 or col == 0:
+        return 1
+    ⟦return count_paths(row - 1, col) + count_paths(row, col - 1)⟧
+
+print(count_paths(8, 8))`]},
+JavaScript:{Beginner:[
+`const name = "Grace";
+let visits = 3;
+⟦visits += 1;
+console.log(name + " visited " + visits + " times");⟧`,
+`const temperature = 28;
+⟦if (temperature > 25) {
+  console.log("warm");
+} else {
+  console.log("cool");
+}⟧`],
+Intermediate:[`function groupByLength(words) {
+  const groups = {};
+  ⟦for (const word of words) {
+    const key = word.length;
+    (groups[key] ??= []).push(word);
+  }⟧
+  return groups;
+}
+
+console.log(groupByLength(["a", "to", "be", "sky"]));`],
+Advanced:[`function debounce(fn, delay) {
+  let timer = null;
+  return (...args) => {
+    ⟦clearTimeout(timer);
+    timer = setTimeout(() => {
+      timer = null;
+      fn(...args);
+    }, delay);⟧
+  };
+}
+
+const onResize = debounce(() => console.log("resized"), 200);
+window.addEventListener("resize", onResize);`]},
+TypeScript:{Beginner:[
+`const title: string = "Report";
+let pages: number = 12;
+⟦pages = pages + 2;
+console.log(title, pages);⟧`,
+`let isReady: boolean = true;
+⟦if (isReady) {
+  console.log("go");
+}⟧`],
+Intermediate:[`interface User {
+  name: string;
+  age: number;
+}
+
+function oldest(users: User[]): User | undefined {
+  ⟦return users.reduce<User | undefined>(
+    (best, user) => (!best || user.age > best.age ? user : best),
+    undefined
+  );⟧
+}`],
+Advanced:[`type Result<T> = { ok: true; value: T } | { ok: false; error: string };
+
+function parseNumber(input: string): Result<number> {
+  const value = Number(input);
+  ⟦if (Number.isNaN(value)) {
+    return { ok: false, error: "not a number: " + input };
+  }
+  return { ok: true, value };⟧
+}`]},
+"C++":{Beginner:[
+`#include <iostream>
+
+int main() {
+    int apples = 5;
+    ⟦apples += 2;
+    std::cout << apples << std::endl;⟧
+    return 0;
+}`,
+`#include <iostream>
+
+int main() {
+    int speed = 62;
+    ⟦if (speed > 60) {
+        std::cout << "slow down" << std::endl;
+    }⟧
+    return 0;
+}`],
+Intermediate:[`#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<int> values = {4, 8, 15, 16};
+    int sum = 0;
+    ⟦for (int value : values) {
+        sum += value;
+    }⟧
+    std::cout << sum << std::endl;
+}`],
+Advanced:[`#include <algorithm>
+#include <string>
+#include <vector>
+
+std::vector<std::string> sortByLength(std::vector<std::string> words) {
+    ⟦std::sort(words.begin(), words.end(),
+        [](const std::string& a, const std::string& b) {
+            return a.size() < b.size();
+        });⟧
+    return words;
+}`]},
+"C#":{Beginner:[
+`string name = "Linus";
+int level = 7;
+⟦level++;
+Console.WriteLine($"{name} is level {level}");⟧`,
+`int count = 3;
+⟦if (count > 0)
+{
+    Console.WriteLine("items left");
+}⟧`],
+Intermediate:[`using System;
+using System.Collections.Generic;
+
+var stock = new Dictionary<string, int> { ["pens"] = 12, ["ink"] = 0 };
+⟦foreach (var item in stock)
+{
+    Console.WriteLine($"{item.Key}: {item.Value}");
+}⟧`],
+Advanced:[`using System.Linq;
+
+public static class TextTools
+{
+    public static string LongestWord(string text)
+    {
+        ⟦return text.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .OrderByDescending(word => word.Length)
+            .FirstOrDefault() ?? "";⟧
+    }
+}`]},
+Rust:{Beginner:[
+`fn main() {
+    let mut lives = 3;
+    ⟦lives -= 1;
+    println!("lives left: {}", lives);⟧
+}`,
+`fn main() {
+    let temp = 31;
+    ⟦if temp > 30 {
+        println!("hot");
+    } else {
+        println!("mild");
+    }⟧
+}`],
+Intermediate:[`fn main() {
+    let names = vec!["Ada", "Alan", "Grace"];
+    ⟦for (index, name) in names.iter().enumerate() {
+        println!("{}: {}", index, name);
+    }⟧
+}`],
+Advanced:[`#[derive(Debug)]
+struct Stack<T> {
+    items: Vec<T>,
+}
+
+impl<T> Stack<T> {
+    fn new() -> Self {
+        Stack { items: Vec::new() }
+    }
+
+    ⟦fn pop(&mut self) -> Option<T> {
+        self.items.pop()
+    }⟧
+}`]},
+Java:{Beginner:[
+`public class Main {
+    public static void main(String[] args) {
+        int lives = 3;
+        ⟦lives--;
+        System.out.println(lives);⟧
+    }
+}`,
+`int score = 88;
+⟦if (score >= 50) {
+    System.out.println("pass");
+}⟧`],
+Intermediate:[`import java.util.List;
+
+public class Totals {
+    static int sumEvens(List<Integer> values) {
+        int total = 0;
+        ⟦for (int value : values) {
+            if (value % 2 == 0) {
+                total += value;
+            }
+        }⟧
+        return total;
+    }
+}`],
+Advanced:[`import java.util.*;
+
+public class Cache<K, V> extends LinkedHashMap<K, V> {
+    private final int capacity;
+
+    public Cache(int capacity) {
+        super(16, 0.75f, true);
+        this.capacity = capacity;
+    }
+
+    @Override
+    ⟦protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+        return size() > capacity;
+    }⟧
+}`]},
+Go:{Beginner:[
+`package main
+
+import "fmt"
+
+func main() {
+\tscore := 10
+\t⟦score += 5
+\tfmt.Println("score:", score)⟧
+}`,
+`package main
+
+import "fmt"
+
+func main() {
+\tage := 20
+\t⟦if age >= 18 {
+\t\tfmt.Println("adult")
+\t}⟧
+}`],
+Intermediate:[`package main
+
+import "fmt"
+
+func main() {
+\tprices := map[string]float64{"tea": 2.5, "cake": 4}
+\t⟦for item, price := range prices {
+\t\tfmt.Println(item, price)
+\t}⟧
+}`],
+Advanced:[`package main
+
+import "fmt"
+
+func worker(id int, jobs <-chan int, results chan<- int) {
+\t⟦for job := range jobs {
+\t\tresults <- job * job
+\t}⟧
+\tfmt.Println("worker", id, "done")
+}`]},
+SQL:{Beginner:[
+`SELECT name, price
+FROM products
+⟦WHERE price < 20;⟧`,
+`SELECT COUNT(*) AS total_users
+⟦FROM users
+WHERE active = 1;⟧`],
+Intermediate:[`SELECT category, COUNT(*) AS items
+FROM products
+⟦GROUP BY category
+HAVING COUNT(*) > 5
+ORDER BY items DESC;⟧`],
+Advanced:[`WITH monthly AS (
+  SELECT customer_id, SUM(total) AS spent
+  FROM orders
+  WHERE created_at >= '2026-01-01'
+  GROUP BY customer_id
+)
+SELECT c.name, ⟦m.spent
+FROM monthly m
+JOIN customers c ON c.id = m.customer_id
+ORDER BY m.spent DESC
+LIMIT 10;⟧`]}
+};
+
+const More={
+Lua:{Intermediate:`local inventory = { apples = 3, pears = 0, plums = 7 }
+local stocked = {}
+⟦for name, count in pairs(inventory) do
+  if count > 0 then
+    table.insert(stocked, name)
+  end
+end⟧
+table.sort(stocked)
+print(table.concat(stocked, ", "))`,Advanced:`local Stack = {}
+Stack.__index = Stack
+
+function Stack.new()
+  return setmetatable({ items = {} }, Stack)
+end
+
+⟦function Stack:push(value)
+  self.items[#self.items + 1] = value
+end
+
+function Stack:pop()
+  return table.remove(self.items)
+end⟧`},
+Python:{Intermediate:`def chunk(items, size):
+    result = []
+    ⟦for start in range(0, len(items), size):
+        result.append(items[start:start + size])⟧
+    return result
+
+print(chunk([1, 2, 3, 4, 5], 2))`,Advanced:`import heapq
+
+def top_k(values, k):
+    heap = []
+    ⟦for value in values:
+        heapq.heappush(heap, value)
+        if len(heap) > k:
+            heapq.heappop(heap)⟧
+    return sorted(heap, reverse=True)`},
+JavaScript:{Intermediate:`const orders = [
+  { id: 1, total: 40, paid: true },
+  { id: 2, total: 15, paid: false },
+];
+
+⟦const revenue = orders
+  .filter((order) => order.paid)
+  .reduce((sum, order) => sum + order.total, 0);⟧
+console.log(revenue);`,Advanced:`async function fetchWithRetry(url, attempts = 3) {
+  for (let i = 0; i < attempts; i++) {
+    ⟦try {
+      const response = await fetch(url);
+      if (response.ok) return await response.json();
+    } catch (error) {
+      if (i === attempts - 1) throw error;
+    }⟧
+  }
+  throw new Error("request failed");
+}`},
+TypeScript:{Intermediate:`type Task = { id: number; done: boolean };
+
+function pending(tasks: Task[]): number[] {
+  ⟦return tasks
+    .filter((task) => !task.done)
+    .map((task) => task.id);⟧
+}`,Advanced:`function groupBy<T, K extends string | number>(items: T[], key: (item: T) => K): Record<K, T[]> {
+  const groups = {} as Record<K, T[]>;
+  ⟦for (const item of items) {
+    const group = key(item);
+    (groups[group] ??= []).push(item);
+  }⟧
+  return groups;
+}`},
+"C++":{Intermediate:`#include <iostream>
+#include <map>
+#include <string>
+
+int main() {
+    std::map<std::string, int> ages = {{"Ada", 36}, {"Alan", 41}};
+    ⟦for (const auto& entry : ages) {
+        std::cout << entry.first << ": " << entry.second << std::endl;
+    }⟧
+}`,Advanced:`#include <memory>
+
+struct Node {
+    int value;
+    std::unique_ptr<Node> next;
+};
+
+⟦std::unique_ptr<Node> push(std::unique_ptr<Node> head, int value) {
+    auto node = std::make_unique<Node>();
+    node->value = value;
+    node->next = std::move(head);
+    return node;
+}⟧`},
+"C#":{Intermediate:`using System;
+using System.Linq;
+
+int[] numbers = { 3, 8, 12, 5, 20 };
+⟦var evens = numbers.Where(n => n % 2 == 0).ToArray();
+Console.WriteLine(string.Join(", ", evens));⟧`,Advanced:`public record Point(int X, int Y)
+{
+    ⟦public double DistanceTo(Point other)
+    {
+        var dx = X - other.X;
+        var dy = Y - other.Y;
+        return Math.Sqrt(dx * dx + dy * dy);
+    }⟧
+}`},
+Rust:{Intermediate:`use std::collections::HashMap;
+
+fn main() {
+    let mut counts: HashMap<char, usize> = HashMap::new();
+    ⟦for letter in "banana".chars() {
+        *counts.entry(letter).or_insert(0) += 1;
+    }⟧
+    println!("{:?}", counts.get(&'a'));
+}`,Advanced:`fn parse_age(input: &str) -> Result<u8, String> {
+    ⟦let value: i32 = input
+        .trim()
+        .parse()
+        .map_err(|_| format!("not a number: {}", input))?;
+    if !(0..=130).contains(&value) {
+        return Err(String::from("age out of range"));
+    }
+    Ok(value as u8)⟧
+}`},
+Java:{Intermediate:`import java.util.ArrayList;
+import java.util.List;
+
+public class Names {
+    static List<String> shortNames(List<String> names) {
+        List<String> result = new ArrayList<>();
+        ⟦for (String name : names) {
+            if (name.length() <= 4) {
+                result.add(name.toUpperCase());
+            }
+        }⟧
+        return result;
+    }
+}`,Advanced:`import java.util.List;
+import java.util.Optional;
+
+public class Lookup {
+    record User(int id, String name) {}
+
+    ⟦static Optional<User> find(List<User> users, int id) {
+        return users.stream()
+            .filter(user -> user.id() == id)
+            .findFirst();
+    }⟧
+}`},
+Go:{Intermediate:`package main
+
+import "fmt"
+
+func main() {
+\tnumbers := []int{4, 9, 16}
+\tsquares := make([]int, 0, len(numbers))
+\t⟦for _, n := range numbers {
+\t\tsquares = append(squares, n*n)
+\t}⟧
+\tfmt.Println(squares)
+}`,Advanced:`package main
+
+import (
+\t"errors"
+\t"fmt"
+)
+
+⟦func divide(a, b float64) (float64, error) {
+\tif b == 0 {
+\t\treturn 0, errors.New("division by zero")
+\t}
+\treturn a / b, nil
+}⟧
+
+func main() {
+\tfmt.Println(divide(9, 3))
+}`},
+SQL:{Intermediate:`SELECT u.name, COUNT(o.id) AS orders
+FROM users u
+⟦LEFT JOIN orders o ON o.user_id = u.id
+GROUP BY u.name
+ORDER BY orders DESC;⟧`,Advanced:`SELECT name, department, salary,
+  ⟦RANK() OVER (
+    PARTITION BY department
+    ORDER BY salary DESC
+  ) AS dept_rank⟧
+FROM employees;`}
+};
+for(const L in More)for(const Lv in More[L])Snippets[L][Lv].push(More[L][Lv]);
+
+let StorageOk=true;
+function Load(Key,Fallback){try{const V=JSON.parse(localStorage.getItem(Key));return V===null||V===undefined?Fallback:V}catch(E){StorageOk=false;return Fallback}}
+function Store(Key,Value){try{localStorage.setItem(Key,JSON.stringify(Value));return true}catch(E){StorageOk=false;Note("Storage is unavailable, so results will not persist after a reload.");return false}}
+function Forget(Key){try{localStorage.removeItem(Key);return true}catch(E){StorageOk=false;return false}}
+
+const Cfg={Lang:"Lua",Duration:60,Level:"Beginner",Type:"Copy Code"};
+const Settings=Object.assign({Sound:false,Accent:"Violet",Motion:"system"},Load(SettingsKey,{}));
+let Sessions=Load(SessionsKey,[]);
+if(!Array.isArray(Sessions))Sessions=[];
+let Ch=null,S=null,Spans=[],TimerId=0,NoteTimer=0,LastKey="",Ac=null;
+const Typing=Q("Typing"),Mirror=Q("Mirror"),SegRows={},StatEls={};
+const MotionQuery=window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function Note(Text){Q("Note").textContent=Text;clearTimeout(NoteTimer);NoteTimer=setTimeout(()=>{Q("Note").textContent=""},4000)}
+
+function Beep(Freq,Seconds){
+  if(!Settings.Sound)return;
+  try{
+    Ac=Ac||new AudioContext();if(Ac.state==="suspended")Ac.resume();
+    const O=Ac.createOscillator(),G=Ac.createGain();
+    O.frequency.value=Freq;G.gain.value=0.03;O.connect(G);G.connect(Ac.destination);
+    O.start();O.stop(Ac.currentTime+Seconds);
+  }catch(E){}
+}
+
+function ApplySettings(){
+  document.documentElement.style.setProperty("--accent",Accents[Settings.Accent]||Accents.Violet);
+  const Reduce=Settings.Motion==="on"||(Settings.Motion==="system"&&MotionQuery.matches);
+  document.documentElement.dataset.motion=Reduce?"reduce":"full";
+}
+function SaveSettings(){Store(SettingsKey,Settings)}
+
+function Classify(Text,Lang){
+  const Esc=X=>X.replace(/[-\/\\^$*+?.()|[\]{}]/g,"\\$&");
+  const Re=new RegExp("("+Esc(Comment[Lang]||"//")+".*|/\\*[\\s\\S]*?\\*/)|(\"(?:\\\\.|[^\"\\\\\\n])*\"|'(?:\\\\.|[^'\\\\\\n])*'|`[^`]*`)|(\\b\\d[\\d_.]*)|([A-Za-z_]\\w*)","g");
+  const Out=new Array(Text.length).fill("");
+  for(const M of Text.matchAll(Re)){
+    const Kind=M[1]?"C":M[2]?"S":M[3]?"N":Keywords.has(M[4])?"K":/^[A-Z]/.test(M[4])?"T":Text[M.index+M[0].length]==="("?"F":"";
+    Out.fill(Kind,M.index,M.index+M[0].length);
+  }
+  return Out;
+}
+
+function Compute(Sess,ElapsedMs){
+  const Typed=Sess.Typed,Target=Ch.Target;
+  let Correct=0;
+  for(let I=0;I<Typed.length;I++)if(Typed[I]===Target[I])Correct++;
+  const Keys=Sess.KeysOk+Sess.KeysBad,Minutes=Math.max(ElapsedMs,MinElapsedMs)/60000;
+  return {
+    Correct,Incorrect:Typed.length-Correct,Mistakes:Sess.KeysBad,
+    Gross:Keys?Keys/5/Minutes:0,Net:Correct/5/Minutes,
+    Accuracy:Keys?100*Sess.KeysOk/Keys:null,Completion:100*Correct/Target.length
+  };
+}
+
+function ElapsedMs(){return S.State==="running"?performance.now()-S.Start:S.State==="done"?S.Result.ElapsedMs:0}
+
+function NewChallenge(){
+  const Pool=Snippets[Cfg.Lang][Cfg.Level];
+  let Idx=Math.floor(Math.random()*Pool.length);
+  if(Pool.length>1&&LastKey===Cfg.Lang+Cfg.Level+Idx)Idx=(Idx+1)%Pool.length;
+  LastKey=Cfg.Lang+Cfg.Level+Idx;
+  const Raw=Pool[Idx],A=Raw.indexOf("⟦"),B=Raw.indexOf("⟧");
+  const Pre=Raw.slice(0,A),Gap=Raw.slice(A+1,B),Full=Pre+Gap+Raw.slice(B+1);
+  const Complete=Cfg.Type==="Complete Snippet";
+  Ch={Full,Complete,Start:Complete?Pre.length:0,Target:Complete?Gap:Full,Syn:Classify(Full,Cfg.Lang)};
+  Q("File").textContent=(Cfg.Lang==="Java"?"Main":"main")+Exts[Cfg.Lang];
+  Q("Chip").textContent=Cfg.Level+", "+Cfg.Type;
+  Q("TabKey").hidden=!Ch.Target.includes("\t");
+  const Box=Q("Target");Box.textContent="";Spans=[];
+  for(let I=0;I<Full.length;I++){
+    const In=I>=Ch.Start&&I<Ch.Start+Ch.Target.length;
+    const Sp=El("span",null,In&&Full[I]==="\n"?"↵\n":Full[I]);
+    const Base="Tk"+Ch.Syn[I]+(In?(Complete?" Gap":""):" Ctx");
+    Sp.className=Base;Sp.dataset.b=Base;
+    Box.append(Sp);if(In)Spans.push(Sp);
+  }
+  StartSession();
+}
+
+function StartSession(){
+  clearInterval(TimerId);TimerId=0;
+  document.body.classList.remove("Running");
+  S={State:"idle",Typed:"",KeysOk:0,KeysBad:0,Start:0,Saved:false,Result:null,Id:Date.now().toString(36)+Math.random().toString(36).slice(2,6)};
+  Typing.value="";Typing.readOnly=false;Typing.maxLength=Ch.Target.length;
+  Q("Play").hidden=false;Q("Results").hidden=true;
+  Q("Prompt").textContent=Prompts[Cfg.Type];Q("Note").textContent="";
+  Paint();
+  if(!Q("ViewPractice").hidden)Typing.focus({preventScroll:true});
+}
+
+function Paint(){
+  const Typed=S.Typed,Target=Ch.Target;
+  for(let J=0;J<Spans.length;J++){
+    const State=J<Typed.length?(Typed[J]===Target[J]?"Ok":"Bad"):J===Typed.length?"Cur":"Pend";
+    Spans[J].className=Spans[J].dataset.b+" "+State;
+  }
+  Mirror.textContent="";
+  if(!Typed)Mirror.append(El("span","Hint","Start typing here"));
+  for(let J=0;J<Typed.length;J++)Mirror.append(El("span",Typed[J]===Target[J]?"":"Bad",Typed[J]));
+  Mirror.append("\u200b");
+  ShowStats();
+}
+
+function ShowStats(){
+  const Ms=ElapsedMs(),M=Compute(S,Ms);
+  StatEls.Left.textContent=Math.max(0,Math.ceil(Cfg.Duration-Ms/1000))+"s";
+  StatEls.Elapsed.textContent=(Math.min(Ms,Cfg.Duration*1000)/1000).toFixed(1)+"s";
+  StatEls.Net.textContent=Math.round(M.Net);
+  StatEls.Gross.textContent=Math.round(M.Gross);
+  StatEls.Acc.textContent=M.Accuracy===null?"–":Math.round(M.Accuracy)+"%";
+  StatEls.Miss.textContent=M.Mistakes+(Cfg.Type==="Error-Free Run"?"/"+StrikeLimit:"");
+  const Frac=Math.max(0,1-Ms/(Cfg.Duration*1000));
+  Q("TimeFill").style.transform="scaleX("+Frac+")";
+  Q("TimeFill").parentNode.classList.toggle("Low",S.State==="running"&&Frac*Cfg.Duration<=5);
+  Q("DoneFill").style.transform="scaleX("+M.Completion/100+")";
+}
+
+function Tick(){
+  if(S.State!=="running")return;
+  if(ElapsedMs()>=Cfg.Duration*1000)Finish("time");else ShowStats();
+}
+
+function OnInput(){
+  if(S.State==="done"){Typing.value=S.Typed;return}
+  const Prev=S.Typed,Next=Typing.value.slice(0,Ch.Target.length);
+  if(S.State==="running"&&ElapsedMs()>=Cfg.Duration*1000){Typing.value=Prev;Finish("time");return}
+  let P=0;const Limit=Math.min(Prev.length,Next.length);
+  while(P<Limit&&Prev[P]===Next[P])P++;
+  if(S.State==="idle"&&Next.length>P){S.State="running";S.Start=performance.now();TimerId=setInterval(Tick,100);document.body.classList.add("Running")}
+  let LastOk=true;
+  for(let I=P;I<Next.length;I++){LastOk=Next[I]===Ch.Target[I];if(LastOk)S.KeysOk++;else S.KeysBad++}
+  S.Typed=Next;if(Typing.value!==Next)Typing.value=Next;
+  if(Next.length>P)Beep(LastOk?640:170,0.04);
+  Paint();
+  if(Next===Ch.Target)Finish("complete");
+  else if(Cfg.Type==="Error-Free Run"&&S.KeysBad>=StrikeLimit)Finish("broken");
+}
+
+function Finish(Reason){
+  if(S.State!=="running")return;
+  S.State="done";clearInterval(TimerId);TimerId=0;document.body.classList.remove("Running");
+  S.PrevBest=Sessions.length?Math.max(...Sessions.map(X=>X.Net)):null;
+  const Ms=Math.min(performance.now()-S.Start,Cfg.Duration*1000),M=Compute(S,Ms);
+  S.Result={Reason,ElapsedMs:Math.round(Ms),Net:R1(M.Net),Gross:R1(M.Gross),Accuracy:R1(M.Accuracy),Correct:M.Correct,Incorrect:M.Incorrect,Mistakes:M.Mistakes,Completion:R1(M.Completion)};
+  Typing.readOnly=true;
+  SaveSession();Beep(880,0.12);
+  Q("Play").hidden=true;Q("Results").hidden=false;
+  BuildResults();
+}
+
+function SaveSession(){
+  if(S.Saved)return;
+  S.Saved=true;
+  Sessions.push(Object.assign({Id:S.Id,At:new Date().toISOString(),Lang:Cfg.Lang,Level:Cfg.Level,Type:Cfg.Type,Duration:Cfg.Duration},S.Result));
+  Sessions=Sessions.slice(-500);
+  Store(SessionsKey,Sessions);
+}
+
+function BuildResults(){
+  const R=S.Result,Box=Q("Results");Box.textContent="";
+  const Title=R.Reason==="broken"?"Run broken after "+StrikeLimit+" mistakes":R.Reason==="time"?"Time is up":Cfg.Type==="Error-Free Run"&&R.Mistakes===0?"Clean run":"Challenge complete";
+  const Info=El("div"),Head=El("div","ResHead");
+  Info.append(El("h2",null,Title),El("div","Sub",[Cfg.Lang,Cfg.Level,Cfg.Type,Cfg.Duration+" s limit"].join(", ")),El("div","Sub","Previous best: "+(S.PrevBest===null?"none yet":S.PrevBest+" net WPM")));
+  if(S.PrevBest!==null&&R.Net>S.PrevBest)Info.append(El("div","Badge","New personal best"));
+  Head.append(Ring(R.Net,Math.max(R.Net,S.PrevBest||0,40)),Info);Box.append(Head);
+  const Rows=[
+    ["Final WPM (net)",R.Net,"correct characters ÷ 5 ÷ minutes","Big"],
+    ["Gross WPM",R.Gross,"all characters typed ÷ 5 ÷ minutes"],
+    ["Accuracy",R.Accuracy+"%","correct keystrokes ÷ all keystrokes"],
+    ["Mistakes",R.Mistakes,"incorrect keystrokes, including corrected ones"],
+    ["Correct characters",R.Correct,"typed characters matching the target"],
+    ["Incorrect characters",R.Incorrect,"typed characters still wrong at the end"],
+    ["Completion",R.Completion+"%","correct characters ÷ target length"],
+    ["Time",(R.ElapsedMs/1000).toFixed(1)+" s","first keystroke to finish"]];
+  const Grid=El("div","Metrics");
+  for(const [L,V,How,Cls] of Rows){const D=El("div","Metric"+(Cls?" "+Cls:""));D.append(El("div","Lbl",L),El("div","Val",String(V)),El("div","Sub",How));Grid.append(D)}
+  Box.append(Grid);
+  const Row=El("div","Row"),Retry=El("button","Btn Primary","Retry"),Other=El("button","Btn","Try another challenge");
+  Retry.type=Other.type="button";
+  Retry.onclick=StartSession;Other.onclick=NewChallenge;
+  Row.append(Retry,Other,El("span","Sub",StorageOk?"Saved to your progress.":"Not saved: browser storage is unavailable."));
+  Box.append(Row);Retry.focus();
+}
+
+function Table(Heads,Rows){
+  const T=El("table","Table"),Hd=El("tr");
+  for(const H of Heads)Hd.append(El("th",null,H));
+  T.append(Hd);
+  for(const Cells of Rows){const Tr=El("tr");Cells.forEach((C,I)=>Tr.append(El("td",I>1?"Num":"",String(C))));T.append(Tr)}
+  return T;
+}
+
+function Mk(Tag,Attrs,Text){
+  const N=document.createElementNS("http://www.w3.org/2000/svg",Tag);
+  for(const K in Attrs)N.setAttribute(K,Attrs[K]);
+  if(Text)N.textContent=Text;
+  return N;
+}
+
+function Ring(Value,Max){
+  const C=2*Math.PI*50,Svg=Mk("svg",{viewBox:"0 0 120 120",class:"Ring",role:"img","aria-label":"Final net WPM: "+Value});
+  const Fg=Mk("circle",{cx:60,cy:60,r:50,class:"Fg","stroke-dasharray":C,"stroke-dashoffset":C,transform:"rotate(-90 60 60)"});
+  Svg.append(Mk("circle",{cx:60,cy:60,r:50,class:"Bg"}),Fg,Mk("text",{x:60,y:66},String(Value)),Mk("text",{x:60,y:84,class:"Unit"},"net WPM"));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>Fg.setAttribute("stroke-dashoffset",C*(1-Math.min(1,Value/Max)))));
+  return Svg;
+}
+
+function Chart(List){
+  const W=600,H=130,Svg=Mk("svg",{viewBox:"0 0 "+W+" "+(H+20),class:"Chart",role:"img","aria-label":"Net WPM for your last "+List.length+" sessions"});
+  const Max=Math.max(...List.map(X=>X.Net),1),Slot=W/Math.max(List.length,12),Bw=Slot*0.7;
+  const Top=List.reduce((B,X)=>X.Net>B.Net?X:B,List[0]),Avg=List.reduce((A,X)=>A+X.Net,0)/List.length;
+  List.forEach((X,I)=>{
+    const Bh=Math.max(2,X.Net/Max*H),R=Mk("rect",{x:I*Slot+(Slot-Bw)/2,y:H-Bh+16,width:Bw,height:Bh,rx:2,class:X===Top?"Pb":""});
+    R.append(Mk("title",{},X.Net+" WPM, "+X.Lang+", "+new Date(X.At).toLocaleDateString()));
+    Svg.append(R);
+  });
+  const AvgY=H-Avg/Max*H+16;
+  Svg.append(Mk("line",{x1:0,x2:W,y1:AvgY,y2:AvgY,class:"Avg"}),Mk("text",{x:0,y:10},"Net WPM, oldest to newest. Green bar: best shown. Dashed line: average ("+R1(Avg)+")"));
+  return Svg;
+}
+
+function RenderProgress(){
+  const Box=Q("ViewProgress");Box.textContent="";
+  const Head=El("div","Head"),Clear=El("button","Btn Danger","Clear saved data");
+  Clear.type="button";Clear.disabled=!Sessions.length;Clear.onclick=ClearData;
+  Head.append(El("h2",null,"Progress"),Clear);Box.append(Head);
+  if(!StorageOk)Box.append(El("div","Sub","Browser storage is unavailable: only this visit's sessions are shown."));
+  if(!Sessions.length){Box.append(El("p","Empty","No sessions yet. Finish a challenge on the Practice tab and its results will appear here."));return}
+  const Best=Sessions.reduce((B,X)=>!B||X.Net>B.Net?X:B,null);
+  const Mean=F=>{const V=Sessions.map(F).filter(X=>X!==null&&X!==undefined);return V.length?R1(V.reduce((A,X)=>A+X,0)/V.length):null};
+  const Tiles=[
+    ["Personal best (highest net WPM)",Best.Net,Best.Lang+", "+Best.Level+", "+Best.Type,"Big"],
+    ["Average net WPM",Mean(X=>X.Net),"mean of all "+Sessions.length+" sessions"],
+    ["Average accuracy",(Mean(X=>X.Accuracy)??"–")+"%","mean of session accuracies"],
+    ["Sessions",Sessions.length,"saved on this device"]];
+  const Grid=El("div","Metrics");
+  for(const [L,V,Sub,Cls] of Tiles){const D=El("div","Metric"+(Cls?" "+Cls:""));D.append(El("div","Lbl",L),El("div","Val",String(V)),El("div","Sub",Sub));Grid.append(D)}
+  Box.append(Grid,Chart(Sessions.slice(-20)));
+  Box.append(El("h2",null,"Best net WPM by language"));
+  Box.append(Table(["Language","Sessions","Best net WPM"],Langs.map(L=>{
+    const List=Sessions.filter(X=>X.Lang===L);
+    return [L,List.length,List.length?Math.max(...List.map(X=>X.Net)):"–"];
+  })));
+  Box.append(El("h2",null,"Recent sessions"));
+  Box.append(Table(["Date","Challenge","Net WPM","Accuracy","Mistakes"],Sessions.slice(-10).reverse().map(X=>[
+    new Date(X.At).toLocaleDateString(undefined,{month:"short",day:"numeric"}),
+    X.Lang+", "+X.Level+", "+X.Type,X.Net,X.Accuracy+"%",X.Mistakes])));
+}
+
+function ClearData(){
+  if(!confirm("Delete all saved sessions and personal bests? This cannot be undone."))return;
+  Sessions=[];Forget(SessionsKey);
+  RenderProgress();Note("Saved progress cleared.");
+}
+
+function Show(Name){
+  for(const V of ["Practice","Progress","Settings"]){
+    Q("View"+V).hidden=V!==Name;
+    const B=Q("Nav").querySelector("[data-v="+V+"]");
+    if(V===Name)B.setAttribute("aria-current","page");else B.removeAttribute("aria-current");
+  }
+  if(Name==="Progress")RenderProgress();
+  if(Name==="Practice")Typing.focus({preventScroll:true});
+}
+
+function Segment(Label,Key,Options){
+  const G=El("div","Group"),Row=El("div","Seg");
+  Row.setAttribute("role","radiogroup");Row.setAttribute("aria-label",Label);
+  for(const O of Options){
+    const B=El("button","SegBtn",Key==="Duration"?O+"s":O);
+    B.type="button";B.setAttribute("role","radio");B.dataset.v=O;
+    B.onclick=()=>{Cfg[Key]=O;MarkSetup();NewChallenge()};
+    Row.append(B);
+  }
+  G.append(El("span","GLbl",Label),Row);Q("Setup").append(G);SegRows[Key]=Row;
+}
+function MarkSetup(){
+  for(const K in SegRows)for(const B of SegRows[K].children){
+    const On=String(Cfg[K])===B.dataset.v;B.setAttribute("aria-checked",String(On));B.classList.toggle("On",On);
+  }
+}
+
+function InsertTab(){
+  const L=Typing.value.length;
+  if(S.State!=="done"&&L<Ch.Target.length){Typing.setRangeText("\t",L,L,"end");Typing.dispatchEvent(new Event("input"))}
+}
+
+function EndCaret(){const L=Typing.value.length;Typing.setSelectionRange(L,L)}
+
+function Init(){
+  ApplySettings();
+  for(const V of ["Practice","Progress","Settings"]){
+    const B=El("button","Tab",V);B.type="button";B.dataset.v=V;B.onclick=()=>Show(V);Q("Nav").append(B);
+  }
+  const Group=El("div","Group"),Sel=El("select");
+  Sel.setAttribute("aria-label","Programming language");
+  for(const L of Langs){const O=El("option",null,L);O.value=L;Sel.append(O)}
+  Sel.onchange=()=>{Cfg.Lang=Sel.value;NewChallenge()};
+  Group.append(El("span","GLbl","Language"),Sel);Q("Setup").append(Group);
+  Segment("Duration","Duration",Durations);Segment("Difficulty","Level",Levels);Segment("Challenge type","Type",Types);
+  MarkSetup();
+
+  for(const [Key,Label,Tip] of [["Left","Time left","Seconds remaining in this attempt"],["Elapsed","Elapsed","Seconds since your first keystroke"],["Net","Net WPM","Correct characters ÷ 5 ÷ elapsed minutes"],["Gross","Gross WPM","All characters typed ÷ 5 ÷ elapsed minutes"],["Acc","Accuracy","Correct keystrokes ÷ all keystrokes"],["Miss","Mistakes","Incorrect keystrokes, including ones you corrected"]]){
+    const D=El("div","Stat"+(Key==="Net"?" Hero":"")),V=El("div","Val","–");D.title=Tip;D.append(V,El("div","Lbl",Label));StatEls[Key]=V;Q("Stats").append(D);
+  }
+
+  Typing.addEventListener("input",OnInput);
+  Typing.addEventListener("keydown",E=>{
+    if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Home","End","PageUp","PageDown"].includes(E.key)||((E.ctrlKey||E.metaKey)&&E.key.toLowerCase()==="a"))E.preventDefault();
+    else if(E.key==="Tab"&&!E.shiftKey&&Ch.Target.includes("\t")){
+      E.preventDefault();
+      InsertTab();
+    }else if(E.key==="Escape")Typing.blur();
+  });
+  for(const Ev of ["paste","drop","cut"])Typing.addEventListener(Ev,E=>{E.preventDefault();if(Ev!=="cut")Note("Paste is disabled. Type the code.")});
+  Typing.addEventListener("beforeinput",E=>{if(/^(insertFromPaste|insertFromDrop|insertFromYank|historyUndo|historyRedo)/.test(E.inputType))E.preventDefault()});
+  Typing.addEventListener("mousedown",E=>{E.preventDefault();Typing.focus();EndCaret()});
+  for(const Ev of ["select","focus","click","touchend","keyup"])Typing.addEventListener(Ev,EndCaret);
+  Q("Target").addEventListener("click",()=>Typing.focus());
+  Q("TabKey").addEventListener("mousedown",E=>E.preventDefault());
+  Q("TabKey").onclick=()=>{InsertTab();Typing.focus()};
+  Q("Restart").onclick=StartSession;
+  Q("Another").onclick=NewChallenge;
+  document.addEventListener("visibilitychange",Tick);
+
+  const SetSound=Q("SetSound"),SetAccent=Q("SetAccent"),SetMotion=Q("SetMotion");
+  SetSound.checked=Settings.Sound===true;
+  for(const K in Accents){const O=El("option",null,K);O.value=K;SetAccent.append(O)}
+  SetAccent.value=Accents[Settings.Accent]?Settings.Accent:"Violet";SetMotion.value=Settings.Motion;
+  SetSound.onchange=()=>{Settings.Sound=SetSound.checked;SaveSettings();Beep(640,0.06)};
+  SetAccent.onchange=()=>{Settings.Accent=SetAccent.value;ApplySettings();SaveSettings()};
+  SetMotion.onchange=()=>{Settings.Motion=SetMotion.value;ApplySettings();SaveSettings()};
+  Q("SetReset").onclick=ClearData;
+  MotionQuery.addEventListener("change",ApplySettings);
+
+  document.addEventListener("pointermove",E=>{
+    const M=E.target.closest&&E.target.closest(".Metric");
+    if(M){const Box=M.getBoundingClientRect();M.style.setProperty("--mx",E.clientX-Box.left+"px");M.style.setProperty("--my",E.clientY-Box.top+"px")}
+  });
+  Show("Practice");
+  NewChallenge();
+}
+Init();
+</script>
+</body>
+</html>

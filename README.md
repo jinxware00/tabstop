@@ -30,7 +30,7 @@
 
 **Tabstop** is a coding typing-speed trainer built for developers.
 
-Type real code snippets across ten programming and query languages, race against the clock, and track your speed, accuracy, and progress, all directly in your browser.
+Type real code snippets across eleven programming and query languages, race against the clock, and track your speed, accuracy, and progress, all directly in your browser.
 
 No downloads. No installation. Just open Tabstop and start typing.
 
@@ -40,7 +40,7 @@ Whether you're writing Lua, working with Python, or getting comfortable with Rus
 
 | Feature | Description |
 | --- | --- |
-| **10 languages** | Practise programming and SQL syntax |
+| **11 languages** | Practise programming and SQL syntax |
 | **3 challenge modes** | Copy Code, Complete Snippet, and Error-Free Run |
 | **Flexible timers** | Choose 30, 60, or 120 seconds |
 | **3 difficulty levels** | Beginner, Intermediate, and Advanced |
@@ -74,11 +74,11 @@ Get started in seconds.
 
 ## Supported languages
 
-Tabstop includes ten languages for practising a variety of syntax styles.
+Tabstop includes eleven languages for practising a variety of syntax styles.
 
 | Category | Languages |
 | --- | --- |
-| **Programming** | Lua, Python, JavaScript, TypeScript, C++, C#, Rust, Java, Go |
+| **Programming** | C, C++, C#, Go, Java, JavaScript, Lua, Python, Rust, TypeScript |
 | **Query** | SQL |
 
 ## Challenge modes
@@ -136,29 +136,76 @@ Your locally stored progress is tied to your browser and device. It does not aut
 
 Tabstop uses code snippets to provide realistic typing practice across supported languages.
 
-The repository can organise snippets by language and difficulty:
+Snippets are loaded from the `Snippets/` folder at runtime. Each language has its own
+directory with one file per difficulty:
 
 ```text
 Snippets/
-├── Lua/
-│   ├── easy.lua
-│   ├── medium.lua
-│   └── hard.lua
-├── Python/
-│   ├── easy.py
-│   ├── medium.py
-│   └── hard.py
+├── manifest.json
+├── C/
+│   ├── easy.c
+│   ├── medium.c
+│   └── hard.c
+├── C++/
+│   ├── easy.cpp
+│   ├── medium.cpp
+│   └── hard.cpp
+├── C#/
+│   ├── easy.cs
+│   ├── medium.cs
+│   └── hard.cs
+├── Go/
+├── Java/
 ├── JavaScript/
-│   ├── easy.js
-│   ├── medium.js
-│   └── hard.js
-└── Rust/
-    ├── easy.rs
-    ├── medium.rs
-    └── hard.rs
+├── Lua/
+├── Python/
+├── Rust/
+├── SQL/
+└── TypeScript/
 ```
 
-The structure can expand as more languages and snippets are added.
+Each language directory contains `easy.<ext>`, `medium.<ext>`, and `hard.<ext>`
+matching the Beginner, Intermediate, and Advanced difficulty levels.
+
+### manifest.json
+
+`Snippets/manifest.json` lists which files belong to each language and difficulty.
+The app fetches it first, then loads every listed file:
+
+```json
+{
+  "Lua": {
+    "Beginner": ["Lua/easy.lua"],
+    "Intermediate": ["Lua/medium.lua"],
+    "Advanced": ["Lua/hard.lua"]
+  }
+}
+```
+
+Add a language by creating its directory and files, then adding an entry to
+`manifest.json`. No application code changes are required.
+
+### Gap markers
+
+**Complete Snippet** mode requires a snippet to contain a gap the player fills in.
+Mark the gap with a matched pair of `⟦` and `⟧` characters:
+
+```lua
+local function add(a, b)
+  ⟦return a + b⟧
+end
+```
+
+The text between the markers is the part the player types; everything outside is
+shown as read-only context. A file with no marker pair is used in Copy Code and
+Error-Free Run mode only.
+
+### Fallback behaviour
+
+If the `Snippets/` folder or `manifest.json` cannot be loaded, Tabstop falls back to
+built-in snippets and shows a notice, so the app still works offline or from a plain
+`file://` URL. On `file://`, browsers block folder requests, so the built-in snippets
+are always used.
 
 ## Technology
 

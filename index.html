@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tabstop – coding typing trainer</title>
+<meta name="description" content="Tabstop is a free browser-based coding typing trainer. Practise real code snippets in 11 languages, race the clock, and beat your personal best.">
+<meta name="theme-color" content="#09090c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2309090c'/%3E%3Crect x='8' y='8' width='16' height='4.5' rx='1.5' fill='%23a78bfa'/%3E%3Crect x='8' y='15' width='11' height='4.5' rx='1.5' fill='%23d6d6de'/%3E%3Crect x='8' y='22' width='6' height='4.5' rx='1.5' fill='%23a78bfa'/%3E%3C/svg%3E">
 <style>
 :root{--bg:#09090c;--panel:#0f0f14;--line:#22222b;--text:#d6d6de;--mute:#767685;--accent:#a78bfa;--ok:#86efac;--bad:#f87171;--mono:ui-monospace,"JetBrains Mono","Cascadia Code","SF Mono",Consolas,Menlo,monospace}
 *{box-sizing:border-box}
@@ -146,6 +149,24 @@ main{max-width:1040px}
 .Dots{display:none}
 .Win .Code{min-height:7em}
 }
+
+.Btn,.Tab,.SegBtn{position:relative;isolation:isolate;overflow:hidden}
+.Btn::before,.Tab::before,.SegBtn::before{content:"";position:absolute;z-index:-1;left:110%;top:135%;width:170%;aspect-ratio:1;border-radius:50%;background:color-mix(in srgb,var(--accent) 26%,transparent);transition:transform .6s cubic-bezier(.23,1,.32,1)}
+.Btn:not(.Primary):hover::before,.Tab:hover::before,.SegBtn:hover::before{transform:translate(-45%,-58%)}
+.Btn:active{scale:.97}
+.Tab:not([aria-current=page]):hover{background:#17171f}
+.SegBtn:not(.On):hover{background:#17171f}
+select{-webkit-appearance:none;appearance:none;padding-right:26px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%23767685' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;background-size:11px 11px}
+.Bar{position:relative}
+.Bar::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent) 60%,transparent),transparent)}
+.WinBar{flex-wrap:wrap}
+.Running .Win{box-shadow:0 30px 60px -40px #000,0 0 0 1px color-mix(in srgb,var(--accent) 40%,transparent),0 0 40px -16px var(--accent);transition:box-shadow .4s}
+.Metric{transition:transform .25s,box-shadow .25s}
+.Metric:hover{transform:translateY(-3px);box-shadow:0 20px 34px -24px #000,0 0 0 1px color-mix(in srgb,var(--accent) 30%,transparent);z-index:1}
+.Switch i{box-shadow:inset 0 2px 5px rgba(0,0,0,.55)}
+[data-motion=full] .Badge{animation:BadgeGlow 1.8s ease-in-out infinite}
+@keyframes BadgeGlow{50%{box-shadow:0 0 24px -2px var(--ok)}}
+.Empty{border:1px dashed var(--line);border-radius:10px;padding:34px 20px;text-align:center}
 </style>
 </head>
 <body>
@@ -193,14 +214,14 @@ const Q=Id=>document.getElementById(Id);
 const El=(Tag,Cls,Text)=>{const N=document.createElement(Tag);if(Cls)N.className=Cls;if(Text!==undefined)N.textContent=Text;return N};
 const R1=X=>Math.round(X*10)/10;
 
-const Langs=["Lua","Python","JavaScript","TypeScript","C++","C#","Rust","Java","Go","SQL"];
+const Langs=["Lua","Python","JavaScript","TypeScript","C","C++","C#","Rust","Java","Go","SQL"];
 const Durations=[30,60,120],Levels=["Beginner","Intermediate","Advanced"],Types=["Copy Code","Complete Snippet","Error-Free Run"];
 const StrikeLimit=3,MinElapsedMs=3000,SessionsKey="tabstop.sessions",SettingsKey="tabstop.settings";
 const Accents={Violet:"#a78bfa",Indigo:"#818cf8",Teal:"#2dd4bf"};
 const Prompts={"Copy Code":"Type the whole snippet. The timer starts on your first keystroke.","Complete Snippet":"Type only the highlighted missing section. Dimmed code is context.","Error-Free Run":"Type it cleanly. The run ends after "+StrikeLimit+" mistakes, even ones you fix."};
-const Exts={Lua:".lua",Python:".py",JavaScript:".js",TypeScript:".ts","C++":".cpp","C#":".cs",Rust:".rs",Java:".java",Go:".go",SQL:".sql"};
+const Exts={Lua:".lua",Python:".py",JavaScript:".js",TypeScript:".ts",C:".c","C++":".cpp","C#":".cs",Rust:".rs",Java:".java",Go:".go",SQL:".sql"};
 const Comment={Lua:"--",SQL:"--",Python:"#"};
-const Keywords=new Set(("local function end if then else elseif for in do while return and or not nil true false def class import from as pass None True False const let var async await new typeof interface type extends implements public private static void int string bool boolean float double char fn mut pub impl struct enum match use self package func range go defer chan map foreach switch case break continue try catch throw readonly namespace using override final super this "+
+const Keywords=new Set(("local function end if then else elseif for in do while return and or not nil true false def class import from as pass None True False const let var async await new typeof interface type extends implements public private static void int string bool boolean float double char fn mut pub impl struct enum match use self package func range go defer chan map foreach switch case break continue try catch throw readonly namespace using override final super this sizeof typedef extern volatile register signed unsigned long short default auto goto constexpr nullptr template virtual operator delete friend inline mutable explicit "+
 "SELECT FROM WHERE GROUP BY ORDER JOIN ON AS AND OR NOT NULL LIMIT DESC ASC COUNT SUM HAVING WITH INNER LEFT").split(" "));
 
 const Snippets={
@@ -725,6 +746,35 @@ FROM employees;`}
 };
 for(const L in More)for(const Lv in More[L])Snippets[L][Lv].push(More[L][Lv]);
 
+const Sources=new Map();
+async function LoadFolder(){
+  let Loaded=0;
+  try{
+    const Res=await fetch("Snippets/manifest.json");
+    if(!Res.ok)throw new Error("manifest");
+    const Man=await Res.json();
+    const Jobs=[];
+    for(const Lang in Man)for(const Lv in Man[Lang])for(const Path of Man[Lang][Lv])Jobs.push({Lang,Lv,Path});
+    const Bodies=await Promise.all(Jobs.map(J=>fetch("Snippets/"+J.Path.split("/").map(encodeURIComponent).join("/")).then(R=>R.ok?R.text():null).catch(()=>null)));
+    for(let I=0;I<Jobs.length;I++){
+      const J=Jobs[I],Body=Bodies[I];
+      if(Body===null)continue;
+      Snippets[J.Lang]??={Beginner:[],Intermediate:[],Advanced:[]};
+      Snippets[J.Lang][J.Lv]??=[];
+      const Raw=Body.replace(/\r\n/g,"\n").trim();
+      if(!Raw||Snippets[J.Lang][J.Lv].includes(Raw))continue;
+      Snippets[J.Lang][J.Lv].push(Raw);
+      Sources.set(Raw,"Snippets/"+J.Path);
+      Loaded++;
+    }
+  }catch(E){
+    Note("Snippets folder unavailable — using built-in snippets.");
+    return;
+  }
+  if(S&&S.State==="idle")NewChallenge();
+  if(Loaded)Note("Loaded "+Loaded+" snippets from the Snippets folder.");
+}
+
 let StorageOk=true;
 function Load(Key,Fallback){try{const V=JSON.parse(localStorage.getItem(Key));return V===null||V===undefined?Fallback:V}catch(E){StorageOk=false;return Fallback}}
 function Store(Key,Value){try{localStorage.setItem(Key,JSON.stringify(Value));return true}catch(E){StorageOk=false;Note("Storage is unavailable, so results will not persist after a reload.");return false}}
@@ -784,15 +834,17 @@ function ElapsedMs(){return S.State==="running"?performance.now()-S.Start:S.Stat
 
 function NewChallenge(){
   const Pool=Snippets[Cfg.Lang][Cfg.Level];
+  if(!Pool||!Pool.length){Note("No snippets available for this language yet.");return}
   let Idx=Math.floor(Math.random()*Pool.length);
   if(Pool.length>1&&LastKey===Cfg.Lang+Cfg.Level+Idx)Idx=(Idx+1)%Pool.length;
   LastKey=Cfg.Lang+Cfg.Level+Idx;
-  const Raw=Pool[Idx],A=Raw.indexOf("⟦"),B=Raw.indexOf("⟧");
-  const Pre=Raw.slice(0,A),Gap=Raw.slice(A+1,B),Full=Pre+Gap+Raw.slice(B+1);
+  const Raw=Pool[Idx];
+  const A=Raw.indexOf("⟦"),B=Raw.indexOf("⟧"),HasGap=A>=0&&B>A;
+  const Pre=HasGap?Raw.slice(0,A):"",Gap=HasGap?Raw.slice(A+1,B):Raw,Full=HasGap?Pre+Gap+Raw.slice(B+1):Raw;
   const Complete=Cfg.Type==="Complete Snippet";
   Ch={Full,Complete,Start:Complete?Pre.length:0,Target:Complete?Gap:Full,Syn:Classify(Full,Cfg.Lang)};
-  Q("File").textContent=(Cfg.Lang==="Java"?"Main":"main")+Exts[Cfg.Lang];
-  Q("Chip").textContent=Cfg.Level+", "+Cfg.Type;
+  Q("File").textContent=Sources.get(Raw)||(Cfg.Lang==="Java"?"Main":"main")+Exts[Cfg.Lang];
+  Q("Chip").textContent=Cfg.Level+", "+Cfg.Type+" · "+Pool.length+(Pool.length===1?" snippet":" snippets");
   Q("TabKey").hidden=!Ch.Target.includes("\t");
   const Box=Q("Target");Box.textContent="";Spans=[];
   for(let I=0;I<Full.length;I++){
@@ -1069,6 +1121,7 @@ function Init(){
   NewChallenge();
 }
 Init();
+LoadFolder();
 </script>
 </body>
 </html>

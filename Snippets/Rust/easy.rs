@@ -4,6 +4,6 @@ fn greet(name: &str) -> String {
 
 fn main() {
     let name = "Jinx";
-    let msg = greet(name);
-    let level = 10;
+    ⟦let message = greet(name);
+    println!("{}", message);⟧
 }

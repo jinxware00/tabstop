@@ -6,5 +6,6 @@ std::string greet(const std::string& name) {
 
 int main() {
     std::string name = "Jinx";
-    auto msg = greet(name);
+    ⟦auto message = greet(name);
+    return message.empty() ? 1 : 0;⟧
 }

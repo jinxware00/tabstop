@@ -3,6 +3,6 @@ public class Main {
         String name = "Jinx";
         int level = 10;
 
-        System.out.println("Hello, " + name);
+        ⟦System.out.println(name + " reached level " + level);⟧
     }
 }

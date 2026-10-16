@@ -2,7 +2,7 @@ const name: string = "Jinx";
 const level: number = 10;
 
 function greet(): string {
-    return `Hello, ${name}`;
+    ⟦return `${name} reached level ${level}`;⟧
 }
 
-const msg = greet();
+console.log(greet());

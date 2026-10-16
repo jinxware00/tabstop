@@ -9,13 +9,13 @@
 <br/>
 
 <a href="https://jinxware00.github.io/tabstop/">
-  <img src="https://img.shields.io/badge/Play%20Tabstop-Start%20Typing-0F766E?style=for-the-badge&logo=github&logoColor=white" alt="Play Tabstop" />
+  <img src="https://img.shields.io/badge/Play%20Tabstop-Start%20Typing-E0B258?style=for-the-badge&logo=github&logoColor=101114" alt="Play Tabstop" />
 </a>
 <a href="https://github.com/jinxware00/tabstop">
   <img src="https://img.shields.io/github/stars/jinxware00/tabstop?style=for-the-badge&logo=github&label=Stars" alt="GitHub stars" />
 </a>
 <a href="https://github.com/jinxware00/tabstop">
-  <img src="https://img.shields.io/badge/Platform-Browser-2563EB?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Browser based" />
+  <img src="https://img.shields.io/badge/Platform-Browser-E0B258?style=for-the-badge&logo=googlechrome&logoColor=101114" alt="Browser based" />
 </a>
 
 <br/>
@@ -44,11 +44,11 @@ Whether you're writing Lua, working with Python, or getting comfortable with Rus
 | **3 challenge modes** | Copy Code, Complete Snippet, and Error-Free Run |
 | **Flexible timers** | Choose 30, 60, or 120 seconds |
 | **3 difficulty levels** | Beginner, Intermediate, and Advanced |
-| **Live statistics** | Track typing speed and accuracy |
+| **Live statistics** | Net WPM, raw WPM, accuracy, and mistakes as you type |
 | **Personal bests** | Keep track of your strongest sessions |
 | **Local progress** | Save session history and preferences in your browser |
-| **Distraction-free typing** | Focus on the code while you type |
-| **Sound and appearance settings** | Customise your experience |
+| **Focused typing surface** | A quiet, single-row code surface with a live caret |
+| **Sound and appearance settings** | Customise sound, accent colour, and motion |
 
 ## Play Tabstop
 
@@ -57,7 +57,7 @@ Get started in seconds.
 <div align="center">
 
 <a href="https://jinxware00.github.io/tabstop/">
-  <img src="https://img.shields.io/badge/1.%20Open%20Tabstop-0F766E?style=for-the-badge" alt="Open Tabstop" />
+  <img src="https://img.shields.io/badge/1.%20Open%20Tabstop-E0B258?style=for-the-badge&logoColor=101114" alt="Open Tabstop" />
 </a>
 
 <br/><br/>
@@ -105,8 +105,11 @@ Challenge yourself to type code with as few mistakes as possible. Accuracy matte
 
 Tabstop tracks your typing performance throughout each session.
 
-- **WPM:** Words per minute.
-- **Accuracy:** How accurately you reproduce the target code.
+- **Net WPM:** Correct characters ÷ 5 ÷ minutes elapsed.
+- **Raw WPM:** All characters typed ÷ 5 ÷ minutes elapsed.
+- **Accuracy:** Correct keystrokes ÷ all keystrokes.
+- **Mistakes:** Incorrect keystrokes, including ones you correct.
+- **Completion:** Correct characters as a share of the target.
 - **Personal best:** Your highest net WPM across saved sessions.
 - **Average:** Your mean performance across saved sessions.
 

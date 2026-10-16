@@ -70,9 +70,9 @@ select{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r
 .Hints{display:flex;gap:var(--s4);margin-top:var(--s4);color:var(--ink-3);font-size:var(--t-xs)}
 .Hints b{color:var(--ink-2);font-weight:500;font-family:var(--mono)}
 .Empty{color:var(--ink-3);padding:var(--s5) 0}
-.Type{position:relative}
+.Type{position:relative;border-radius:calc(var(--r) + 5px);background:linear-gradient(180deg,var(--bg-2),var(--bg));box-shadow:inset 0 0 0 1px var(--line);padding:0 var(--s4);transition:box-shadow .25s}
 .Code{font:var(--t-1)/1.9 var(--mono);tab-size:4;white-space:pre-wrap;overflow-wrap:anywhere;padding:var(--s4) 0;margin:0;min-height:8.5em;cursor:text;user-select:none;-webkit-user-select:none}
-.Caret{position:absolute;left:0;top:0;width:2px;height:1.2em;background:var(--accent);border-radius:1px;pointer-events:none;transition:transform .07s linear,height .07s linear;will-change:transform}
+.Caret{position:absolute;left:0;top:0;width:2px;height:1.2em;background:var(--accent);border-radius:1px;pointer-events:none;box-shadow:0 0 9px color-mix(in srgb,var(--accent) 55%,transparent);transition:transform .07s linear,height .07s linear;will-change:transform}
 .Caret.Off{opacity:0}
 body:not(.Running) .Caret{animation:CaretIdle 1s steps(1) infinite}
 @keyframes CaretIdle{50%{opacity:.25}}
@@ -108,6 +108,24 @@ body.Running .Setup:focus-within,body.Running .Setup:hover{opacity:1}
 .Switch input:checked+i::after{transform:translateX(18px);background:var(--accent)}
 .Switch input:focus-visible+i{outline:2px solid var(--accent);outline-offset:2px}
 select{-webkit-appearance:none;appearance:none;padding-right:26px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%239aa1a9' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;background-size:11px 11px}
+.Type:focus-within{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 50%,var(--line)),0 0 0 5px color-mix(in srgb,var(--accent) 10%,transparent)}
+.Type.Error{box-shadow:inset 0 0 0 1px var(--bad),0 0 0 5px color-mix(in srgb,var(--bad) 13%,transparent)}
+.Type.In{animation:Rise .3s ease}
+.Type.Shake{animation:Shake .3s}
+@keyframes Rise{from{opacity:0;transform:translateY(7px)}}
+@keyframes Shake{20%{transform:translateX(-2px)}40%{transform:translateX(2px)}60%{transform:translateX(-2px)}80%{transform:translateX(1px)}}
+main>section{animation:ViewIn .28s ease both}
+@keyframes ViewIn{from{opacity:0;transform:translateY(8px)}}
+.Val.Pop{animation:Pop .22s ease}
+@keyframes Pop{40%{transform:scale(1.15)}}
+.Btn{transition:border-color .15s,color .15s,background .15s,transform .1s}
+.Btn:hover{transform:translateY(-1px)}
+.Btn:active{transform:translateY(1px)}
+.radio .name{transition:background .15s,color .15s,transform .1s}
+.radio .name:active{transform:scale(.96)}
+.Tab[aria-current=page]{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(120% 55% at 50% -12%,color-mix(in srgb,var(--accent) 8%,transparent),transparent 62%)}
+.Bar,main{position:relative;z-index:1}
 @media(max-width:640px){
 main{padding:var(--s2) var(--s3) var(--s5)}
 .Bar{padding:var(--s2) var(--s3)}
@@ -151,6 +169,7 @@ main{padding:var(--s2) var(--s3) var(--s5)}
   <section id="ViewSettings" aria-label="Settings" hidden>
     <h2>Settings</h2>
     <label class="Field"><span class="Switch"><input type="checkbox" id="SetSound"><i></i></span> Sound effects <small>Keystroke ticks and a finish chime. Off by default.</small></label>
+    <label class="Field"><span class="Switch"><input type="checkbox" id="SetStop"><i></i></span> Stop on mistakes <small>You can't continue until an error is fixed. Ignored in Error-Free Run.</small></label>
     <label class="Field">Accent colour <select id="SetAccent"></select></label>
     <label class="Field">Reduced motion <select id="SetMotion"><option value="system">Follow system setting</option><option value="on">Always reduce</option><option value="off">Allow motion</option></select></label>
     <div class="Field"><button class="Btn Danger" id="SetReset" type="button">Reset progress…</button><small>Deletes every saved session and personal best. Settings are kept.</small></div>
@@ -167,7 +186,6 @@ const Durations=[30,60,120],Levels=["Beginner","Intermediate","Advanced"],Types=
 const StrikeLimit=3,MinElapsedMs=3000,SessionsKey="tabstop.sessions",SettingsKey="tabstop.settings";
 const Accents={Amber:"#e0b258",Violet:"#a78bfa",Cyan:"#22d3ee",Rose:"#f0788f"};
 const Prompts={"Copy Code":"Type the whole snippet. The timer starts on your first keystroke.","Complete Snippet":"Type only the highlighted missing section. Dimmed code is context.","Error-Free Run":"Type it cleanly. The run ends after "+StrikeLimit+" mistakes, even ones you fix."};
-const Exts={Lua:".lua",Python:".py",JavaScript:".js",TypeScript:".ts",C:".c","C++":".cpp","C#":".cs",Rust:".rs",Java:".java",Go:".go",SQL:".sql"};
 const Comment={Lua:"--",SQL:"--",Python:"#"};
 const Keywords=new Set(("local function end if then else elseif for in do while return and or not nil true false def class import from as pass None True False const let var async await new typeof interface type extends implements public private static void int string bool boolean float double char fn mut pub impl struct enum match use self package func range go defer chan map foreach switch case break continue try catch throw readonly namespace using override final super this sizeof typedef extern volatile register signed unsigned long short default auto goto constexpr nullptr template virtual operator delete friend inline mutable explicit "+
 "SELECT FROM WHERE GROUP BY ORDER JOIN ON AS AND OR NOT NULL LIMIT DESC ASC COUNT SUM HAVING WITH INNER LEFT").split(" "));
@@ -694,7 +712,15 @@ FROM employees;`}
 };
 for(const L in More)for(const Lv in More[L])Snippets[L][Lv].push(More[L][Lv]);
 
-const Sources=new Map();
+const Catalog={};
+const TopicByLevel={Beginner:"Basics",Intermediate:"Functions",Advanced:"Algorithms"};
+function DeriveTitle(Text){
+  for(const Line of Text.split("\n")){const T=Line.replace(/[⟦⟧]/g,"").trim();if(T)return T.length>46?T.slice(0,45)+"…":T}
+  return "Snippet";
+}
+function AddRecord(Lang,Rec){(Catalog[Lang]??=[]).push(Rec)}
+for(const L in Snippets)for(const Lv in Snippets[L])for(const Text of Snippets[L][Lv])
+  AddRecord(L,{Text,Level:Lv,Topic:TopicByLevel[Lv]||"Basics",Title:DeriveTitle(Text)});
 async function LoadFolder(){
   let Loaded=0;
   try{
@@ -702,23 +728,31 @@ async function LoadFolder(){
     if(!Res.ok)throw new Error("manifest");
     const Man=await Res.json();
     const Jobs=[];
-    for(const Lang in Man)for(const Lv in Man[Lang])for(const Path of Man[Lang][Lv])Jobs.push({Lang,Lv,Path});
-    const Bodies=await Promise.all(Jobs.map(J=>fetch("Snippets/"+J.Path.split("/").map(encodeURIComponent).join("/")).then(R=>R.ok?R.text():null).catch(()=>null)));
+    for(const Lang in Man){
+      const Raw=Man[Lang];
+      const Entries=Array.isArray(Raw)?Raw:Object.entries(Raw).flatMap(([Lv,Paths])=>Paths.map(P=>({file:P,level:Lv})));
+      for(const Rec of Entries){
+        const File=typeof Rec==="string"?Rec:Rec.file;
+        if(!File)continue;
+        Jobs.push({Lang,File,Level:Rec.level||"Beginner",Topic:Rec.topic||TopicByLevel[Rec.level]||"Basics",Title:Rec.title});
+      }
+    }
+    const Bodies=await Promise.all(Jobs.map(J=>fetch("Snippets/"+J.File.split("/").map(encodeURIComponent).join("/")).then(R=>R.ok?R.text():null).catch(()=>null)));
     for(let I=0;I<Jobs.length;I++){
       const J=Jobs[I],Body=Bodies[I];
       if(Body===null)continue;
-      Snippets[J.Lang]??={Beginner:[],Intermediate:[],Advanced:[]};
-      Snippets[J.Lang][J.Lv]??=[];
       const Raw=Body.replace(/\r\n/g,"\n").trim();
-      if(!Raw||Snippets[J.Lang][J.Lv].includes(Raw))continue;
-      Snippets[J.Lang][J.Lv].push(Raw);
-      Sources.set(Raw,"Snippets/"+J.Path);
+      if(!Raw)continue;
+      const List=Catalog[J.Lang]??=[];
+      if(List.some(R=>R.Text===Raw))continue;
+      AddRecord(J.Lang,{Text:Raw,Level:J.Level,Topic:J.Topic,Title:J.Title||DeriveTitle(Raw)});
       Loaded++;
     }
   }catch(E){
     Note("Snippets folder unavailable — using built-in snippets.");
     return;
   }
+  RefreshTopics();
   if(S&&S.State==="idle")NewChallenge();
   if(Loaded)Note("Loaded "+Loaded+" snippets from the Snippets folder.");
 }
@@ -728,8 +762,8 @@ function Load(Key,Fallback){try{const V=JSON.parse(localStorage.getItem(Key));re
 function Store(Key,Value){try{localStorage.setItem(Key,JSON.stringify(Value));return true}catch(E){StorageOk=false;Note("Storage is unavailable, so results will not persist after a reload.");return false}}
 function Forget(Key){try{localStorage.removeItem(Key);return true}catch(E){StorageOk=false;return false}}
 
-const Cfg={Lang:"Lua",Duration:60,Level:"Beginner",Type:"Copy Code"};
-const Settings=Object.assign({Sound:false,Accent:"Amber",Motion:"system"},Load(SettingsKey,{}));
+const Cfg={Lang:"Lua",Duration:60,Level:"Beginner",Type:"Copy Code",Topic:"Any"};
+const Settings=Object.assign({Sound:false,Accent:"Amber",Motion:"system",StopOnError:true},Load(SettingsKey,{}));
 let Sessions=Load(SessionsKey,[]);
 if(!Array.isArray(Sessions))Sessions=[];
 let Ch=null,S=null,Spans=[],TimerId=0,NoteTimer=0,LastKey="",Ac=null;
@@ -781,18 +815,21 @@ function Compute(Sess,ElapsedMs){
 function ElapsedMs(){return S.State==="running"?performance.now()-S.Start:S.State==="done"?S.Result.ElapsedMs:0}
 
 function NewChallenge(){
-  const Pool=Snippets[Cfg.Lang][Cfg.Level];
-  if(!Pool||!Pool.length){Note("No snippets available for this language yet.");return}
+  const All=Catalog[Cfg.Lang]||[];
+  let Pool=All.filter(R=>R.Level===Cfg.Level&&(Cfg.Topic==="Any"||R.Topic===Cfg.Topic));
+  if(!Pool.length)Pool=All.filter(R=>R.Level===Cfg.Level);
+  if(!Pool.length)Pool=All;
+  if(!Pool.length){Note("No snippets available for this language yet.");return}
   let Idx=Math.floor(Math.random()*Pool.length);
-  if(Pool.length>1&&LastKey===Cfg.Lang+Cfg.Level+Idx)Idx=(Idx+1)%Pool.length;
-  LastKey=Cfg.Lang+Cfg.Level+Idx;
-  const Raw=Pool[Idx];
+  if(Pool.length>1&&LastKey===Cfg.Lang+Cfg.Level+Cfg.Topic+Idx)Idx=(Idx+1)%Pool.length;
+  LastKey=Cfg.Lang+Cfg.Level+Cfg.Topic+Idx;
+  const Rec=Pool[Idx],Raw=Rec.Text;
   const A=Raw.indexOf("⟦"),B=Raw.indexOf("⟧"),HasGap=A>=0&&B>A;
   const Pre=HasGap?Raw.slice(0,A):"",Gap=HasGap?Raw.slice(A+1,B):Raw,Full=HasGap?Pre+Gap+Raw.slice(B+1):Raw;
   const Complete=Cfg.Type==="Complete Snippet";
-  Ch={Full,Complete,Start:Complete?Pre.length:0,Target:Complete?Gap:Full,Syn:Classify(Full,Cfg.Lang)};
-  Q("File").textContent=Sources.get(Raw)||(Cfg.Lang==="Java"?"Main":"main")+Exts[Cfg.Lang];
-  Q("Chip").textContent=Cfg.Level+", "+Cfg.Type+" · "+Pool.length+(Pool.length===1?" snippet":" snippets");
+  Ch={Full,Complete,Start:Complete?Pre.length:0,Target:Complete?Gap:Full,Syn:Classify(Full,Cfg.Lang),Topic:Rec.Topic,Title:Rec.Title};
+  Q("File").textContent=Rec.Title;
+  Q("Chip").textContent=Rec.Topic+" · "+Cfg.Type+" · "+Pool.length+(Pool.length===1?" snippet":" snippets");
   Q("TabKey").hidden=!Ch.Target.includes("\t");
   const Box=Q("Target");Box.textContent="";Spans=[];
   for(let I=0;I<Full.length;I++){
@@ -802,6 +839,7 @@ function NewChallenge(){
     Sp.className=Base;Sp.dataset.b=Base;
     Box.append(Sp);if(In)Spans.push(Sp);
   }
+  const T=Q("Target").parentNode;T.classList.remove("In");void T.offsetWidth;T.classList.add("In");
   StartSession();
 }
 
@@ -811,6 +849,7 @@ function StartSession(){
   S={State:"idle",Typed:"",KeysOk:0,KeysBad:0,Start:0,Saved:false,Result:null,Id:Date.now().toString(36)+Math.random().toString(36).slice(2,6)};
   Typing.value="";Typing.readOnly=false;Typing.maxLength=Ch.Target.length;
   Q("Play").hidden=false;Q("Results").hidden=true;
+  Q("Target").parentNode.classList.remove("Error");
   Q("Prompt").textContent=Prompts[Cfg.Type];Q("Note").textContent="";
   Paint();
   if(!Q("ViewPractice").hidden)Typing.focus({preventScroll:true});
@@ -830,19 +869,25 @@ function MoveCaret(){
   const Caret=Q("Caret"),Sp=Spans[S.Typed.length];
   if(!Sp){Caret.classList.add("Off");return}
   Caret.classList.remove("Off");
-  const B=Sp.getBoundingClientRect(),R=Q("Target").getBoundingClientRect();
+  const B=Sp.getBoundingClientRect(),R=Q("Target").parentNode.getBoundingClientRect();
   Caret.style.transform="translate("+(B.left-R.left)+"px,"+(B.top-R.top)+"px)";
   Caret.style.height=B.height+"px";
 }
 
+const PrevVals=new WeakMap();
+function SetStat(Node,Text){
+  if(PrevVals.get(Node)===Text)return;
+  PrevVals.set(Node,Text);Node.textContent=Text;
+  Node.classList.remove("Pop");void Node.offsetWidth;Node.classList.add("Pop");
+}
 function ShowStats(){
   const Ms=ElapsedMs(),M=Compute(S,Ms);
   StatEls.Left.textContent=Math.max(0,Math.ceil(Cfg.Duration-Ms/1000))+"s";
   StatEls.Elapsed.textContent=(Math.min(Ms,Cfg.Duration*1000)/1000).toFixed(1)+"s";
-  StatEls.Net.textContent=Math.round(M.Net);
-  StatEls.Gross.textContent=Math.round(M.Gross);
-  StatEls.Acc.textContent=M.Accuracy===null?"–":Math.round(M.Accuracy)+"%";
-  StatEls.Miss.textContent=M.Mistakes+(Cfg.Type==="Error-Free Run"?"/"+StrikeLimit:"");
+  SetStat(StatEls.Net,Math.round(M.Net));
+  SetStat(StatEls.Gross,Math.round(M.Gross));
+  SetStat(StatEls.Acc,M.Accuracy===null?"–":Math.round(M.Accuracy)+"%");
+  SetStat(StatEls.Miss,M.Mistakes+(Cfg.Type==="Error-Free Run"?"/"+StrikeLimit:""));
   const Frac=Math.max(0,1-Ms/(Cfg.Duration*1000));
   Q("TimeFill").style.transform="scaleX("+Frac+")";
   Q("TimeFill").parentNode.classList.toggle("Low",S.State==="running"&&Frac*Cfg.Duration<=5);
@@ -853,10 +898,22 @@ function Tick(){
   if(ElapsedMs()>=Cfg.Duration*1000)Finish("time");else ShowStats();
 }
 
+function Shake(){const T=Q("Target").parentNode;T.classList.remove("Shake");void T.offsetWidth;T.classList.add("Shake")}
+
 function OnInput(){
   if(S.State==="done"){Typing.value=S.Typed;return}
-  const Prev=S.Typed,Next=Typing.value.slice(0,Ch.Target.length);
+  const Prev=S.Typed;
+  let Next=Typing.value.slice(0,Ch.Target.length);
   if(S.State==="running"&&ElapsedMs()>=Cfg.Duration*1000){Typing.value=Prev;Finish("time");return}
+  let Locked=false;
+  if(Settings.StopOnError!==false&&Cfg.Type!=="Error-Free Run"){
+    for(let I=0;I<Next.length;I++){
+      if(Next[I]!==Ch.Target[I]){
+        if(Next.length>I+1){Next=Next.slice(0,I+1);Locked=true}
+        break;
+      }
+    }
+  }
   let P=0;const Limit=Math.min(Prev.length,Next.length);
   while(P<Limit&&Prev[P]===Next[P])P++;
   if(S.State==="idle"&&Next.length>P){S.State="running";S.Start=performance.now();TimerId=setInterval(Tick,100);document.body.classList.add("Running")}
@@ -865,6 +922,9 @@ function OnInput(){
   S.Typed=Next;if(Typing.value!==Next)Typing.value=Next;
   if(Next.length>P)Beep(LastOk?640:170,0.04);
   Paint();
+  const Stuck=Next.length>0&&Next[Next.length-1]!==Ch.Target[Next.length-1];
+  Q("Target").parentNode.classList.toggle("Error",Stuck&&Cfg.Type!=="Error-Free Run");
+  if(Locked)Shake();
   if(Next===Ch.Target)Finish("complete");
   else if(Cfg.Type==="Error-Free Run"&&S.KeysBad>=StrikeLimit)Finish("broken");
 }
@@ -872,6 +932,7 @@ function OnInput(){
 function Finish(Reason){
   if(S.State!=="running")return;
   S.State="done";clearInterval(TimerId);TimerId=0;document.body.classList.remove("Running");
+  Q("Target").parentNode.classList.remove("Error");
   S.PrevBest=Sessions.length?Math.max(...Sessions.map(X=>X.Net)):null;
   const Ms=Math.min(performance.now()-S.Start,Cfg.Duration*1000),M=Compute(S,Ms);
   S.Result={Reason,ElapsedMs:Math.round(Ms),Net:R1(M.Net),Gross:R1(M.Gross),Accuracy:R1(M.Accuracy),Correct:M.Correct,Incorrect:M.Incorrect,Mistakes:M.Mistakes,Completion:R1(M.Completion)};
@@ -884,7 +945,7 @@ function Finish(Reason){
 function SaveSession(){
   if(S.Saved)return;
   S.Saved=true;
-  Sessions.push(Object.assign({Id:S.Id,At:new Date().toISOString(),Lang:Cfg.Lang,Level:Cfg.Level,Type:Cfg.Type,Duration:Cfg.Duration},S.Result));
+  Sessions.push(Object.assign({Id:S.Id,At:new Date().toISOString(),Lang:Cfg.Lang,Level:Cfg.Level,Topic:Ch.Topic,Type:Cfg.Type,Duration:Cfg.Duration},S.Result));
   Sessions=Sessions.slice(-500);
   Store(SessionsKey,Sessions);
 }
@@ -893,7 +954,7 @@ function BuildResults(){
   const R=S.Result,Box=Q("Results");Box.textContent="";
   const Title=R.Reason==="broken"?"Run broken after "+StrikeLimit+" mistakes":R.Reason==="time"?"Time is up":Cfg.Type==="Error-Free Run"&&R.Mistakes===0?"Clean run":"Challenge complete";
   const Head=El("div","Head2");
-  Head.append(El("h2",null,Title),El("div","Sub",[Cfg.Lang,Cfg.Level,Cfg.Type,Cfg.Duration+" s limit"].join(" · ")));
+  Head.append(El("h2",null,Title),El("div","Sub",[Cfg.Lang,Ch.Topic,Cfg.Type,Cfg.Duration+" s limit"].join(" · ")));
   if(S.PrevBest!==null&&R.Net>S.PrevBest)Head.append(El("span","Badge","new personal best"));
   else Head.append(El("div","Sub","previous best "+(S.PrevBest===null?"none":S.PrevBest+" net WPM")));
   Box.append(Head);
@@ -1004,6 +1065,29 @@ function MarkSetup(){
   for(const K in SegRows)for(const Inp of SegRows[K].querySelectorAll("input"))Inp.checked=String(Cfg[K])===Inp.value;
 }
 
+const TopicOrder=["Basics","Strings","Loops","Functions","Pointers","Arrays","Lists","Slices","Maps","Dicts","Objects","Tables","Sets","Collections","Classes","Structs","Enums","Interfaces","Types","Generics","Unions","Ownership","Results","Iterators","Templates","STL","Memory","Modules","Metatables","LINQ","Streams","Exceptions","Async","Goroutines","Algorithms","Select","Filtering","Joins","Aggregation","Subqueries","Window Functions"];
+function TopicsFor(Lang){
+  const Seen=new Set((Catalog[Lang]||[]).map(R=>R.Topic));
+  return [...Seen].sort((A,B)=>{const IA=TopicOrder.indexOf(A),IB=TopicOrder.indexOf(B);return (IA<0?99:IA)-(IB<0?99:IB)});
+}
+function RefreshTopics(){
+  const Wrap=SegRows.Topic;if(!Wrap)return;
+  const Topics=TopicsFor(Cfg.Lang);
+  if(Cfg.Topic!=="Any"&&!Topics.includes(Cfg.Topic))Cfg.Topic="Any";
+  Wrap.textContent="";
+  for(const T of ["Any",...Topics]){
+    const Lab=El("label","radio"),Inp=El("input"),Name=El("span","name",T);
+    Inp.type="radio";Inp.name="SegTopic";Inp.value=T;Inp.checked=Cfg.Topic===T;
+    Inp.onchange=()=>{Cfg.Topic=T;NewChallenge()};
+    Lab.append(Inp,Name);Wrap.append(Lab);
+  }
+}
+function SegmentDynamic(Label,Key){
+  const G=El("div","Group"),Wrap=El("div","radio-inputs");
+  Wrap.setAttribute("role","radiogroup");Wrap.setAttribute("aria-label",Label);
+  G.append(El("span","GLbl",Label),Wrap);Q("Setup").append(G);SegRows[Key]=Wrap;
+}
+
 function InsertTab(){
   const L=Typing.value.length;
   if(S.State!=="done"&&L<Ch.Target.length){Typing.setRangeText("\t",L,L,"end");Typing.dispatchEvent(new Event("input"))}
@@ -1019,10 +1103,10 @@ function Init(){
   const Group=El("div","Group"),Sel=El("select");
   Sel.setAttribute("aria-label","Programming language");
   for(const L of Langs){const O=El("option",null,L);O.value=L;Sel.append(O)}
-  Sel.onchange=()=>{Cfg.Lang=Sel.value;NewChallenge()};
+  Sel.onchange=()=>{Cfg.Lang=Sel.value;RefreshTopics();NewChallenge()};
   Group.append(El("span","GLbl","Language"),Sel);Q("Setup").append(Group);
-  Segment("Duration","Duration",Durations);Segment("Difficulty","Level",Levels);Segment("Challenge type","Type",Types);
-  MarkSetup();
+  Segment("Duration","Duration",Durations);Segment("Difficulty","Level",Levels);SegmentDynamic("Topic","Topic");Segment("Challenge type","Type",Types);
+  MarkSetup();RefreshTopics();
 
   for(const [Key,Label,Tip] of [["Left","time left","Seconds remaining in this attempt"],["Elapsed","elapsed","Seconds since your first keystroke"],["Net","net wpm","Correct characters ÷ 5 ÷ elapsed minutes"],["Gross","gross wpm","All characters typed ÷ 5 ÷ elapsed minutes"],["Acc","accuracy","Correct keystrokes ÷ all keystrokes"],["Miss","mistakes","Incorrect keystrokes, including ones you corrected"]]){
     const D=El("div","Stat"+(Key==="Net"?" Hero":"")),V=El("div","Val","–");D.title=Tip;D.append(V,El("div","Lbl",Label));StatEls[Key]=V;Q("Stats").append(D);
@@ -1047,11 +1131,13 @@ function Init(){
   Q("Another").onclick=NewChallenge;
   document.addEventListener("visibilitychange",Tick);
 
-  const SetSound=Q("SetSound"),SetAccent=Q("SetAccent"),SetMotion=Q("SetMotion");
+  const SetSound=Q("SetSound"),SetAccent=Q("SetAccent"),SetMotion=Q("SetMotion"),SetStop=Q("SetStop");
   SetSound.checked=Settings.Sound===true;
+  SetStop.checked=Settings.StopOnError!==false;
   for(const K in Accents){const O=El("option",null,K);O.value=K;SetAccent.append(O)}
   SetAccent.value=Accents[Settings.Accent]?Settings.Accent:"Amber";SetMotion.value=Settings.Motion;
   SetSound.onchange=()=>{Settings.Sound=SetSound.checked;SaveSettings();Beep(640,0.06)};
+  SetStop.onchange=()=>{Settings.StopOnError=SetStop.checked;SaveSettings()};
   SetAccent.onchange=()=>{Settings.Accent=SetAccent.value;ApplySettings();SaveSettings()};
   SetMotion.onchange=()=>{Settings.Motion=SetMotion.value;ApplySettings();SaveSettings()};
   Q("SetReset").onclick=ClearData;

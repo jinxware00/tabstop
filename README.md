@@ -15,9 +15,8 @@ Type real code snippets across ten programming and query languages, race against
 
 ## Run it
 
-1. Download `index.html`
-2. Open `index.html` in your browser.
-3. Start typing
+1. https://jinxware00.github.io/tabstop/
+2. Start typing
 
 ## Languages
 

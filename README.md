@@ -3,7 +3,7 @@
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=180&color=gradient&text=Tabstop&fontAlign=50&fontAlignY=35&fontSize=48&desc=Code%20Typing%20Trainer%20%E2%80%A2%20Speed%20%E2%80%A2%20Accuracy%20%E2%80%A2%20Precision&descAlign=50&descAlignY=60" />
 
 <a href="https://jinxware00.github.io/tabstop/">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=22&duration=2500&pause=900&center=true&vCenter=true&width=700&lines=Type+Real+Code;Build+Your+Muscle+Memory;Race+Against+The+Clock;Every+Keystroke+Counts" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=22&duration=2500&pause=900&center=true&vCenter=true&width=700&lines=Code.+Type.+Repeat.;10+Languages.+One+Keyboard.;Measure+Your+Typing+Speed;Track+Speed+%26+Accuracy" alt="Tabstop" />
 </a>
 
 <br/>

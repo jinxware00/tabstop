@@ -116,22 +116,7 @@ Your results help you see how your typing develops over time.
 ## Progress and settings
 
 Tabstop stores your session history and preferences in your browser using `localStorage`.
-
-| Storage key | Purpose |
-| --- | --- |
-| `tabstop.sessions` | Up to 500 recent sessions |
-| `tabstop.settings` | Sound, accent, and reduced-motion preferences |
-
 A session is saved once when it ends. Choosing **Retry** starts a new session.
-
-Additional details:
-
-- **Personal best:** Calculated from saved sessions.
-- **Average:** Calculated across saved sessions.
-- **Sound:** Off by default.
-- **Reduced motion:** Follows your operating-system preference unless overridden.
-
-Your locally stored progress is tied to your browser and device. It does not automatically sync across devices.
 
 ## Snippets
 
@@ -249,9 +234,5 @@ See the repository's `LICENSE` file for the terms under which Tabstop is distrib
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=120&section=footer&color=gradient" />
 
 **Tabstop**
-
-*Every keystroke counts.*
-
-<a href="https://jinxware00.github.io/tabstop/">Start typing →</a>
 
 </div>

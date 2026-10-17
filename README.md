@@ -20,7 +20,7 @@
 
 <br/>
 
-**Your code. Your speed. Your next personal best.**
+**Improve your typing speed.**
 
 </div>
 
@@ -28,11 +28,9 @@
 
 ## What is Tabstop?
 
-**Tabstop** is a coding typing-speed trainer built for developers.
+**Tabstop** is a typing-speed trainer built for developers.
 
-Type real code snippets across eleven programming and query languages, race against the clock, and track your speed, accuracy, and progress, all directly in your browser.
-
-No downloads. No installation. Just open Tabstop and start typing.
+Type code snippets across 11 programming languages, race against the clock, and track your speed, accuracy, and progress, all in your browser.
 
 Whether you're writing Lua, working with Python, or getting comfortable with Rust, Tabstop helps you build familiarity with the syntax you use every day.
 
@@ -62,7 +60,7 @@ Get started in seconds.
 
 <br/><br/>
 
-**Choose your language. Pick your difficulty. Start typing.**
+**Start typing.**
 
 </div>
 

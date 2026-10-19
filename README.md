@@ -15,7 +15,7 @@
 
 <br/>
 
-**Improve your typing speed.**
+**Improve your typing speed, whilst learning how to code.**
 
 </div>
 

@@ -11,9 +11,7 @@
 <a href="https://github.com/jinxware00/tabstop">
   <img src="https://img.shields.io/github/stars/jinxware00/tabstop?style=for-the-badge&logo=github&label=Stars" alt="GitHub stars" />
 </a>
-<a href="https://github.com/jinxware00/tabstop">
-  <img src="https://img.shields.io/badge/Platform-Browser-E0B258?style=for-the-badge&logo=googlechrome&logoColor=101114" alt="Browser based" />
-</a>
+
 
 <br/>
 

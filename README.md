@@ -25,9 +25,9 @@
 
 **Tabstop** is a typing-speed trainer built for developers.
 
-Type code snippets across 11 programming languages, race against the clock, and track your speed, accuracy, and progress, all in your browser.
+Over 11 programming languages.
 
-Whether you're writing Lua, working with Python, or getting comfortable with Rust, Tabstop helps you build familiarity with the syntax you use every day.
+Tabstop helps you build familiarity with the syntax you use every day.
 
 ## Features
 

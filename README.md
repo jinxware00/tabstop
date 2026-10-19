@@ -29,23 +29,7 @@ Over 11 programming languages.
 
 Tabstop helps you build familiarity with the syntax you use every day.
 
-## Features
-
-| Feature | Description |
-| --- | --- |
-| **11 languages** | Practise programming and SQL syntax |
-| **3 challenge modes** | Copy Code, Complete Snippet, and Error-Free Run |
-| **Flexible timers** | Choose 30, 60, or 120 seconds |
-| **3 difficulty levels** | Beginner, Intermediate, and Advanced |
-| **Live statistics** | Net WPM, raw WPM, accuracy, and mistakes as you type |
-| **Personal bests** | Keep track of your strongest sessions |
-| **Local progress** | Save session history and preferences in your browser |
-| **Focused typing surface** | A quiet, single-row code surface with a live caret |
-| **Sound and appearance settings** | Customise sound, accent colour, and motion |
-
 ## Play Tabstop
-
-Get started in seconds.
 
 <div align="center">
 

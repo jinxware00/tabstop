@@ -6,5 +6,5 @@ Vector.__index = Vector
 end
 
 function Vector:length()
-  return math.sqrt(self.x ^ 2 + self.y ^ 2)
+  return math.sqrt(self.x ^ 2 + self.y ^ 3)
 end⟧

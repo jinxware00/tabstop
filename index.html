@@ -1,1155 +1,468 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tabstop – coding typing trainer</title>
-<meta name="description" content="Tabstop is a free browser-based coding typing trainer. Practise real code snippets in 11 languages, race the clock, and beat your personal best.">
-<meta name="theme-color" content="#101114">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101114'/%3E%3Crect x='8' y='8' width='16' height='4.5' rx='1.5' fill='%23e0b258'/%3E%3Crect x='8' y='15' width='11' height='4.5' rx='1.5' fill='%23e6e7e9'/%3E%3Crect x='8' y='22' width='6' height='4.5' rx='1.5' fill='%23e0b258'/%3E%3C/svg%3E">
-<style>
-:root{
-  --bg:#101114;--bg-2:#17191d;--bg-3:#202329;--line:#282c33;
-  --ink:#e6e7e9;--ink-2:#9aa1a9;--ink-3:#5c626a;
-  --accent:#e0b258;--ok:#8ecf7a;--bad:#e0707a;
-  --ui:"SF Pro Display","SF Pro Text",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --mono:ui-monospace,"SF Mono","JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
-  --r:8px;
-  --s1:.35rem;--s2:.6rem;--s3:.9rem;--s4:1.4rem;--s5:2rem;--s6:3rem;
-  --t-xs:.75rem;--t-s:.82rem;--t-0:.92rem;--t-1:1rem;--t-2:1.28rem;--t-3:1.6rem;--t-4:2rem;--t-5:2.6rem;--t-6:3.6rem;
-}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font:var(--t-1)/1.55 var(--ui);-webkit-font-smoothing:antialiased}
-button,select,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.Bar{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);padding:var(--s3) var(--s4);max-width:1000px;margin:0 auto}
-.Logo{font:700 1.05rem/1 var(--mono);letter-spacing:-.03em}
-.Blk{display:inline-block;width:.5em;height:1.05em;margin-left:2px;background:var(--accent);vertical-align:-.16em}
-[data-motion=full] .Blk{animation:Blink 1.1s steps(2,start) infinite}
-@keyframes Blink{to{visibility:hidden}}
-nav{display:flex;gap:var(--s1)}
-.Tab{background:none;border:0;border-radius:var(--r);padding:var(--s2) var(--s3);cursor:pointer;color:var(--ink-2);font-size:var(--t-0);transition:color .12s}
-.Tab:hover{color:var(--ink)}
-.Tab[aria-current=page]{color:var(--accent)}
-main{max-width:1000px;margin:0 auto;padding:var(--s3) var(--s4) var(--s6)}
-h2{font-size:var(--t-0);font-weight:600;letter-spacing:.02em;margin:0 0 var(--s2)}
-.Setup{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:var(--s2) var(--s3);margin-bottom:var(--s5)}
-.Group{display:flex;align-items:center;gap:var(--s2)}
-.GLbl,.Lbl,.Sub,small{color:var(--ink-3);font-size:var(--t-xs)}
-.GLbl{text-transform:uppercase;letter-spacing:.08em}
-.radio-inputs{position:relative;display:flex;flex-wrap:wrap;border-radius:var(--r);background:var(--bg-2);box-shadow:0 0 0 1px var(--line);padding:.22rem;font-size:var(--t-s)}
-.radio{position:relative;flex:1 1 auto;text-align:center}
-.radio input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer;z-index:1}
-.radio .name{display:flex;cursor:pointer;align-items:center;justify-content:center;border-radius:calc(var(--r) - 3px);padding:.42rem .8rem;color:var(--ink-2);white-space:nowrap;transition:background .15s,color .15s}
-.radio .name:hover{color:var(--ink)}
-.radio input:checked+.name{background:var(--bg-3);color:var(--accent);font-weight:600}
-.radio input:focus-visible+.name{outline:2px solid var(--accent);outline-offset:2px}
-select{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:.42rem .6rem;font-size:var(--t-s);cursor:pointer}
-.Stats{display:grid;grid-template-columns:repeat(6,1fr);margin-bottom:var(--s4)}
-.Stat{padding:0 var(--s3) var(--s2) 0}
-.Val{font:600 var(--t-2)/1.1 var(--mono);font-variant-numeric:tabular-nums}
-.Lbl{display:block;margin-top:.15rem}
-.Stat.Hero .Val{color:var(--accent)}
-.Code,.Code span{transition:color .12s,opacity .12s}
-[data-motion=reduce] *{transition:none!important;animation:none!important}
-.TkK{color:#c8b6ff}.TkS{color:#a8d5a2}.TkN{color:#eab785}.TkC{color:#6a6f78;font-style:italic}.TkT{color:#7fd0f0}.TkF{color:#9db8f5}
-.Code span{opacity:.42}
-.Code span.Ok{opacity:1}
-.Code span.Bad{opacity:1;color:var(--bad)}
-.Code span.Ctx{opacity:.2}
-.Row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3);margin-top:var(--s3)}
-.Btn{background:none;border:1px solid var(--line);border-radius:var(--r);padding:var(--s2) var(--s3);cursor:pointer;color:var(--ink-2);transition:border-color .15s,color .15s,background .15s}
-.Btn:hover{border-color:var(--accent);color:var(--ink)}
-.Btn.Primary{background:var(--accent);border-color:var(--accent);color:#12100a;font-weight:600}
-.Btn.Danger:hover{border-color:var(--bad);color:var(--bad)}
-.Btn:disabled{opacity:.4;cursor:default}
-#Prompt{color:var(--ink-3);font-size:var(--t-s)}
-#Note{color:var(--accent);font-size:var(--t-s);margin-left:auto}
-.Meta{display:flex;justify-content:space-between;gap:var(--s3);margin-bottom:var(--s2);font:var(--t-xs)/1 var(--mono);color:var(--ink-3)}
-.Hints{display:flex;gap:var(--s4);margin-top:var(--s4);color:var(--ink-3);font-size:var(--t-xs)}
-.Hints b{color:var(--ink-2);font-weight:500;font-family:var(--mono)}
-.Empty{color:var(--ink-3);padding:var(--s5) 0}
-.Type{position:relative;border-radius:calc(var(--r) + 5px);background:linear-gradient(180deg,var(--bg-2),var(--bg));box-shadow:inset 0 0 0 1px var(--line);padding:0 var(--s4);transition:box-shadow .25s}
-.Code{font:var(--t-1)/1.9 var(--mono);tab-size:4;white-space:pre-wrap;overflow-wrap:anywhere;padding:var(--s4) 0;margin:0;min-height:8.5em;cursor:text;user-select:none;-webkit-user-select:none}
-.Caret{position:absolute;left:0;top:0;width:2px;height:1.2em;background:var(--accent);border-radius:1px;pointer-events:none;box-shadow:0 0 9px color-mix(in srgb,var(--accent) 55%,transparent);transition:transform .07s linear,height .07s linear;will-change:transform}
-.Caret.Off{opacity:0}
-body:not(.Running) .Caret{animation:CaretIdle 1s steps(1) infinite}
-@keyframes CaretIdle{50%{opacity:.25}}
-#Typing{position:absolute;inset:0;width:100%;height:100%;background:transparent;color:transparent;caret-color:transparent;border:0;resize:none;overflow:hidden;outline:0;font:var(--t-1)/1.9 var(--mono);tab-size:4;white-space:pre-wrap;overflow-wrap:anywhere;padding:var(--s4) 0}
-body.Running .Setup{opacity:.4;transition:opacity .3s}
-body.Running .Setup:focus-within,body.Running .Setup:hover{opacity:1}
-.Meter{grid-column:1/-1;height:2px;margin-top:var(--s2);background:var(--bg-3);border-radius:var(--r);overflow:hidden}
-.Meter i{display:block;height:100%;background:var(--accent);transform-origin:left;transition:transform .1s linear,background .3s}
-.Meter.Low i{background:var(--bad)}
-.Head2{display:flex;flex-direction:column;gap:var(--s1);margin-bottom:var(--s3)}
-.Badge{display:inline-block;align-self:flex-start;padding:.15rem .6rem;border-radius:var(--r);font-size:var(--t-xs);font-weight:600;color:#12100a;background:var(--ok)}
-.Metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s4) var(--s3);margin:var(--s5) 0 var(--s4)}
-.Metric .Val{font-size:var(--t-3)}
-.Metric.Big .Val{color:var(--accent);font-size:var(--t-5);line-height:1}
-.Table{width:100%;border-collapse:collapse;margin:var(--s2) 0 var(--s5);font-size:var(--t-s)}
-.Table th{color:var(--ink-3);font-weight:400;text-align:left}
-.Table th,.Table td{padding:var(--s2) var(--s3) var(--s2) 0;border-bottom:1px solid var(--line)}
-.Num{font-family:var(--mono);font-variant-numeric:tabular-nums}
-.Head{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s3)}
-.Field{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3);padding:var(--s3) 0;border-bottom:1px solid var(--line)}
-.Field small{flex-basis:100%}
-.Chart{width:100%;height:auto;margin:var(--s2) 0 var(--s5)}
-.Chart text{fill:var(--ink-3);font:var(--t-xs) var(--mono)}
-.Chart rect{fill:var(--accent);opacity:.85;transition:opacity .15s}
-.Chart rect:hover{opacity:1}
-.Chart rect.Pb{fill:var(--ok);opacity:1}
-.Chart .Avg{stroke:var(--ink-3);stroke-dasharray:4 4;stroke-width:1}
-.Switch{position:relative;width:40px;height:22px;flex:none}
-.Switch input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer;z-index:1}
-.Switch i{position:absolute;inset:0;border-radius:var(--r);background:var(--bg-3);border:1px solid var(--line);transition:background .2s,border-color .2s}
-.Switch i::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--ink-2);transition:transform .2s,background .2s}
-.Switch input:checked+i{background:color-mix(in srgb,var(--accent) 26%,var(--bg-2));border-color:var(--accent)}
-.Switch input:checked+i::after{transform:translateX(18px);background:var(--accent)}
-.Switch input:focus-visible+i{outline:2px solid var(--accent);outline-offset:2px}
-select{-webkit-appearance:none;appearance:none;padding-right:26px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%239aa1a9' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;background-size:11px 11px}
-.Type:focus-within{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 50%,var(--line)),0 0 0 5px color-mix(in srgb,var(--accent) 10%,transparent)}
-.Type.Error{box-shadow:inset 0 0 0 1px var(--bad),0 0 0 5px color-mix(in srgb,var(--bad) 13%,transparent)}
-.Type.In{animation:Rise .3s ease}
-.Type.Shake{animation:Shake .3s}
-@keyframes Rise{from{opacity:0;transform:translateY(7px)}}
-@keyframes Shake{20%{transform:translateX(-2px)}40%{transform:translateX(2px)}60%{transform:translateX(-2px)}80%{transform:translateX(1px)}}
-main>section{animation:ViewIn .28s ease both}
-@keyframes ViewIn{from{opacity:0;transform:translateY(8px)}}
-.Val.Pop{animation:Pop .22s ease}
-@keyframes Pop{40%{transform:scale(1.15)}}
-.Btn{transition:border-color .15s,color .15s,background .15s,transform .1s}
-.Btn:hover{transform:translateY(-1px)}
-.Btn:active{transform:translateY(1px)}
-.radio .name{transition:background .15s,color .15s,transform .1s}
-.radio .name:active{transform:scale(.96)}
-.Tab[aria-current=page]{background:color-mix(in srgb,var(--accent) 14%,transparent)}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(120% 55% at 50% -12%,color-mix(in srgb,var(--accent) 8%,transparent),transparent 62%)}
-.Bar,main{position:relative;z-index:1}
-@media(max-width:640px){
-main{padding:var(--s2) var(--s3) var(--s5)}
-.Bar{padding:var(--s2) var(--s3)}
-.Stats{grid-template-columns:repeat(3,1fr);gap:var(--s3) 0}
-.Metrics{grid-template-columns:repeat(2,1fr)}
-.Setup{justify-content:flex-start}
-#Note{margin-left:0}
-.Hints{display:none}
-.Code,#Typing{font-size:.95rem}
-}
-</style>
-</head>
-<body>
-<header class="Bar">
-  <div class="Logo" aria-label="Tabstop">tabstop<i class="Blk"></i></div>
-  <nav id="Nav" aria-label="Main"></nav>
-</header>
-<main>
-  <section id="ViewPractice" aria-label="Practice">
-    <div class="Setup" id="Setup"></div>
-    <div class="Stats" id="Stats"><div class="Meter" aria-hidden="true"><i id="TimeFill"></i></div></div>
-    <div id="Play">
-      <div class="Meta"><span id="File">main.lua</span><span id="Chip"></span></div>
-      <div class="Type">
-        <pre class="Code" id="Target" aria-label="Code to type"></pre>
-        <div class="Caret" id="Caret" aria-hidden="true"></div>
-        <textarea id="Typing" aria-label="Typing area: type the code shown above" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" rows="1"></textarea>
+<html lang="en" data-theme="graphite" data-motion="full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>tabstop — find your coding rhythm</title>
+    <meta
+      name="description"
+      content="A quiet place to practise typing real code. Explore hundreds of snippets in 28 languages, find your rhythm, and follow your progress."
+    />
+    <meta name="theme-color" content="#121615" />
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to practice</a>
+    <header class="site-header shell">
+      <a href="#practice" class="brand" aria-label="tabstop home"
+        ><span class="brand-mark" aria-hidden="true">↹</span>tabstop<span
+          class="brand-dot"
+          >.</span
+        ></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="#practice" data-view="practice" aria-current="page"
+          >Practice</a
+        >
+        <a href="#library" data-view="library">Library</a>
+        <a href="#progress" data-view="progress">Progress</a>
+      </nav>
+      <button
+        id="SettingsButton"
+        class="icon-button"
+        type="button"
+        aria-label="Open settings"
+        title="Settings"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16M4 17h16M8 4v6m8 4v6" />
+        </svg>
+      </button>
+    </header>
+    <main id="main" class="shell">
+      <section id="PracticeView" aria-labelledby="PracticeTitle">
+        <div class="practice-intro">
+          <div>
+            <p class="eyebrow">
+              <span class="status-dot"></span>A little practice goes a long way
+            </p>
+            <h1 id="PracticeTitle">Find your rhythm.</h1>
+            <p class="lede">
+              Real code. Familiar keys. One good session at a time.
+            </p>
+          </div>
+          <button class="daily-pick" id="DailyButton" type="button">
+            <span class="daily-icon" aria-hidden="true">☀</span
+            ><span
+              ><span class="eyebrow">Today's pick</span
+              ><strong id="DailyTitle">A fresh challenge</strong
+              ><span id="DailyMeta">Loading your library…</span></span
+            ><span aria-hidden="true">↗</span>
+          </button>
+        </div>
+        <div class="practice-controls" id="Controls">
+          <div class="control-top">
+            <button
+              id="LanguageButton"
+              class="language-button"
+              type="button"
+              aria-haspopup="dialog"
+            >
+              <span class="language-dot"></span
+              ><span id="CurrentLanguage">Lua</span
+              ><svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="m6 8 4 4 4-4" />
+              </svg>
+            </button>
+            <fieldset class="segmented mode-picker">
+              <legend class="sr-only">Challenge mode</legend>
+              <label
+                ><input type="radio" name="mode" value="copy" checked /><span
+                  >Type code</span
+                ></label
+              ><label
+                ><input type="radio" name="mode" value="gaps" /><span
+                  >Fill the gaps</span
+                ></label
+              ><label
+                ><input type="radio" name="mode" value="precision" /><span
+                  >Precision</span
+                ></label
+              >
+            </fieldset>
+            <fieldset class="segmented time-picker">
+              <legend class="sr-only">Session length</legend>
+              <label
+                ><input type="radio" name="duration" value="15" /><span
+                  >15s</span
+                ></label
+              ><label
+                ><input type="radio" name="duration" value="30" /><span
+                  >30s</span
+                ></label
+              ><label
+                ><input type="radio" name="duration" value="60" checked /><span
+                  >60s</span
+                ></label
+              ><label
+                ><input type="radio" name="duration" value="120" /><span
+                  >120s</span
+                ></label
+              ><label
+                ><input type="radio" name="duration" value="0" /><span
+                  >Untimed</span
+                ></label
+              >
+            </fieldset>
+          </div>
+          <div class="control-bottom">
+            <label
+              >Difficulty
+              <select id="Difficulty">
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+              </select></label
+            ><label
+              >Topic
+              <select id="Topic">
+                <option value="Any">All topics</option>
+              </select></label
+            ><span id="PoolCount" class="pool-count"></span>
+          </div>
+        </div>
+        <div id="SessionArea">
+          <div class="session-heading">
+            <div class="session-metrics">
+              <div>
+                <strong id="Timer">60<span>s</span></strong
+                ><span id="TimerLabel">remaining</span>
+              </div>
+              <div><strong id="Wpm">0</strong><span>wpm</span></div>
+              <div>
+                <strong id="Accuracy">100<span>%</span></strong
+                ><span>accuracy</span>
+              </div>
+              <div class="mistake-stat">
+                <strong id="Mistakes">0</strong><span>mistakes</span>
+              </div>
+            </div>
+            <button
+              class="quiet-button"
+              id="FocusButton"
+              type="button"
+              aria-pressed="false"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5" /></svg
+              ><span>Focus</span>
+            </button>
+          </div>
+          <div class="editor" id="Editor">
+            <div class="editor-bar">
+              <div class="file-info">
+                <span class="file-icon" aria-hidden="true">{ }</span
+                ><strong id="SnippetTitle">Getting your practice ready</strong
+                ><span id="FileExtension">.lua</span>
+              </div>
+              <button
+                class="icon-button"
+                id="BookmarkCurrent"
+                type="button"
+                aria-label="Save this snippet"
+                aria-pressed="false"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 4h12v17l-6-4-6 4z" />
+                </svg>
+              </button>
+            </div>
+            <div class="code-scroll" id="CodeScroll">
+              <pre id="Code" class="code" aria-hidden="true"></pre>
+              <span class="caret" id="Caret" aria-hidden="true"></span
+              ><textarea
+                id="Typing"
+                class="typing-input"
+                aria-label="Typing area"
+                aria-describedby="AccessibleCode ModeHint"
+                spellcheck="false"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                inputmode="text"
+              ></textarea>
+            </div>
+            <pre class="sr-only" id="AccessibleCode"></pre>
+            <div class="editor-bottom">
+              <span id="Position">Line 1, column 1</span
+              ><button id="ResumeButton" class="start-hint" type="button">
+                <span class="status-dot"></span
+                ><span id="FocusHint">Click here to start typing</span></button
+              ><span id="SnippetProgress">0 snippets completed</span>
+            </div>
+            <div class="time-track" aria-hidden="true">
+              <i id="TimeFill"></i>
+            </div>
+          </div>
+          <div class="practice-actions">
+            <p id="ModeHint">The clock starts with your first character.</p>
+            <div>
+              <button
+                id="RestartButton"
+                type="button"
+                class="quiet-button"
+                title="Ctrl + Enter"
+              >
+                <span aria-hidden="true">↺</span>Restart</button
+              ><button id="NextButton" type="button" class="quiet-button">
+                Next snippet<span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="Results" class="results" hidden></div>
+        <div class="practice-bottom">
+          <div class="shortcut-hints">
+            <span><kbd>tab</kbd> indent</span><span><kbd>esc</kbd> pause</span
+            ><span><kbd>ctrl</kbd> + <kbd>enter</kbd> restart</span>
+          </div>
+          <span id="PracticeSummary">Your progress stays in this browser.</span>
+        </div>
+        <div class="library-invite">
+          <div>
+            <span class="eyebrow">Something different?</span>
+            <h2>There's more to type.</h2>
+            <p id="LibraryDescription">
+              Explore the snippet library by language, topic, or difficulty.
+            </p>
+          </div>
+          <a href="#library" class="text-link"
+            >Browse the library <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </section>
+      <section id="LibraryView" aria-labelledby="LibraryTitle" hidden>
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">A whole lot of code</p>
+            <h1 id="LibraryTitle">The snippet library.</h1>
+            <p class="lede" id="LibrarySubtitle"></p>
+          </div>
+          <button
+            id="SavedFilter"
+            class="button secondary"
+            type="button"
+            aria-pressed="false"
+          >
+            Saved snippets <span id="SavedCount">0</span>
+          </button>
+        </div>
+        <div class="library-filters">
+          <label class="search-field"
+            ><svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10" cy="10" r="6" />
+              <path d="m15 15 5 5" /></svg
+            ><input
+              id="LibrarySearch"
+              type="search"
+              aria-label="Search snippets"
+              placeholder="Search snippets, topics, or code…" /></label
+          ><label class="sr-only" for="LibraryLanguage">Library language</label
+          ><select id="LibraryLanguage">
+            <option value="All">All languages</option></select
+          ><label class="sr-only" for="LibraryLevel">Library difficulty</label
+          ><select id="LibraryLevel">
+            <option value="All">All levels</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+        <p id="LibraryCount" class="results-count" role="status"></p>
+        <div id="SnippetGrid" class="snippet-grid"></div>
+        <button id="LoadMore" type="button" class="button secondary load-more">
+          Show more snippets
+        </button>
+      </section>
+      <section id="ProgressView" aria-labelledby="ProgressTitle" hidden>
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">Small steps add up</p>
+            <h1 id="ProgressTitle">Your progress.</h1>
+            <p class="lede">A record of the time you've put in.</p>
+          </div>
+          <button class="button secondary" id="ExportButton" type="button">
+            Export sessions <span aria-hidden="true">↓</span>
+          </button>
+        </div>
+        <label class="progress-filter"
+          >Language
+          <select id="ProgressLanguage">
+            <option value="All">All languages</option>
+          </select></label
+        >
+        <div id="ProgressContent"></div>
+      </section>
+      <noscript
+        ><p class="empty-state">
+          Tabstop needs JavaScript to measure your typing and save practice
+          sessions. Please enable it to start a session.
+        </p></noscript
+      >
+    </main>
+    <footer class="site-footer shell">
+      <span>Made for the love of code.</span>
+      <div>
+        <span id="CatalogCount"></span
+        ><a
+          href="https://github.com/jinxware00/tabstop"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub ↗</a
+        ><button type="button" id="FooterSettings">Make it yours</button>
       </div>
-      <div class="Row">
-        <button class="Btn" id="Restart" type="button">Restart</button>
-        <button class="Btn" id="Another" type="button">New snippet</button>
-        <button class="Btn" id="TabKey" type="button" hidden>Insert tab</button>
-        <span id="Prompt"></span>
-        <span id="Note" role="status" aria-live="polite"></span>
+    </footer>
+    <div id="Notice" class="notice" role="status" aria-live="polite"></div>
+    <dialog
+      id="LanguageDialog"
+      class="language-dialog"
+      aria-labelledby="LanguageTitle"
+    >
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">What are you working on?</p>
+          <h2 id="LanguageTitle">Choose a language</h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          data-close
+          aria-label="Close language picker"
+        >
+          ✕
+        </button>
       </div>
-      <div class="Hints" aria-hidden="true"><span><b>tab</b> insert tab</span><span><b>esc</b> leave</span></div>
-    </div>
-    <div id="Results" hidden></div>
-  </section>
-  <section id="ViewProgress" aria-label="Progress" hidden></section>
-  <section id="ViewSettings" aria-label="Settings" hidden>
-    <h2>Settings</h2>
-    <label class="Field"><span class="Switch"><input type="checkbox" id="SetSound"><i></i></span> Sound effects <small>Keystroke ticks and a finish chime. Off by default.</small></label>
-    <label class="Field"><span class="Switch"><input type="checkbox" id="SetStop"><i></i></span> Stop on mistakes <small>You can't continue until an error is fixed. Ignored in Error-Free Run.</small></label>
-    <label class="Field">Accent colour <select id="SetAccent"></select></label>
-    <label class="Field">Reduced motion <select id="SetMotion"><option value="system">Follow system setting</option><option value="on">Always reduce</option><option value="off">Allow motion</option></select></label>
-    <div class="Field"><button class="Btn Danger" id="SetReset" type="button">Reset progress…</button><small>Deletes every saved session and personal best. Settings are kept.</small></div>
-  </section>
-</main>
-<script>
-"use strict";
-const Q=Id=>document.getElementById(Id);
-const El=(Tag,Cls,Text)=>{const N=document.createElement(Tag);if(Cls)N.className=Cls;if(Text!==undefined)N.textContent=Text;return N};
-const R1=X=>Math.round(X*10)/10;
-
-const Langs=["Lua","Python","JavaScript","TypeScript","C","C++","C#","Rust","Java","Go","SQL"];
-const Durations=[30,60,120],Levels=["Beginner","Intermediate","Advanced"],Types=["Copy Code","Complete Snippet","Error-Free Run"];
-const StrikeLimit=3,MinElapsedMs=3000,SessionsKey="tabstop.sessions",SettingsKey="tabstop.settings";
-const Accents={Amber:"#e0b258",Violet:"#a78bfa",Cyan:"#22d3ee",Rose:"#f0788f"};
-const Prompts={"Copy Code":"Type the whole snippet. The timer starts on your first keystroke.","Complete Snippet":"Type only the highlighted missing section. Dimmed code is context.","Error-Free Run":"Type it cleanly. The run ends after "+StrikeLimit+" mistakes, even ones you fix."};
-const Comment={Lua:"--",SQL:"--",Python:"#"};
-const Keywords=new Set(("local function end if then else elseif for in do while return and or not nil true false def class import from as pass None True False const let var async await new typeof interface type extends implements public private static void int string bool boolean float double char fn mut pub impl struct enum match use self package func range go defer chan map foreach switch case break continue try catch throw readonly namespace using override final super this sizeof typedef extern volatile register signed unsigned long short default auto goto constexpr nullptr template virtual operator delete friend inline mutable explicit "+
-"SELECT FROM WHERE GROUP BY ORDER JOIN ON AS AND OR NOT NULL LIMIT DESC ASC COUNT SUM HAVING WITH INNER LEFT").split(" "));
-
-const Snippets={
-Lua:{Beginner:[
-`local name = "Ada"
-local score = 42
-⟦if score > 40 then
-  print(name .. " passed")
-end⟧`,
-`local width, height = 8, 5
-local area = width * height
-⟦print("area:", area)⟧`],
-Intermediate:[`local function average(items)
-  local total = 0
-  ⟦for _, value in ipairs(items) do
-    total = total + value
-  end⟧
-  return total / #items
-end
-
-local scores = { 82, 91, 76 }
-print(average(scores))`],
-Advanced:[`local function binarySearch(list, target)
-  local low, high = 1, #list
-  while low <= high do
-    local mid = (low + high) // 2
-    ⟦if list[mid] == target then
-      return mid
-    elseif list[mid] < target then
-      low = mid + 1
-    else
-      high = mid - 1
-    end⟧
-  end
-  return nil
-end`]},
-Python:{Beginner:[
-`price = 24.5
-quantity = 3
-⟦total = price * quantity
-print(f"Total: {total}")⟧`,
-`age = 17
-⟦if age >= 18:
-    print("adult")
-else:
-    print("minor")⟧`],
-Intermediate:[`def word_counts(text):
-    counts = {}
-    ⟦for word in text.lower().split():
-        counts[word] = counts.get(word, 0) + 1⟧
-    return counts
-
-print(word_counts("the cat and the hat"))`],
-Advanced:[`from functools import lru_cache
-
-@lru_cache(maxsize=None)
-def count_paths(row, col):
-    if row == 0 or col == 0:
-        return 1
-    ⟦return count_paths(row - 1, col) + count_paths(row, col - 1)⟧
-
-print(count_paths(8, 8))`]},
-JavaScript:{Beginner:[
-`const name = "Grace";
-let visits = 3;
-⟦visits += 1;
-console.log(name + " visited " + visits + " times");⟧`,
-`const temperature = 28;
-⟦if (temperature > 25) {
-  console.log("warm");
-} else {
-  console.log("cool");
-}⟧`],
-Intermediate:[`function groupByLength(words) {
-  const groups = {};
-  ⟦for (const word of words) {
-    const key = word.length;
-    (groups[key] ??= []).push(word);
-  }⟧
-  return groups;
-}
-
-console.log(groupByLength(["a", "to", "be", "sky"]));`],
-Advanced:[`function debounce(fn, delay) {
-  let timer = null;
-  return (...args) => {
-    ⟦clearTimeout(timer);
-    timer = setTimeout(() => {
-      timer = null;
-      fn(...args);
-    }, delay);⟧
-  };
-}
-
-const onResize = debounce(() => console.log("resized"), 200);
-window.addEventListener("resize", onResize);`]},
-TypeScript:{Beginner:[
-`const title: string = "Report";
-let pages: number = 12;
-⟦pages = pages + 2;
-console.log(title, pages);⟧`,
-`let isReady: boolean = true;
-⟦if (isReady) {
-  console.log("go");
-}⟧`],
-Intermediate:[`interface User {
-  name: string;
-  age: number;
-}
-
-function oldest(users: User[]): User | undefined {
-  ⟦return users.reduce<User | undefined>(
-    (best, user) => (!best || user.age > best.age ? user : best),
-    undefined
-  );⟧
-}`],
-Advanced:[`type Result<T> = { ok: true; value: T } | { ok: false; error: string };
-
-function parseNumber(input: string): Result<number> {
-  const value = Number(input);
-  ⟦if (Number.isNaN(value)) {
-    return { ok: false, error: "not a number: " + input };
-  }
-  return { ok: true, value };⟧
-}`]},
-"C++":{Beginner:[
-`#include <iostream>
-
-int main() {
-    int apples = 5;
-    ⟦apples += 2;
-    std::cout << apples << std::endl;⟧
-    return 0;
-}`,
-`#include <iostream>
-
-int main() {
-    int speed = 62;
-    ⟦if (speed > 60) {
-        std::cout << "slow down" << std::endl;
-    }⟧
-    return 0;
-}`],
-Intermediate:[`#include <iostream>
-#include <vector>
-
-int main() {
-    std::vector<int> values = {4, 8, 15, 16};
-    int sum = 0;
-    ⟦for (int value : values) {
-        sum += value;
-    }⟧
-    std::cout << sum << std::endl;
-}`],
-Advanced:[`#include <algorithm>
-#include <string>
-#include <vector>
-
-std::vector<std::string> sortByLength(std::vector<std::string> words) {
-    ⟦std::sort(words.begin(), words.end(),
-        [](const std::string& a, const std::string& b) {
-            return a.size() < b.size();
-        });⟧
-    return words;
-}`]},
-"C#":{Beginner:[
-`string name = "Linus";
-int level = 7;
-⟦level++;
-Console.WriteLine($"{name} is level {level}");⟧`,
-`int count = 3;
-⟦if (count > 0)
-{
-    Console.WriteLine("items left");
-}⟧`],
-Intermediate:[`using System;
-using System.Collections.Generic;
-
-var stock = new Dictionary<string, int> { ["pens"] = 12, ["ink"] = 0 };
-⟦foreach (var item in stock)
-{
-    Console.WriteLine($"{item.Key}: {item.Value}");
-}⟧`],
-Advanced:[`using System.Linq;
-
-public static class TextTools
-{
-    public static string LongestWord(string text)
-    {
-        ⟦return text.Split(' ', StringSplitOptions.RemoveEmptyEntries)
-            .OrderByDescending(word => word.Length)
-            .FirstOrDefault() ?? "";⟧
-    }
-}`]},
-Rust:{Beginner:[
-`fn main() {
-    let mut lives = 3;
-    ⟦lives -= 1;
-    println!("lives left: {}", lives);⟧
-}`,
-`fn main() {
-    let temp = 31;
-    ⟦if temp > 30 {
-        println!("hot");
-    } else {
-        println!("mild");
-    }⟧
-}`],
-Intermediate:[`fn main() {
-    let names = vec!["Ada", "Alan", "Grace"];
-    ⟦for (index, name) in names.iter().enumerate() {
-        println!("{}: {}", index, name);
-    }⟧
-}`],
-Advanced:[`#[derive(Debug)]
-struct Stack<T> {
-    items: Vec<T>,
-}
-
-impl<T> Stack<T> {
-    fn new() -> Self {
-        Stack { items: Vec::new() }
-    }
-
-    ⟦fn pop(&mut self) -> Option<T> {
-        self.items.pop()
-    }⟧
-}`]},
-Java:{Beginner:[
-`public class Main {
-    public static void main(String[] args) {
-        int lives = 3;
-        ⟦lives--;
-        System.out.println(lives);⟧
-    }
-}`,
-`int score = 88;
-⟦if (score >= 50) {
-    System.out.println("pass");
-}⟧`],
-Intermediate:[`import java.util.List;
-
-public class Totals {
-    static int sumEvens(List<Integer> values) {
-        int total = 0;
-        ⟦for (int value : values) {
-            if (value % 2 == 0) {
-                total += value;
-            }
-        }⟧
-        return total;
-    }
-}`],
-Advanced:[`import java.util.*;
-
-public class Cache<K, V> extends LinkedHashMap<K, V> {
-    private final int capacity;
-
-    public Cache(int capacity) {
-        super(16, 0.75f, true);
-        this.capacity = capacity;
-    }
-
-    @Override
-    ⟦protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
-        return size() > capacity;
-    }⟧
-}`]},
-Go:{Beginner:[
-`package main
-
-import "fmt"
-
-func main() {
-\tscore := 10
-\t⟦score += 5
-\tfmt.Println("score:", score)⟧
-}`,
-`package main
-
-import "fmt"
-
-func main() {
-\tage := 20
-\t⟦if age >= 18 {
-\t\tfmt.Println("adult")
-\t}⟧
-}`],
-Intermediate:[`package main
-
-import "fmt"
-
-func main() {
-\tprices := map[string]float64{"tea": 2.5, "cake": 4}
-\t⟦for item, price := range prices {
-\t\tfmt.Println(item, price)
-\t}⟧
-}`],
-Advanced:[`package main
-
-import "fmt"
-
-func worker(id int, jobs <-chan int, results chan<- int) {
-\t⟦for job := range jobs {
-\t\tresults <- job * job
-\t}⟧
-\tfmt.Println("worker", id, "done")
-}`]},
-SQL:{Beginner:[
-`SELECT name, price
-FROM products
-⟦WHERE price < 20;⟧`,
-`SELECT COUNT(*) AS total_users
-⟦FROM users
-WHERE active = 1;⟧`],
-Intermediate:[`SELECT category, COUNT(*) AS items
-FROM products
-⟦GROUP BY category
-HAVING COUNT(*) > 5
-ORDER BY items DESC;⟧`],
-Advanced:[`WITH monthly AS (
-  SELECT customer_id, SUM(total) AS spent
-  FROM orders
-  WHERE created_at >= '2026-01-01'
-  GROUP BY customer_id
-)
-SELECT c.name, ⟦m.spent
-FROM monthly m
-JOIN customers c ON c.id = m.customer_id
-ORDER BY m.spent DESC
-LIMIT 10;⟧`]}
-};
-
-const More={
-Lua:{Intermediate:`local inventory = { apples = 3, pears = 0, plums = 7 }
-local stocked = {}
-⟦for name, count in pairs(inventory) do
-  if count > 0 then
-    table.insert(stocked, name)
-  end
-end⟧
-table.sort(stocked)
-print(table.concat(stocked, ", "))`,Advanced:`local Stack = {}
-Stack.__index = Stack
-
-function Stack.new()
-  return setmetatable({ items = {} }, Stack)
-end
-
-⟦function Stack:push(value)
-  self.items[#self.items + 1] = value
-end
-
-function Stack:pop()
-  return table.remove(self.items)
-end⟧`},
-Python:{Intermediate:`def chunk(items, size):
-    result = []
-    ⟦for start in range(0, len(items), size):
-        result.append(items[start:start + size])⟧
-    return result
-
-print(chunk([1, 2, 3, 4, 5], 2))`,Advanced:`import heapq
-
-def top_k(values, k):
-    heap = []
-    ⟦for value in values:
-        heapq.heappush(heap, value)
-        if len(heap) > k:
-            heapq.heappop(heap)⟧
-    return sorted(heap, reverse=True)`},
-JavaScript:{Intermediate:`const orders = [
-  { id: 1, total: 40, paid: true },
-  { id: 2, total: 15, paid: false },
-];
-
-⟦const revenue = orders
-  .filter((order) => order.paid)
-  .reduce((sum, order) => sum + order.total, 0);⟧
-console.log(revenue);`,Advanced:`async function fetchWithRetry(url, attempts = 3) {
-  for (let i = 0; i < attempts; i++) {
-    ⟦try {
-      const response = await fetch(url);
-      if (response.ok) return await response.json();
-    } catch (error) {
-      if (i === attempts - 1) throw error;
-    }⟧
-  }
-  throw new Error("request failed");
-}`},
-TypeScript:{Intermediate:`type Task = { id: number; done: boolean };
-
-function pending(tasks: Task[]): number[] {
-  ⟦return tasks
-    .filter((task) => !task.done)
-    .map((task) => task.id);⟧
-}`,Advanced:`function groupBy<T, K extends string | number>(items: T[], key: (item: T) => K): Record<K, T[]> {
-  const groups = {} as Record<K, T[]>;
-  ⟦for (const item of items) {
-    const group = key(item);
-    (groups[group] ??= []).push(item);
-  }⟧
-  return groups;
-}`},
-"C++":{Intermediate:`#include <iostream>
-#include <map>
-#include <string>
-
-int main() {
-    std::map<std::string, int> ages = {{"Ada", 36}, {"Alan", 41}};
-    ⟦for (const auto& entry : ages) {
-        std::cout << entry.first << ": " << entry.second << std::endl;
-    }⟧
-}`,Advanced:`#include <memory>
-
-struct Node {
-    int value;
-    std::unique_ptr<Node> next;
-};
-
-⟦std::unique_ptr<Node> push(std::unique_ptr<Node> head, int value) {
-    auto node = std::make_unique<Node>();
-    node->value = value;
-    node->next = std::move(head);
-    return node;
-}⟧`},
-"C#":{Intermediate:`using System;
-using System.Linq;
-
-int[] numbers = { 3, 8, 12, 5, 20 };
-⟦var evens = numbers.Where(n => n % 2 == 0).ToArray();
-Console.WriteLine(string.Join(", ", evens));⟧`,Advanced:`public record Point(int X, int Y)
-{
-    ⟦public double DistanceTo(Point other)
-    {
-        var dx = X - other.X;
-        var dy = Y - other.Y;
-        return Math.Sqrt(dx * dx + dy * dy);
-    }⟧
-}`},
-Rust:{Intermediate:`use std::collections::HashMap;
-
-fn main() {
-    let mut counts: HashMap<char, usize> = HashMap::new();
-    ⟦for letter in "banana".chars() {
-        *counts.entry(letter).or_insert(0) += 1;
-    }⟧
-    println!("{:?}", counts.get(&'a'));
-}`,Advanced:`fn parse_age(input: &str) -> Result<u8, String> {
-    ⟦let value: i32 = input
-        .trim()
-        .parse()
-        .map_err(|_| format!("not a number: {}", input))?;
-    if !(0..=130).contains(&value) {
-        return Err(String::from("age out of range"));
-    }
-    Ok(value as u8)⟧
-}`},
-Java:{Intermediate:`import java.util.ArrayList;
-import java.util.List;
-
-public class Names {
-    static List<String> shortNames(List<String> names) {
-        List<String> result = new ArrayList<>();
-        ⟦for (String name : names) {
-            if (name.length() <= 4) {
-                result.add(name.toUpperCase());
-            }
-        }⟧
-        return result;
-    }
-}`,Advanced:`import java.util.List;
-import java.util.Optional;
-
-public class Lookup {
-    record User(int id, String name) {}
-
-    ⟦static Optional<User> find(List<User> users, int id) {
-        return users.stream()
-            .filter(user -> user.id() == id)
-            .findFirst();
-    }⟧
-}`},
-Go:{Intermediate:`package main
-
-import "fmt"
-
-func main() {
-\tnumbers := []int{4, 9, 16}
-\tsquares := make([]int, 0, len(numbers))
-\t⟦for _, n := range numbers {
-\t\tsquares = append(squares, n*n)
-\t}⟧
-\tfmt.Println(squares)
-}`,Advanced:`package main
-
-import (
-\t"errors"
-\t"fmt"
-)
-
-⟦func divide(a, b float64) (float64, error) {
-\tif b == 0 {
-\t\treturn 0, errors.New("division by zero")
-\t}
-\treturn a / b, nil
-}⟧
-
-func main() {
-\tfmt.Println(divide(9, 3))
-}`},
-SQL:{Intermediate:`SELECT u.name, COUNT(o.id) AS orders
-FROM users u
-⟦LEFT JOIN orders o ON o.user_id = u.id
-GROUP BY u.name
-ORDER BY orders DESC;⟧`,Advanced:`SELECT name, department, salary,
-  ⟦RANK() OVER (
-    PARTITION BY department
-    ORDER BY salary DESC
-  ) AS dept_rank⟧
-FROM employees;`}
-};
-for(const L in More)for(const Lv in More[L])Snippets[L][Lv].push(More[L][Lv]);
-
-const Catalog={};
-const TopicByLevel={Beginner:"Basics",Intermediate:"Functions",Advanced:"Algorithms"};
-function DeriveTitle(Text){
-  for(const Line of Text.split("\n")){const T=Line.replace(/[⟦⟧]/g,"").trim();if(T)return T.length>46?T.slice(0,45)+"…":T}
-  return "Snippet";
-}
-function AddRecord(Lang,Rec){(Catalog[Lang]??=[]).push(Rec)}
-for(const L in Snippets)for(const Lv in Snippets[L])for(const Text of Snippets[L][Lv])
-  AddRecord(L,{Text,Level:Lv,Topic:TopicByLevel[Lv]||"Basics",Title:DeriveTitle(Text)});
-async function LoadFolder(){
-  let Loaded=0;
-  try{
-    const Res=await fetch("Snippets/manifest.json");
-    if(!Res.ok)throw new Error("manifest");
-    const Man=await Res.json();
-    const Jobs=[];
-    for(const Lang in Man){
-      const Raw=Man[Lang];
-      const Entries=Array.isArray(Raw)?Raw:Object.entries(Raw).flatMap(([Lv,Paths])=>Paths.map(P=>({file:P,level:Lv})));
-      for(const Rec of Entries){
-        const File=typeof Rec==="string"?Rec:Rec.file;
-        if(!File)continue;
-        Jobs.push({Lang,File,Level:Rec.level||"Beginner",Topic:Rec.topic||TopicByLevel[Rec.level]||"Basics",Title:Rec.title});
-      }
-    }
-    const Bodies=await Promise.all(Jobs.map(J=>fetch("Snippets/"+J.File.split("/").map(encodeURIComponent).join("/")).then(R=>R.ok?R.text():null).catch(()=>null)));
-    for(let I=0;I<Jobs.length;I++){
-      const J=Jobs[I],Body=Bodies[I];
-      if(Body===null)continue;
-      const Raw=Body.replace(/\r\n/g,"\n").trim();
-      if(!Raw)continue;
-      const List=Catalog[J.Lang]??=[];
-      if(List.some(R=>R.Text===Raw))continue;
-      AddRecord(J.Lang,{Text:Raw,Level:J.Level,Topic:J.Topic,Title:J.Title||DeriveTitle(Raw)});
-      Loaded++;
-    }
-  }catch(E){
-    Note("Snippets folder unavailable — using built-in snippets.");
-    return;
-  }
-  RefreshTopics();
-  if(S&&S.State==="idle")NewChallenge();
-  if(Loaded)Note("Loaded "+Loaded+" snippets from the Snippets folder.");
-}
-
-let StorageOk=true;
-function Load(Key,Fallback){try{const V=JSON.parse(localStorage.getItem(Key));return V===null||V===undefined?Fallback:V}catch(E){StorageOk=false;return Fallback}}
-function Store(Key,Value){try{localStorage.setItem(Key,JSON.stringify(Value));return true}catch(E){StorageOk=false;Note("Storage is unavailable, so results will not persist after a reload.");return false}}
-function Forget(Key){try{localStorage.removeItem(Key);return true}catch(E){StorageOk=false;return false}}
-
-const Cfg={Lang:"Lua",Duration:60,Level:"Beginner",Type:"Copy Code",Topic:"Any"};
-const Settings=Object.assign({Sound:false,Accent:"Amber",Motion:"system",StopOnError:true},Load(SettingsKey,{}));
-let Sessions=Load(SessionsKey,[]);
-if(!Array.isArray(Sessions))Sessions=[];
-let Ch=null,S=null,Spans=[],TimerId=0,NoteTimer=0,LastKey="",Ac=null;
-const Typing=Q("Typing"),SegRows={},StatEls={};
-const MotionQuery=window.matchMedia("(prefers-reduced-motion: reduce)");
-
-function Note(Text){Q("Note").textContent=Text;clearTimeout(NoteTimer);NoteTimer=setTimeout(()=>{Q("Note").textContent=""},4000)}
-
-function Beep(Freq,Seconds){
-  if(!Settings.Sound)return;
-  try{
-    Ac=Ac||new AudioContext();if(Ac.state==="suspended")Ac.resume();
-    const O=Ac.createOscillator(),G=Ac.createGain();
-    O.frequency.value=Freq;G.gain.value=0.03;O.connect(G);G.connect(Ac.destination);
-    O.start();O.stop(Ac.currentTime+Seconds);
-  }catch(E){}
-}
-
-function ApplySettings(){
-  document.documentElement.style.setProperty("--accent",Accents[Settings.Accent]||Accents.Amber);
-  const Reduce=Settings.Motion==="on"||(Settings.Motion==="system"&&MotionQuery.matches);
-  document.documentElement.dataset.motion=Reduce?"reduce":"full";
-}
-function SaveSettings(){Store(SettingsKey,Settings)}
-
-function Classify(Text,Lang){
-  const Esc=X=>X.replace(/[-\/\\^$*+?.()|[\]{}]/g,"\\$&");
-  const Re=new RegExp("("+Esc(Comment[Lang]||"//")+".*|/\\*[\\s\\S]*?\\*/)|(\"(?:\\\\.|[^\"\\\\\\n])*\"|'(?:\\\\.|[^'\\\\\\n])*'|`[^`]*`)|(\\b\\d[\\d_.]*)|([A-Za-z_]\\w*)","g");
-  const Out=new Array(Text.length).fill("");
-  for(const M of Text.matchAll(Re)){
-    const Kind=M[1]?"C":M[2]?"S":M[3]?"N":Keywords.has(M[4])?"K":/^[A-Z]/.test(M[4])?"T":Text[M.index+M[0].length]==="("?"F":"";
-    Out.fill(Kind,M.index,M.index+M[0].length);
-  }
-  return Out;
-}
-
-function Compute(Sess,ElapsedMs){
-  const Typed=Sess.Typed,Target=Ch.Target;
-  let Correct=0;
-  for(let I=0;I<Typed.length;I++)if(Typed[I]===Target[I])Correct++;
-  const Keys=Sess.KeysOk+Sess.KeysBad,Minutes=Math.max(ElapsedMs,MinElapsedMs)/60000;
-  return {
-    Correct,Incorrect:Typed.length-Correct,Mistakes:Sess.KeysBad,
-    Gross:Keys?Keys/5/Minutes:0,Net:Correct/5/Minutes,
-    Accuracy:Keys?100*Sess.KeysOk/Keys:null,Completion:100*Correct/Target.length
-  };
-}
-
-function ElapsedMs(){return S.State==="running"?performance.now()-S.Start:S.State==="done"?S.Result.ElapsedMs:0}
-
-function NewChallenge(){
-  const All=Catalog[Cfg.Lang]||[];
-  let Pool=All.filter(R=>R.Level===Cfg.Level&&(Cfg.Topic==="Any"||R.Topic===Cfg.Topic));
-  if(!Pool.length)Pool=All.filter(R=>R.Level===Cfg.Level);
-  if(!Pool.length)Pool=All;
-  if(!Pool.length){Note("No snippets available for this language yet.");return}
-  let Idx=Math.floor(Math.random()*Pool.length);
-  if(Pool.length>1&&LastKey===Cfg.Lang+Cfg.Level+Cfg.Topic+Idx)Idx=(Idx+1)%Pool.length;
-  LastKey=Cfg.Lang+Cfg.Level+Cfg.Topic+Idx;
-  const Rec=Pool[Idx],Raw=Rec.Text;
-  const A=Raw.indexOf("⟦"),B=Raw.indexOf("⟧"),HasGap=A>=0&&B>A;
-  const Pre=HasGap?Raw.slice(0,A):"",Gap=HasGap?Raw.slice(A+1,B):Raw,Full=HasGap?Pre+Gap+Raw.slice(B+1):Raw;
-  const Complete=Cfg.Type==="Complete Snippet";
-  Ch={Full,Complete,Start:Complete?Pre.length:0,Target:Complete?Gap:Full,Syn:Classify(Full,Cfg.Lang),Topic:Rec.Topic,Title:Rec.Title};
-  Q("File").textContent=Rec.Title;
-  Q("Chip").textContent=Rec.Topic+" · "+Cfg.Type+" · "+Pool.length+(Pool.length===1?" snippet":" snippets");
-  Q("TabKey").hidden=!Ch.Target.includes("\t");
-  const Box=Q("Target");Box.textContent="";Spans=[];
-  for(let I=0;I<Full.length;I++){
-    const In=I>=Ch.Start&&I<Ch.Start+Ch.Target.length;
-    const Sp=El("span",null,In&&Full[I]==="\n"?"↵\n":Full[I]);
-    const Base="Tk"+Ch.Syn[I]+(In?(Complete?" Gap":""):" Ctx");
-    Sp.className=Base;Sp.dataset.b=Base;
-    Box.append(Sp);if(In)Spans.push(Sp);
-  }
-  const T=Q("Target").parentNode;T.classList.remove("In");void T.offsetWidth;T.classList.add("In");
-  StartSession();
-}
-
-function StartSession(){
-  clearInterval(TimerId);TimerId=0;
-  document.body.classList.remove("Running");
-  S={State:"idle",Typed:"",KeysOk:0,KeysBad:0,Start:0,Saved:false,Result:null,Id:Date.now().toString(36)+Math.random().toString(36).slice(2,6)};
-  Typing.value="";Typing.readOnly=false;Typing.maxLength=Ch.Target.length;
-  Q("Play").hidden=false;Q("Results").hidden=true;
-  Q("Target").parentNode.classList.remove("Error");
-  Q("Prompt").textContent=Prompts[Cfg.Type];Q("Note").textContent="";
-  Paint();
-  if(!Q("ViewPractice").hidden)Typing.focus({preventScroll:true});
-}
-
-function Paint(){
-  const Typed=S.Typed,Target=Ch.Target;
-  for(let J=0;J<Spans.length;J++){
-    const State=J<Typed.length?(Typed[J]===Target[J]?"Ok":"Bad"):J===Typed.length?"Cur":"Pend";
-    Spans[J].className=Spans[J].dataset.b+" "+State;
-  }
-  ShowStats();
-  MoveCaret();
-}
-
-function MoveCaret(){
-  const Caret=Q("Caret"),Sp=Spans[S.Typed.length];
-  if(!Sp){Caret.classList.add("Off");return}
-  Caret.classList.remove("Off");
-  const B=Sp.getBoundingClientRect(),R=Q("Target").parentNode.getBoundingClientRect();
-  Caret.style.transform="translate("+(B.left-R.left)+"px,"+(B.top-R.top)+"px)";
-  Caret.style.height=B.height+"px";
-}
-
-const PrevVals=new WeakMap();
-function SetStat(Node,Text){
-  if(PrevVals.get(Node)===Text)return;
-  PrevVals.set(Node,Text);Node.textContent=Text;
-  Node.classList.remove("Pop");void Node.offsetWidth;Node.classList.add("Pop");
-}
-function ShowStats(){
-  const Ms=ElapsedMs(),M=Compute(S,Ms);
-  StatEls.Left.textContent=Math.max(0,Math.ceil(Cfg.Duration-Ms/1000))+"s";
-  StatEls.Elapsed.textContent=(Math.min(Ms,Cfg.Duration*1000)/1000).toFixed(1)+"s";
-  SetStat(StatEls.Net,Math.round(M.Net));
-  SetStat(StatEls.Gross,Math.round(M.Gross));
-  SetStat(StatEls.Acc,M.Accuracy===null?"–":Math.round(M.Accuracy)+"%");
-  SetStat(StatEls.Miss,M.Mistakes+(Cfg.Type==="Error-Free Run"?"/"+StrikeLimit:""));
-  const Frac=Math.max(0,1-Ms/(Cfg.Duration*1000));
-  Q("TimeFill").style.transform="scaleX("+Frac+")";
-  Q("TimeFill").parentNode.classList.toggle("Low",S.State==="running"&&Frac*Cfg.Duration<=5);
-}
-
-function Tick(){
-  if(S.State!=="running")return;
-  if(ElapsedMs()>=Cfg.Duration*1000)Finish("time");else ShowStats();
-}
-
-function Shake(){const T=Q("Target").parentNode;T.classList.remove("Shake");void T.offsetWidth;T.classList.add("Shake")}
-
-function OnInput(){
-  if(S.State==="done"){Typing.value=S.Typed;return}
-  const Prev=S.Typed;
-  let Next=Typing.value.slice(0,Ch.Target.length);
-  if(S.State==="running"&&ElapsedMs()>=Cfg.Duration*1000){Typing.value=Prev;Finish("time");return}
-  let Locked=false;
-  if(Settings.StopOnError!==false&&Cfg.Type!=="Error-Free Run"){
-    for(let I=0;I<Next.length;I++){
-      if(Next[I]!==Ch.Target[I]){
-        if(Next.length>I+1){Next=Next.slice(0,I+1);Locked=true}
-        break;
-      }
-    }
-  }
-  let P=0;const Limit=Math.min(Prev.length,Next.length);
-  while(P<Limit&&Prev[P]===Next[P])P++;
-  if(S.State==="idle"&&Next.length>P){S.State="running";S.Start=performance.now();TimerId=setInterval(Tick,100);document.body.classList.add("Running")}
-  let LastOk=true;
-  for(let I=P;I<Next.length;I++){LastOk=Next[I]===Ch.Target[I];if(LastOk)S.KeysOk++;else S.KeysBad++}
-  S.Typed=Next;if(Typing.value!==Next)Typing.value=Next;
-  if(Next.length>P)Beep(LastOk?640:170,0.04);
-  Paint();
-  const Stuck=Next.length>0&&Next[Next.length-1]!==Ch.Target[Next.length-1];
-  Q("Target").parentNode.classList.toggle("Error",Stuck&&Cfg.Type!=="Error-Free Run");
-  if(Locked)Shake();
-  if(Next===Ch.Target)Finish("complete");
-  else if(Cfg.Type==="Error-Free Run"&&S.KeysBad>=StrikeLimit)Finish("broken");
-}
-
-function Finish(Reason){
-  if(S.State!=="running")return;
-  S.State="done";clearInterval(TimerId);TimerId=0;document.body.classList.remove("Running");
-  Q("Target").parentNode.classList.remove("Error");
-  S.PrevBest=Sessions.length?Math.max(...Sessions.map(X=>X.Net)):null;
-  const Ms=Math.min(performance.now()-S.Start,Cfg.Duration*1000),M=Compute(S,Ms);
-  S.Result={Reason,ElapsedMs:Math.round(Ms),Net:R1(M.Net),Gross:R1(M.Gross),Accuracy:R1(M.Accuracy),Correct:M.Correct,Incorrect:M.Incorrect,Mistakes:M.Mistakes,Completion:R1(M.Completion)};
-  Typing.readOnly=true;
-  SaveSession();Beep(880,0.12);
-  Q("Play").hidden=true;Q("Results").hidden=false;
-  BuildResults();
-}
-
-function SaveSession(){
-  if(S.Saved)return;
-  S.Saved=true;
-  Sessions.push(Object.assign({Id:S.Id,At:new Date().toISOString(),Lang:Cfg.Lang,Level:Cfg.Level,Topic:Ch.Topic,Type:Cfg.Type,Duration:Cfg.Duration},S.Result));
-  Sessions=Sessions.slice(-500);
-  Store(SessionsKey,Sessions);
-}
-
-function BuildResults(){
-  const R=S.Result,Box=Q("Results");Box.textContent="";
-  const Title=R.Reason==="broken"?"Run broken after "+StrikeLimit+" mistakes":R.Reason==="time"?"Time is up":Cfg.Type==="Error-Free Run"&&R.Mistakes===0?"Clean run":"Challenge complete";
-  const Head=El("div","Head2");
-  Head.append(El("h2",null,Title),El("div","Sub",[Cfg.Lang,Ch.Topic,Cfg.Type,Cfg.Duration+" s limit"].join(" · ")));
-  if(S.PrevBest!==null&&R.Net>S.PrevBest)Head.append(El("span","Badge","new personal best"));
-  else Head.append(El("div","Sub","previous best "+(S.PrevBest===null?"none":S.PrevBest+" net WPM")));
-  Box.append(Head);
-  const Rows=[
-    ["net wpm",R.Net,"Big"],
-    ["accuracy",R.Accuracy+"%","Big"],
-    ["raw wpm",R.Gross],
-    ["correct",R.Correct],
-    ["incorrect",R.Incorrect],
-    ["mistakes",R.Mistakes],
-    ["completion",R.Completion+"%"],
-    ["time",(R.ElapsedMs/1000).toFixed(1)+" s"]];
-  const Grid=El("div","Metrics");
-  for(const [L,V,Cls] of Rows){const D=El("div","Metric"+(Cls?" "+Cls:""));D.append(El("div","Val",String(V)),El("div","Lbl",L));Grid.append(D)}
-  Box.append(Grid);
-  const Row=El("div","Row"),Retry=El("button","Btn Primary","Retry"),Other=El("button","Btn","Next snippet");
-  Retry.type=Other.type="button";
-  Retry.onclick=StartSession;Other.onclick=NewChallenge;
-  Row.append(Retry,Other,El("span","Sub",StorageOk?"saved to your progress":"not saved: browser storage is unavailable"));
-  Box.append(Row);Retry.focus();
-}
-
-function Table(Heads,Rows){
-  const T=El("table","Table"),Hd=El("tr");
-  for(const H of Heads)Hd.append(El("th",null,H));
-  T.append(Hd);
-  for(const Cells of Rows){const Tr=El("tr");Cells.forEach((C,I)=>Tr.append(El("td",I>1?"Num":"",String(C))));T.append(Tr)}
-  return T;
-}
-
-function Mk(Tag,Attrs,Text){
-  const N=document.createElementNS("http://www.w3.org/2000/svg",Tag);
-  for(const K in Attrs)N.setAttribute(K,Attrs[K]);
-  if(Text)N.textContent=Text;
-  return N;
-}
-
-function Chart(List){
-  const W=600,H=130,Svg=Mk("svg",{viewBox:"0 0 "+W+" "+(H+20),class:"Chart",role:"img","aria-label":"Net WPM for your last "+List.length+" sessions"});
-  const Max=Math.max(...List.map(X=>X.Net),1),Slot=W/Math.max(List.length,12),Bw=Slot*0.7;
-  const Top=List.reduce((B,X)=>X.Net>B.Net?X:B,List[0]),Avg=List.reduce((A,X)=>A+X.Net,0)/List.length;
-  List.forEach((X,I)=>{
-    const Bh=Math.max(2,X.Net/Max*H),R=Mk("rect",{x:I*Slot+(Slot-Bw)/2,y:H-Bh+16,width:Bw,height:Bh,rx:2,class:X===Top?"Pb":""});
-    R.append(Mk("title",{},X.Net+" WPM, "+X.Lang+", "+new Date(X.At).toLocaleDateString()));
-    Svg.append(R);
-  });
-  const AvgY=H-Avg/Max*H+16;
-  Svg.append(Mk("line",{x1:0,x2:W,y1:AvgY,y2:AvgY,class:"Avg"}),Mk("text",{x:0,y:10},"Net WPM, oldest to newest. Green bar: best shown. Dashed line: average ("+R1(Avg)+")"));
-  return Svg;
-}
-
-function RenderProgress(){
-  const Box=Q("ViewProgress");Box.textContent="";
-  const Head=El("div","Head"),Clear=El("button","Btn Danger","Clear saved data");
-  Clear.type="button";Clear.disabled=!Sessions.length;Clear.onclick=ClearData;
-  Head.append(El("h2",null,"Progress"),Clear);Box.append(Head);
-  if(!StorageOk)Box.append(El("div","Sub","Browser storage is unavailable: only this visit's sessions are shown."));
-  if(!Sessions.length){Box.append(El("p","Empty","No sessions yet. Finish a challenge on the Practice tab and its results will appear here."));return}
-  const Best=Sessions.reduce((B,X)=>!B||X.Net>B.Net?X:B,null);
-  const Mean=F=>{const V=Sessions.map(F).filter(X=>X!==null&&X!==undefined);return V.length?R1(V.reduce((A,X)=>A+X,0)/V.length):null};
-  const Tiles=[
-    ["Personal best (highest net WPM)",Best.Net,Best.Lang+", "+Best.Level+", "+Best.Type,"Big"],
-    ["Average net WPM",Mean(X=>X.Net),"mean of all "+Sessions.length+" sessions"],
-    ["Average accuracy",(Mean(X=>X.Accuracy)??"–")+"%","mean of session accuracies"],
-    ["Sessions",Sessions.length,"saved on this device"]];
-  const Grid=El("div","Metrics");
-  for(const [L,V,Sub,Cls] of Tiles){const D=El("div","Metric"+(Cls?" "+Cls:""));D.append(El("div","Lbl",L),El("div","Val",String(V)),El("div","Sub",Sub));Grid.append(D)}
-  Box.append(Grid,Chart(Sessions.slice(-20)));
-  Box.append(El("h2",null,"Best net WPM by language"));
-  Box.append(Table(["Language","Sessions","Best net WPM"],Langs.map(L=>{
-    const List=Sessions.filter(X=>X.Lang===L);
-    return [L,List.length,List.length?Math.max(...List.map(X=>X.Net)):"–"];
-  })));
-  Box.append(El("h2",null,"Recent sessions"));
-  Box.append(Table(["Date","Challenge","Net WPM","Accuracy","Mistakes"],Sessions.slice(-10).reverse().map(X=>[
-    new Date(X.At).toLocaleDateString(undefined,{month:"short",day:"numeric"}),
-    X.Lang+", "+X.Level+", "+X.Type,X.Net,X.Accuracy+"%",X.Mistakes])));
-}
-
-function ClearData(){
-  if(!confirm("Delete all saved sessions and personal bests? This cannot be undone."))return;
-  Sessions=[];Forget(SessionsKey);
-  RenderProgress();Note("Saved progress cleared.");
-}
-
-function Show(Name){
-  for(const V of ["Practice","Progress","Settings"]){
-    Q("View"+V).hidden=V!==Name;
-    const B=Q("Nav").querySelector("[data-v="+V+"]");
-    if(V===Name)B.setAttribute("aria-current","page");else B.removeAttribute("aria-current");
-  }
-  if(Name==="Progress")RenderProgress();
-  if(Name==="Practice"){Typing.focus({preventScroll:true});if(Ch)MoveCaret();}
-}
-
-function Segment(Label,Key,Options){
-  const G=El("div","Group"),Wrap=El("div","radio-inputs");
-  Wrap.setAttribute("role","radiogroup");Wrap.setAttribute("aria-label",Label);
-  for(const O of Options){
-    const Lab=El("label","radio"),Inp=El("input"),Name=El("span","name",Key==="Duration"?O+"s":O);
-    Inp.type="radio";Inp.name="Seg"+Key;Inp.value=O;
-    Inp.onchange=()=>{Cfg[Key]=O;NewChallenge()};
-    Lab.append(Inp,Name);Wrap.append(Lab);
-  }
-  G.append(El("span","GLbl",Label),Wrap);Q("Setup").append(G);SegRows[Key]=Wrap;
-}
-function MarkSetup(){
-  for(const K in SegRows)for(const Inp of SegRows[K].querySelectorAll("input"))Inp.checked=String(Cfg[K])===Inp.value;
-}
-
-const TopicOrder=["Basics","Strings","Loops","Functions","Pointers","Arrays","Lists","Slices","Maps","Dicts","Objects","Tables","Sets","Collections","Classes","Structs","Enums","Interfaces","Types","Generics","Unions","Ownership","Results","Iterators","Templates","STL","Memory","Modules","Metatables","LINQ","Streams","Exceptions","Async","Goroutines","Algorithms","Select","Filtering","Joins","Aggregation","Subqueries","Window Functions"];
-function TopicsFor(Lang){
-  const Seen=new Set((Catalog[Lang]||[]).map(R=>R.Topic));
-  return [...Seen].sort((A,B)=>{const IA=TopicOrder.indexOf(A),IB=TopicOrder.indexOf(B);return (IA<0?99:IA)-(IB<0?99:IB)});
-}
-function RefreshTopics(){
-  const Wrap=SegRows.Topic;if(!Wrap)return;
-  const Topics=TopicsFor(Cfg.Lang);
-  if(Cfg.Topic!=="Any"&&!Topics.includes(Cfg.Topic))Cfg.Topic="Any";
-  Wrap.textContent="";
-  for(const T of ["Any",...Topics]){
-    const Lab=El("label","radio"),Inp=El("input"),Name=El("span","name",T);
-    Inp.type="radio";Inp.name="SegTopic";Inp.value=T;Inp.checked=Cfg.Topic===T;
-    Inp.onchange=()=>{Cfg.Topic=T;NewChallenge()};
-    Lab.append(Inp,Name);Wrap.append(Lab);
-  }
-}
-function SegmentDynamic(Label,Key){
-  const G=El("div","Group"),Wrap=El("div","radio-inputs");
-  Wrap.setAttribute("role","radiogroup");Wrap.setAttribute("aria-label",Label);
-  G.append(El("span","GLbl",Label),Wrap);Q("Setup").append(G);SegRows[Key]=Wrap;
-}
-
-function InsertTab(){
-  const L=Typing.value.length;
-  if(S.State!=="done"&&L<Ch.Target.length){Typing.setRangeText("\t",L,L,"end");Typing.dispatchEvent(new Event("input"))}
-}
-
-function EndCaret(){const L=Typing.value.length;Typing.setSelectionRange(L,L)}
-
-function Init(){
-  ApplySettings();
-  for(const V of ["Practice","Progress","Settings"]){
-    const B=El("button","Tab",V);B.type="button";B.dataset.v=V;B.onclick=()=>Show(V);Q("Nav").append(B);
-  }
-  const Group=El("div","Group"),Sel=El("select");
-  Sel.setAttribute("aria-label","Programming language");
-  for(const L of Langs){const O=El("option",null,L);O.value=L;Sel.append(O)}
-  Sel.onchange=()=>{Cfg.Lang=Sel.value;RefreshTopics();NewChallenge()};
-  Group.append(El("span","GLbl","Language"),Sel);Q("Setup").append(Group);
-  Segment("Duration","Duration",Durations);Segment("Difficulty","Level",Levels);SegmentDynamic("Topic","Topic");Segment("Challenge type","Type",Types);
-  MarkSetup();RefreshTopics();
-
-  for(const [Key,Label,Tip] of [["Left","time left","Seconds remaining in this attempt"],["Elapsed","elapsed","Seconds since your first keystroke"],["Net","net wpm","Correct characters ÷ 5 ÷ elapsed minutes"],["Gross","gross wpm","All characters typed ÷ 5 ÷ elapsed minutes"],["Acc","accuracy","Correct keystrokes ÷ all keystrokes"],["Miss","mistakes","Incorrect keystrokes, including ones you corrected"]]){
-    const D=El("div","Stat"+(Key==="Net"?" Hero":"")),V=El("div","Val","–");D.title=Tip;D.append(V,El("div","Lbl",Label));StatEls[Key]=V;Q("Stats").append(D);
-  }
-
-  Typing.addEventListener("input",OnInput);
-  Typing.addEventListener("keydown",E=>{
-    if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Home","End","PageUp","PageDown"].includes(E.key)||((E.ctrlKey||E.metaKey)&&E.key.toLowerCase()==="a"))E.preventDefault();
-    else if(E.key==="Tab"&&!E.shiftKey&&Ch.Target.includes("\t")){
-      E.preventDefault();
-      InsertTab();
-    }else if(E.key==="Escape")Typing.blur();
-  });
-  for(const Ev of ["paste","drop","cut"])Typing.addEventListener(Ev,E=>{E.preventDefault();if(Ev!=="cut")Note("Paste is disabled. Type the code.")});
-  Typing.addEventListener("beforeinput",E=>{if(/^(insertFromPaste|insertFromDrop|insertFromYank|historyUndo|historyRedo)/.test(E.inputType))E.preventDefault()});
-  Typing.addEventListener("mousedown",E=>{E.preventDefault();Typing.focus();EndCaret()});
-  for(const Ev of ["select","focus","click","touchend","keyup"])Typing.addEventListener(Ev,EndCaret);
-  Q("Target").addEventListener("click",()=>Typing.focus());
-  Q("TabKey").addEventListener("mousedown",E=>E.preventDefault());
-  Q("TabKey").onclick=()=>{InsertTab();Typing.focus()};
-  Q("Restart").onclick=StartSession;
-  Q("Another").onclick=NewChallenge;
-  document.addEventListener("visibilitychange",Tick);
-
-  const SetSound=Q("SetSound"),SetAccent=Q("SetAccent"),SetMotion=Q("SetMotion"),SetStop=Q("SetStop");
-  SetSound.checked=Settings.Sound===true;
-  SetStop.checked=Settings.StopOnError!==false;
-  for(const K in Accents){const O=El("option",null,K);O.value=K;SetAccent.append(O)}
-  SetAccent.value=Accents[Settings.Accent]?Settings.Accent:"Amber";SetMotion.value=Settings.Motion;
-  SetSound.onchange=()=>{Settings.Sound=SetSound.checked;SaveSettings();Beep(640,0.06)};
-  SetStop.onchange=()=>{Settings.StopOnError=SetStop.checked;SaveSettings()};
-  SetAccent.onchange=()=>{Settings.Accent=SetAccent.value;ApplySettings();SaveSettings()};
-  SetMotion.onchange=()=>{Settings.Motion=SetMotion.value;ApplySettings();SaveSettings()};
-  Q("SetReset").onclick=ClearData;
-  MotionQuery.addEventListener("change",ApplySettings);
-
-  window.addEventListener("resize",()=>{if(Ch)MoveCaret()});
-  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(Ch)MoveCaret()});
-  Show("Practice");
-  NewChallenge();
-}
-Init();
-LoadFolder();
-</script>
-</body>
+      <label class="search-field"
+        ><input
+          type="search"
+          id="LanguageSearch"
+          aria-label="Search languages"
+          placeholder="Find a language…"
+          autofocus
+      /></label>
+      <div id="LanguageList" class="language-list"></div>
+    </dialog>
+    <dialog
+      id="SnippetDialog"
+      class="snippet-dialog"
+      aria-labelledby="PreviewTitle"
+    >
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow" id="PreviewMeta"></p>
+          <h2 id="PreviewTitle"></h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          data-close
+          aria-label="Close snippet preview"
+        >
+          ✕
+        </button>
+      </div>
+      <pre id="PreviewCode" class="preview-code"></pre>
+      <div class="dialog-actions">
+        <span id="PreviewLength"></span
+        ><button type="button" class="button primary" id="PractiseSnippet">
+          Practise this snippet <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </dialog>
+    <dialog
+      id="SettingsDialog"
+      class="settings-dialog"
+      aria-labelledby="SettingsTitle"
+    >
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">Your space, your preferences</p>
+          <h2 id="SettingsTitle">Make it yours.</h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          data-close
+          aria-label="Close settings"
+        >
+          ✕
+        </button>
+      </div>
+      <fieldset class="theme-field">
+        <legend>Appearance</legend>
+        <div class="theme-options">
+          <label
+            ><input type="radio" name="theme" value="graphite" /><span
+              class="theme-preview graphite"
+            ></span
+            >Graphite</label
+          ><label
+            ><input type="radio" name="theme" value="midnight" /><span
+              class="theme-preview midnight"
+            ></span
+            >Midnight</label
+          ><label
+            ><input type="radio" name="theme" value="paper" /><span
+              class="theme-preview paper"
+            ></span
+            >Paper</label
+          >
+        </div>
+      </fieldset>
+      <label class="setting-row"
+        ><span>Accent colour</span
+        ><select id="SetAccent">
+          <option value="Mint">Mint</option>
+          <option value="Amber">Amber</option>
+          <option value="Violet">Violet</option>
+          <option value="Rose">Rose</option>
+        </select></label
+      ><label class="setting-row"
+        ><span>Code size</span
+        ><select id="SetSize">
+          <option value="18">Comfortable</option>
+          <option value="21">Large</option>
+          <option value="24">Extra large</option>
+        </select></label
+      ><label class="setting-row"
+        ><span
+          >Stop on mistakes<small
+            >Fix the wrong character before continuing.</small
+          ></span
+        ><input class="toggle" id="SetStop" type="checkbox" /></label
+      ><label class="setting-row"
+        ><span
+          >Typing sounds<small>Soft feedback with each character.</small></span
+        ><input class="toggle" id="SetSound" type="checkbox" /></label
+      ><label class="setting-row"
+        ><span>Motion</span
+        ><select id="SetMotion">
+          <option value="system">Follow device</option>
+          <option value="on">Reduce motion</option>
+          <option value="off">Allow motion</option>
+        </select></label
+      >
+      <div class="settings-storage">
+        <p>
+          Your preferences, saved snippets, and practice history stay on this
+          device.
+        </p>
+        <button class="text-button danger" id="ResetButton" type="button">
+          Clear practice history…
+        </button>
+      </div>
+    </dialog>
+  </body>
 </html>

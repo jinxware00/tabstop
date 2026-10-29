@@ -1,112 +1,552 @@
 {
   "Lua": [
-    {"file": "Lua/easy.lua", "level": "Beginner", "topic": "Basics", "title": "Variables and printing"},
-    {"file": "Lua/medium.lua", "level": "Intermediate", "topic": "Functions", "title": "Functions and returns"},
-    {"file": "Lua/hard.lua", "level": "Advanced", "topic": "Algorithms", "title": "Filtering a list"},
-    {"file": "Lua/strings.lua", "level": "Beginner", "topic": "Strings", "title": "String handling"},
-    {"file": "Lua/loops.lua", "level": "Beginner", "topic": "Loops", "title": "Loops and iteration"},
-    {"file": "Lua/tables.lua", "level": "Intermediate", "topic": "Tables", "title": "Tables and records"},
-    {"file": "Lua/metatables.lua", "level": "Advanced", "topic": "Metatables", "title": "Metatables and OOP"},
-    {"file": "Lua/modules.lua", "level": "Advanced", "topic": "Modules", "title": "Modules and closures"}
+    {
+      "file": "Lua/easy.lua",
+      "level": "Beginner",
+      "topic": "Functions",
+      "title": "A greeting function"
+    },
+    {
+      "file": "Lua/medium.lua",
+      "level": "Intermediate",
+      "topic": "Tables",
+      "title": "Sum an inventory"
+    },
+    {
+      "file": "Lua/hard.lua",
+      "level": "Advanced",
+      "topic": "Metatables",
+      "title": "Add two vectors"
+    },
+    {
+      "file": "Lua/strings.lua",
+      "level": "Beginner",
+      "topic": "Strings",
+      "title": "String handling"
+    },
+    {
+      "file": "Lua/loops.lua",
+      "level": "Beginner",
+      "topic": "Loops",
+      "title": "Loops and iteration"
+    },
+    {
+      "file": "Lua/tables.lua",
+      "level": "Intermediate",
+      "topic": "Tables",
+      "title": "Tables and records"
+    },
+    {
+      "file": "Lua/metatables.lua",
+      "level": "Advanced",
+      "topic": "Metatables",
+      "title": "Metatables and OOP"
+    },
+    {
+      "file": "Lua/modules.lua",
+      "level": "Advanced",
+      "topic": "Modules",
+      "title": "Modules and closures"
+    }
   ],
   "Python": [
-    {"file": "Python/easy.py", "level": "Beginner", "topic": "Basics", "title": "Variables and printing"},
-    {"file": "Python/medium.py", "level": "Intermediate", "topic": "Functions", "title": "Functions and defaults"},
-    {"file": "Python/hard.py", "level": "Advanced", "topic": "Algorithms", "title": "Sorting a list"},
-    {"file": "Python/strings.py", "level": "Beginner", "topic": "Strings", "title": "Formatting text"},
-    {"file": "Python/loops.py", "level": "Beginner", "topic": "Loops", "title": "Loops and ranges"},
-    {"file": "Python/lists.py", "level": "Intermediate", "topic": "Lists", "title": "List comprehensions"},
-    {"file": "Python/dicts.py", "level": "Intermediate", "topic": "Dicts", "title": "Counting with dicts"},
-    {"file": "Python/classes.py", "level": "Intermediate", "topic": "Classes", "title": "A small class"}
+    {
+      "file": "Python/easy.py",
+      "level": "Beginner",
+      "topic": "Basics",
+      "title": "Variables and printing"
+    },
+    {
+      "file": "Python/medium.py",
+      "level": "Intermediate",
+      "topic": "Dicts",
+      "title": "Filter a dictionary"
+    },
+    {
+      "file": "Python/hard.py",
+      "level": "Advanced",
+      "topic": "Decorators",
+      "title": "A retry decorator"
+    },
+    {
+      "file": "Python/strings.py",
+      "level": "Beginner",
+      "topic": "Strings",
+      "title": "Formatting text"
+    },
+    {
+      "file": "Python/loops.py",
+      "level": "Beginner",
+      "topic": "Loops",
+      "title": "Loops and ranges"
+    },
+    {
+      "file": "Python/lists.py",
+      "level": "Intermediate",
+      "topic": "Lists",
+      "title": "List comprehensions"
+    },
+    {
+      "file": "Python/dicts.py",
+      "level": "Intermediate",
+      "topic": "Dicts",
+      "title": "Counting with dicts"
+    },
+    {
+      "file": "Python/classes.py",
+      "level": "Intermediate",
+      "topic": "Classes",
+      "title": "A small class"
+    }
   ],
   "JavaScript": [
-    {"file": "JavaScript/easy.js", "level": "Beginner", "topic": "Basics", "title": "Variables and printing"},
-    {"file": "JavaScript/medium.js", "level": "Intermediate", "topic": "Functions", "title": "Functions and callbacks"},
-    {"file": "JavaScript/hard.js", "level": "Advanced", "topic": "Algorithms", "title": "Picking and reducing"},
-    {"file": "JavaScript/strings.js", "level": "Beginner", "topic": "Strings", "title": "Template strings"},
-    {"file": "JavaScript/arrays.js", "level": "Intermediate", "topic": "Arrays", "title": "Array methods"},
-    {"file": "JavaScript/objects.js", "level": "Intermediate", "topic": "Objects", "title": "Destructuring objects"},
-    {"file": "JavaScript/classes.js", "level": "Intermediate", "topic": "Classes", "title": "Classes and inheritance"},
-    {"file": "JavaScript/async.js", "level": "Advanced", "topic": "Async", "title": "Async and await"}
+    {
+      "file": "JavaScript/easy.js",
+      "level": "Beginner",
+      "topic": "Basics",
+      "title": "Variables and printing"
+    },
+    {
+      "file": "JavaScript/medium.js",
+      "level": "Intermediate",
+      "topic": "Arrays",
+      "title": "Group words by length"
+    },
+    {
+      "file": "JavaScript/hard.js",
+      "level": "Advanced",
+      "topic": "Classes",
+      "title": "A queue with private fields"
+    },
+    {
+      "file": "JavaScript/strings.js",
+      "level": "Beginner",
+      "topic": "Strings",
+      "title": "Template strings"
+    },
+    {
+      "file": "JavaScript/arrays.js",
+      "level": "Intermediate",
+      "topic": "Arrays",
+      "title": "Array methods"
+    },
+    {
+      "file": "JavaScript/objects.js",
+      "level": "Intermediate",
+      "topic": "Objects",
+      "title": "Destructuring objects"
+    },
+    {
+      "file": "JavaScript/classes.js",
+      "level": "Intermediate",
+      "topic": "Classes",
+      "title": "A class with a method"
+    },
+    {
+      "file": "JavaScript/async.js",
+      "level": "Advanced",
+      "topic": "Async",
+      "title": "Async and await"
+    }
   ],
   "TypeScript": [
-    {"file": "TypeScript/easy.ts", "level": "Beginner", "topic": "Basics", "title": "Typed variables"},
-    {"file": "TypeScript/medium.ts", "level": "Intermediate", "topic": "Functions", "title": "Typed functions"},
-    {"file": "TypeScript/hard.ts", "level": "Advanced", "topic": "Algorithms", "title": "Mapping and filtering"},
-    {"file": "TypeScript/types.ts", "level": "Beginner", "topic": "Types", "title": "Basic types"},
-    {"file": "TypeScript/unions.ts", "level": "Intermediate", "topic": "Unions", "title": "Union types"},
-    {"file": "TypeScript/interfaces.ts", "level": "Intermediate", "topic": "Interfaces", "title": "Interfaces"},
-    {"file": "TypeScript/generics.ts", "level": "Advanced", "topic": "Generics", "title": "Generic functions"},
-    {"file": "TypeScript/classes.ts", "level": "Intermediate", "topic": "Classes", "title": "Classes with types"}
+    {
+      "file": "TypeScript/easy.ts",
+      "level": "Beginner",
+      "topic": "Basics",
+      "title": "Typed variables"
+    },
+    {
+      "file": "TypeScript/medium.ts",
+      "level": "Intermediate",
+      "topic": "Functions",
+      "title": "Typed functions"
+    },
+    {
+      "file": "TypeScript/hard.ts",
+      "level": "Advanced",
+      "topic": "Async",
+      "title": "A generic JSON request"
+    },
+    {
+      "file": "TypeScript/types.ts",
+      "level": "Beginner",
+      "topic": "Types",
+      "title": "Basic types"
+    },
+    {
+      "file": "TypeScript/unions.ts",
+      "level": "Intermediate",
+      "topic": "Unions",
+      "title": "Union types"
+    },
+    {
+      "file": "TypeScript/interfaces.ts",
+      "level": "Intermediate",
+      "topic": "Interfaces",
+      "title": "Interfaces"
+    },
+    {
+      "file": "TypeScript/generics.ts",
+      "level": "Advanced",
+      "topic": "Generics",
+      "title": "Generic functions"
+    },
+    {
+      "file": "TypeScript/classes.ts",
+      "level": "Intermediate",
+      "topic": "Classes",
+      "title": "Classes with types"
+    }
   ],
   "C": [
-    {"file": "C/easy.c", "level": "Beginner", "topic": "Basics", "title": "Hello and math"},
-    {"file": "C/medium.c", "level": "Intermediate", "topic": "Functions", "title": "Functions and loops"},
-    {"file": "C/hard.c", "level": "Advanced", "topic": "Algorithms", "title": "Structs and pointers"},
-    {"file": "C/strings.c", "level": "Beginner", "topic": "Strings", "title": "String handling"},
-    {"file": "C/pointers.c", "level": "Intermediate", "topic": "Pointers", "title": "Pointers and addresses"},
-    {"file": "C/arrays.c", "level": "Intermediate", "topic": "Arrays", "title": "Arrays and sums"},
-    {"file": "C/structs.c", "level": "Intermediate", "topic": "Structs", "title": "Structs and fields"},
-    {"file": "C/memory.c", "level": "Advanced", "topic": "Memory", "title": "Dynamic memory"}
+    {
+      "file": "C/easy.c",
+      "level": "Beginner",
+      "topic": "Basics",
+      "title": "Hello and math"
+    },
+    {
+      "file": "C/medium.c",
+      "level": "Intermediate",
+      "topic": "Arrays",
+      "title": "Average an array"
+    },
+    {
+      "file": "C/hard.c",
+      "level": "Advanced",
+      "topic": "Algorithms",
+      "title": "Structs and pointers"
+    },
+    {
+      "file": "C/strings.c",
+      "level": "Beginner",
+      "topic": "Strings",
+      "title": "String handling"
+    },
+    {
+      "file": "C/pointers.c",
+      "level": "Intermediate",
+      "topic": "Pointers",
+      "title": "Pointers and addresses"
+    },
+    {
+      "file": "C/arrays.c",
+      "level": "Intermediate",
+      "topic": "Arrays",
+      "title": "Arrays and sums"
+    },
+    {
+      "file": "C/structs.c",
+      "level": "Intermediate",
+      "topic": "Structs",
+      "title": "Structs and fields"
+    },
+    {
+      "file": "C/memory.c",
+      "level": "Advanced",
+      "topic": "Memory",
+      "title": "Dynamic memory"
+    }
   ],
   "C++": [
-    {"file": "C++/easy.cpp", "level": "Beginner", "topic": "Basics", "title": "Hello and math"},
-    {"file": "C++/medium.cpp", "level": "Intermediate", "topic": "Functions", "title": "Functions and loops"},
-    {"file": "C++/hard.cpp", "level": "Advanced", "topic": "Algorithms", "title": "Sorting with STL"},
-    {"file": "C++/strings.cpp", "level": "Beginner", "topic": "Strings", "title": "std::string"},
-    {"file": "C++/pointers.cpp", "level": "Intermediate", "topic": "Pointers", "title": "References and pointers"},
-    {"file": "C++/classes.cpp", "level": "Intermediate", "topic": "Classes", "title": "A simple class"},
-    {"file": "C++/vectors.cpp", "level": "Intermediate", "topic": "STL", "title": "Vectors"},
-    {"file": "C++/templates.cpp", "level": "Advanced", "topic": "Templates", "title": "Function templates"}
+    {
+      "file": "C++/easy.cpp",
+      "level": "Beginner",
+      "topic": "Functions",
+      "title": "A string greeting function"
+    },
+    {
+      "file": "C++/medium.cpp",
+      "level": "Intermediate",
+      "topic": "STL",
+      "title": "Average a vector"
+    },
+    {
+      "file": "C++/hard.cpp",
+      "level": "Advanced",
+      "topic": "Algorithms",
+      "title": "Sorting with STL"
+    },
+    {
+      "file": "C++/strings.cpp",
+      "level": "Beginner",
+      "topic": "Strings",
+      "title": "std::string"
+    },
+    {
+      "file": "C++/pointers.cpp",
+      "level": "Intermediate",
+      "topic": "Pointers",
+      "title": "References and pointers"
+    },
+    {
+      "file": "C++/classes.cpp",
+      "level": "Intermediate",
+      "topic": "Classes",
+      "title": "A simple class"
+    },
+    {
+      "file": "C++/vectors.cpp",
+      "level": "Intermediate",
+      "topic": "STL",
+      "title": "Vectors"
+    },
+    {
+      "file": "C++/templates.cpp",
+      "level": "Advanced",
+      "topic": "Templates",
+      "title": "Function templates"
+    }
   ],
   "C#": [
-    {"file": "C#/easy.cs", "level": "Beginner", "topic": "Basics", "title": "Hello and math"},
-    {"file": "C#/medium.cs", "level": "Intermediate", "topic": "Functions", "title": "Methods and loops"},
-    {"file": "C#/hard.cs", "level": "Advanced", "topic": "Algorithms", "title": "Sorting a list"},
-    {"file": "C#/strings.cs", "level": "Beginner", "topic": "Strings", "title": "String interpolation"},
-    {"file": "C#/classes.cs", "level": "Intermediate", "topic": "Classes", "title": "Classes and properties"},
-    {"file": "C#/collections.cs", "level": "Intermediate", "topic": "Collections", "title": "Lists and dictionaries"},
-    {"file": "C#/linq.cs", "level": "Advanced", "topic": "LINQ", "title": "Querying with LINQ"},
-    {"file": "C#/async.cs", "level": "Advanced", "topic": "Async", "title": "Async and await"}
+    {
+      "file": "C#/easy.cs",
+      "level": "Beginner",
+      "topic": "Basics",
+      "title": "Hello and math"
+    },
+    {
+      "file": "C#/medium.cs",
+      "level": "Intermediate",
+      "topic": "Functions",
+      "title": "Methods and loops"
+    },
+    {
+      "file": "C#/hard.cs",
+      "level": "Advanced",
+      "topic": "Records",
+      "title": "Sum paid orders"
+    },
+    {
+      "file": "C#/strings.cs",
+      "level": "Beginner",
+      "topic": "Strings",
+      "title": "String interpolation"
+    },
+    {
+      "file": "C#/classes.cs",
+      "level": "Intermediate",
+      "topic": "Classes",
+      "title": "Classes and properties"
+    },
+    {
+      "file": "C#/collections.cs",
+      "level": "Intermediate",
+      "topic": "Collections",
+      "title": "Lists and dictionaries"
+    },
+    {
+      "file": "C#/linq.cs",
+      "level": "Advanced",
+      "topic": "LINQ",
+      "title": "Querying with LINQ"
+    },
+    {
+      "file": "C#/async.cs",
+      "level": "Advanced",
+      "topic": "Async",
+      "title": "Async and await"
+    }
   ],
   "Rust": [
-    {"file": "Rust/easy.rs", "level": "Beginner", "topic": "Basics", "title": "Variables and printing"},
-    {"file": "Rust/medium.rs", "level": "Intermediate", "topic": "Functions", "title": "Functions and loops"},
-    {"file": "Rust/hard.rs", "level": "Advanced", "topic": "Algorithms", "title": "Iterators and sum"},
-    {"file": "Rust/ownership.rs", "level": "Intermediate", "topic": "Ownership", "title": "Borrowing and ownership"},
-    {"file": "Rust/structs.rs", "level": "Intermediate", "topic": "Structs", "title": "Structs and impl"},
-    {"file": "Rust/enums.rs", "level": "Intermediate", "topic": "Enums", "title": "Enums and match"},
-    {"file": "Rust/iterators.rs", "level": "Advanced", "topic": "Iterators", "title": "Iterator chains"},
-    {"file": "Rust/results.rs", "level": "Intermediate", "topic": "Results", "title": "Result and question mark"}
+    {
+      "file": "Rust/easy.rs",
+      "level": "Beginner",
+      "topic": "Basics",
+      "title": "Variables and printing"
+    },
+    {
+      "file": "Rust/medium.rs",
+      "level": "Intermediate",
+      "topic": "Iterators",
+      "title": "Average an iterator"
+    },
+    {
+      "file": "Rust/hard.rs",
+      "level": "Advanced",
+      "topic": "Traits",
+      "title": "Implement a summary trait"
+    },
+    {
+      "file": "Rust/ownership.rs",
+      "level": "Intermediate",
+      "topic": "Ownership",
+      "title": "Borrowing and ownership"
+    },
+    {
+      "file": "Rust/structs.rs",
+      "level": "Intermediate",
+      "topic": "Structs",
+      "title": "Structs and impl"
+    },
+    {
+      "file": "Rust/enums.rs",
+      "level": "Intermediate",
+      "topic": "Enums",
+      "title": "Enums and match"
+    },
+    {
+      "file": "Rust/iterators.rs",
+      "level": "Advanced",
+      "topic": "Iterators",
+      "title": "Iterator chains"
+    },
+    {
+      "file": "Rust/results.rs",
+      "level": "Intermediate",
+      "topic": "Results",
+      "title": "Result and question mark"
+    }
   ],
   "Java": [
-    {"file": "Java/easy.java", "level": "Beginner", "topic": "Basics", "title": "Hello and math"},
-    {"file": "Java/medium.java", "level": "Intermediate", "topic": "Functions", "title": "Methods and loops"},
-    {"file": "Java/hard.java", "level": "Advanced", "topic": "Algorithms", "title": "Sorting a list"},
-    {"file": "Java/strings.java", "level": "Beginner", "topic": "Strings", "title": "String builder"},
-    {"file": "Java/classes.java", "level": "Intermediate", "topic": "Classes", "title": "Classes and objects"},
-    {"file": "Java/collections.java", "level": "Intermediate", "topic": "Collections", "title": "Lists and maps"},
-    {"file": "Java/streams.java", "level": "Advanced", "topic": "Streams", "title": "Streams and filters"},
-    {"file": "Java/exceptions.java", "level": "Intermediate", "topic": "Exceptions", "title": "Try and catch"}
+    {
+      "file": "Java/easy.java",
+      "level": "Beginner",
+      "topic": "Basics",
+      "title": "Hello and math"
+    },
+    {
+      "file": "Java/medium.java",
+      "level": "Intermediate",
+      "topic": "Functions",
+      "title": "Methods and loops"
+    },
+    {
+      "file": "Java/hard.java",
+      "level": "Advanced",
+      "topic": "Streams",
+      "title": "Find the highest score"
+    },
+    {
+      "file": "Java/strings.java",
+      "level": "Beginner",
+      "topic": "Strings",
+      "title": "String builder"
+    },
+    {
+      "file": "Java/classes.java",
+      "level": "Intermediate",
+      "topic": "Classes",
+      "title": "Classes and objects"
+    },
+    {
+      "file": "Java/collections.java",
+      "level": "Intermediate",
+      "topic": "Collections",
+      "title": "Lists and maps"
+    },
+    {
+      "file": "Java/streams.java",
+      "level": "Advanced",
+      "topic": "Streams",
+      "title": "Streams and filters"
+    },
+    {
+      "file": "Java/exceptions.java",
+      "level": "Intermediate",
+      "topic": "Exceptions",
+      "title": "Try and catch"
+    }
   ],
   "Go": [
-    {"file": "Go/easy.go", "level": "Beginner", "topic": "Basics", "title": "Variables and printing"},
-    {"file": "Go/medium.go", "level": "Intermediate", "topic": "Functions", "title": "Functions and loops"},
-    {"file": "Go/hard.go", "level": "Advanced", "topic": "Algorithms", "title": "Sorting and slices"},
-    {"file": "Go/slices.go", "level": "Intermediate", "topic": "Slices", "title": "Working with slices"},
-    {"file": "Go/maps.go", "level": "Intermediate", "topic": "Maps", "title": "Counting with maps"},
-    {"file": "Go/structs.go", "level": "Intermediate", "topic": "Structs", "title": "Structs and methods"},
-    {"file": "Go/goroutines.go", "level": "Advanced", "topic": "Goroutines", "title": "Goroutines and channels"},
-    {"file": "Go/interfaces.go", "level": "Advanced", "topic": "Interfaces", "title": "Interfaces"}
+    {
+      "file": "Go/easy.go",
+      "level": "Beginner",
+      "topic": "Basics",
+      "title": "Variables and printing"
+    },
+    {
+      "file": "Go/medium.go",
+      "level": "Intermediate",
+      "topic": "Functions",
+      "title": "Functions and loops"
+    },
+    {
+      "file": "Go/hard.go",
+      "level": "Advanced",
+      "topic": "Structs",
+      "title": "A validating account method"
+    },
+    {
+      "file": "Go/slices.go",
+      "level": "Intermediate",
+      "topic": "Slices",
+      "title": "Working with slices"
+    },
+    {
+      "file": "Go/maps.go",
+      "level": "Intermediate",
+      "topic": "Maps",
+      "title": "Counting with maps"
+    },
+    {
+      "file": "Go/structs.go",
+      "level": "Intermediate",
+      "topic": "Structs",
+      "title": "Structs and methods"
+    },
+    {
+      "file": "Go/goroutines.go",
+      "level": "Advanced",
+      "topic": "Goroutines",
+      "title": "Wait for goroutines"
+    },
+    {
+      "file": "Go/interfaces.go",
+      "level": "Advanced",
+      "topic": "Interfaces",
+      "title": "Interfaces"
+    }
   ],
   "SQL": [
-    {"file": "SQL/easy.sql", "level": "Beginner", "topic": "Basics", "title": "A simple SELECT"},
-    {"file": "SQL/medium.sql", "level": "Intermediate", "topic": "Joins", "title": "Grouping rows"},
-    {"file": "SQL/hard.sql", "level": "Advanced", "topic": "Subqueries", "title": "Nested ranking"},
-    {"file": "SQL/filtering.sql", "level": "Beginner", "topic": "Filtering", "title": "WHERE and ORDER BY"},
-    {"file": "SQL/joins.sql", "level": "Intermediate", "topic": "Joins", "title": "Inner and left joins"},
-    {"file": "SQL/aggregation.sql", "level": "Intermediate", "topic": "Aggregation", "title": "COUNT and AVG"},
-    {"file": "SQL/subqueries.sql", "level": "Advanced", "topic": "Subqueries", "title": "Subqueries"},
-    {"file": "SQL/window.sql", "level": "Advanced", "topic": "Window Functions", "title": "Window functions"}
+    {
+      "file": "SQL/easy.sql",
+      "level": "Beginner",
+      "topic": "Basics",
+      "title": "A simple SELECT"
+    },
+    {
+      "file": "SQL/medium.sql",
+      "level": "Intermediate",
+      "topic": "Aggregation",
+      "title": "Group product rows"
+    },
+    {
+      "file": "SQL/hard.sql",
+      "level": "Advanced",
+      "topic": "Subqueries",
+      "title": "Nested ranking"
+    },
+    {
+      "file": "SQL/filtering.sql",
+      "level": "Beginner",
+      "topic": "Filtering",
+      "title": "WHERE and ORDER BY"
+    },
+    {
+      "file": "SQL/joins.sql",
+      "level": "Intermediate",
+      "topic": "Joins",
+      "title": "Join customers and orders"
+    },
+    {
+      "file": "SQL/aggregation.sql",
+      "level": "Intermediate",
+      "topic": "Aggregation",
+      "title": "COUNT and AVG"
+    },
+    {
+      "file": "SQL/subqueries.sql",
+      "level": "Advanced",
+      "topic": "Subqueries",
+      "title": "Subqueries"
+    },
+    {
+      "file": "SQL/window.sql",
+      "level": "Advanced",
+      "topic": "Window Functions",
+      "title": "Window functions"
+    }
   ]
 }

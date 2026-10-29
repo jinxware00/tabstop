@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 List<Player> players = new();
 
@@ -9,3 +10,5 @@ List<Player> players = new();
     .Take(3)
     .Select(p => p.Name)
     .ToList();⟧
+
+record Player(string Name, int Score);

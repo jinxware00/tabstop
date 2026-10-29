@@ -1,0 +1,464 @@
+[
+  {
+    "language": "Lua",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Trim surrounding spaces",
+    "code": "local text = \"  hello there  \"\n⟦local trimmed = text:match(\"^%s*(.-)%s*$\")\nprint(trimmed)⟧"
+  },
+  {
+    "language": "Lua",
+    "level": "Beginner",
+    "topic": "Tables",
+    "title": "Join a sequence",
+    "code": "local words = {\"a\", \"little\", \"practice\"}\n⟦table.insert(words, \"helps\")\nprint(table.concat(words, \" \"))⟧"
+  },
+  {
+    "language": "Lua",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "Keep matching values",
+    "code": "local function filter(items, predicate)\n    local result = {}\n    ⟦for _, item in ipairs(items) do\n        if predicate(item) then\n            result[#result + 1] = item\n        end\n    end⟧\n    return result\nend"
+  },
+  {
+    "language": "Lua",
+    "level": "Intermediate",
+    "topic": "Patterns",
+    "title": "Parse a pair",
+    "code": "local input = \"width=640\"\n⟦local key, value = input:match(\"^(%w+)=(%d+)$\")\nif key then\n    print(key, tonumber(value))\nend⟧"
+  },
+  {
+    "language": "Lua",
+    "level": "Advanced",
+    "topic": "Coroutines",
+    "title": "Yield a sequence",
+    "code": "local function sequence(limit)\n    ⟦return coroutine.wrap(function()\n        for value = 1, limit do\n            coroutine.yield(value * value)\n        end\n    end)⟧\nend\nfor value in sequence(5) do print(value) end"
+  },
+  {
+    "language": "Lua",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "Binary search",
+    "code": "local function search(items, target)\n    local low, high = 1, #items\n    ⟦while low <= high do\n        local mid = math.floor((low + high) / 2)\n        if items[mid] == target then return mid end\n        if items[mid] < target then low = mid + 1 else high = mid - 1 end\n    end⟧\n    return nil\nend"
+  },
+  {
+    "language": "Python",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Unpack a name",
+    "code": "full_name = \"Ada Lovelace\"\n⟦first, last = full_name.split(maxsplit=1)\nprint(f\"{last}, {first}\")⟧"
+  },
+  {
+    "language": "Python",
+    "level": "Beginner",
+    "topic": "Lists",
+    "title": "Pair names and scores",
+    "code": "names = [\"Ada\", \"Alan\", \"Grace\"]\nscores = [91, 85, 98]\n⟦for name, score in zip(names, scores):\n    print(f\"{name}: {score}\")⟧"
+  },
+  {
+    "language": "Python",
+    "level": "Intermediate",
+    "topic": "Classes",
+    "title": "A dataclass record",
+    "code": "from dataclasses import dataclass\n\n⟦@dataclass(frozen=True)\nclass Point:\n    x: float\n    y: float\n\n    def distance_squared(self):\n        return self.x ** 2 + self.y ** 2⟧"
+  },
+  {
+    "language": "Python",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Count with Counter",
+    "code": "from collections import Counter\n\nwords = \"a little code a little practice\".split()\n⟦counts = Counter(words)\nprint(counts.most_common(2))⟧"
+  },
+  {
+    "language": "Python",
+    "level": "Advanced",
+    "topic": "Iterators",
+    "title": "A sliding window",
+    "code": "from collections import deque\n\ndef windows(items, size):\n    if size < 1:\n        raise ValueError(\"size must be positive\")\n    window = deque(maxlen=size)\n    ⟦for item in items:\n        window.append(item)\n        if len(window) == size:\n            yield tuple(window)⟧"
+  },
+  {
+    "language": "Python",
+    "level": "Advanced",
+    "topic": "Async",
+    "title": "Gather async results",
+    "code": "import asyncio\n\nasync def square(value):\n    await asyncio.sleep(0)\n    return value * value\n\nasync def main():\n    ⟦results = await asyncio.gather(*(square(n) for n in range(5)))\n    print(results)⟧"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Pad a counter",
+    "code": "const count = 7;\n⟦const label = String(count).padStart(3, \"0\");\nconsole.log(label);⟧"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Beginner",
+    "topic": "Sets",
+    "title": "Keep unique values",
+    "code": "const tags = [\"code\", \"music\", \"code\", \"tools\"];\n⟦const unique = [...new Set(tags)];\nconsole.log(unique.join(\", \"));⟧"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Intermediate",
+    "topic": "Maps",
+    "title": "Index records by ID",
+    "code": "const users = [{ id: 1, name: \"Ada\" }, { id: 2, name: \"Alan\" }];\n⟦const byId = new Map(users.map(user => [user.id, user]));\nconsole.log(byId.get(1)?.name);⟧"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "Create a counter",
+    "code": "function createCounter(start = 0) {\n  let count = start;\n  ⟦return {\n    next: () => ++count,\n    value: () => count,\n  };⟧\n}"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Advanced",
+    "topic": "Iterators",
+    "title": "A generator range",
+    "code": "function* range(start, end, step = 1) {\n  if (step <= 0) throw new RangeError(\"positive step required\");\n  ⟦for (let value = start; value < end; value += step) {\n    yield value;\n  }⟧\n}"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Advanced",
+    "topic": "Async",
+    "title": "Settle parallel work",
+    "code": "async function collect(tasks) {\n  const results = await Promise.allSettled(tasks);\n  ⟦return results\n    .filter(result => result.status === \"fulfilled\")\n    .map(result => result.value);⟧\n}"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Beginner",
+    "topic": "Types",
+    "title": "A readonly tuple",
+    "code": "⟦const point: readonly [number, number] = [3, 4];\nconst [x, y] = point;\nconsole.log(Math.hypot(x, y));⟧"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Beginner",
+    "topic": "Types",
+    "title": "Literal configuration",
+    "code": "⟦const settings = {\n  theme: \"dark\",\n  duration: 60,\n} as const;\ntype Theme = typeof settings.theme;⟧"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Intermediate",
+    "topic": "Generics",
+    "title": "Pick a typed property",
+    "code": "function getProperty<T, K extends keyof T>(object: T, key: K): T[K] {\n  ⟦return object[key];⟧\n}\nconst name = getProperty({ name: \"Ada\", score: 10 }, \"name\");"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Intermediate",
+    "topic": "Unions",
+    "title": "A type guard",
+    "code": "type User = { name: string };\nfunction isUser(value: unknown): value is User {\n  ⟦return typeof value === \"object\" && value !== null &&\n    \"name\" in value && typeof value.name === \"string\";⟧\n}"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Advanced",
+    "topic": "Types",
+    "title": "A mapped type",
+    "code": "⟦type Getters<T> = {\n  [K in keyof T as K extends string ? `get${Capitalize<K>}` : never]: () => T[K];\n};⟧\ntype UserGetters = Getters<{ name: string; score: number }>;"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Advanced",
+    "topic": "Unions",
+    "title": "Check exhaustive matching",
+    "code": "type State = { kind: \"loading\" } | { kind: \"ready\"; value: string };\nfunction describe(state: State): string {\n  ⟦switch (state.kind) {\n    case \"loading\": return \"Loading\";\n    case \"ready\": return state.value;\n    default: {\n      const exhaustive: never = state;\n      return exhaustive;\n    }\n  }⟧\n}"
+  },
+  {
+    "language": "C",
+    "level": "Beginner",
+    "topic": "Control flow",
+    "title": "Clamp an integer",
+    "code": "int clamp(int value, int low, int high) {\n    ⟦if (value < low) return low;\n    if (value > high) return high;\n    return value;⟧\n}"
+  },
+  {
+    "language": "C",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "Count positive values",
+    "code": "#include <stddef.h>\nsize_t count_positive(const int *values, size_t length) {\n    size_t count = 0;\n    ⟦for (size_t i = 0; i < length; i++) {\n        if (values[i] > 0) count++;\n    }⟧\n    return count;\n}"
+  },
+  {
+    "language": "C",
+    "level": "Intermediate",
+    "topic": "Strings",
+    "title": "Count a character",
+    "code": "#include <stddef.h>\nsize_t count_char(const char *text, char target) {\n    size_t count = 0;\n    ⟦while (*text != '\\0') {\n        if (*text == target) count++;\n        text++;\n    }⟧\n    return count;\n}"
+  },
+  {
+    "language": "C",
+    "level": "Intermediate",
+    "topic": "Pointers",
+    "title": "Visit values with a callback",
+    "code": "#include <stddef.h>\nvoid for_each(int *values, size_t length, void (*visit)(int *)) {\n    ⟦for (size_t i = 0; i < length; i++) {\n        visit(&values[i]);\n    }⟧\n}"
+  },
+  {
+    "language": "C",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "Reverse an array",
+    "code": "#include <stddef.h>\nvoid reverse(int *values, size_t length) {\n    ⟦for (size_t left = 0; left < length / 2; left++) {\n        size_t right = length - left - 1;\n        int temp = values[left];\n        values[left] = values[right];\n        values[right] = temp;\n    }⟧\n}"
+  },
+  {
+    "language": "C",
+    "level": "Advanced",
+    "topic": "Memory",
+    "title": "Allocate zeroed values",
+    "code": "#include <stdlib.h>\nint *zeros(size_t count) {\n    ⟦if (count == 0) return NULL;\n    int *values = calloc(count, sizeof(*values));\n    return values;⟧\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Check a suffix",
+    "code": "#include <string_view>\nbool is_source(std::string_view name) {\n    ⟦return name.ends_with(\".cpp\") || name.ends_with(\".hpp\");⟧\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "Accumulate a total",
+    "code": "#include <array>\n#include <numeric>\nint main() {\n    std::array<int, 4> values{1, 2, 3, 4};\n    ⟦auto total = std::accumulate(values.begin(), values.end(), 0);⟧\n    return total == 10 ? 0 : 1;\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Intermediate",
+    "topic": "Algorithms",
+    "title": "Remove empty strings",
+    "code": "#include <string>\n#include <vector>\nvoid remove_empty(std::vector<std::string>& values) {\n    ⟦std::erase_if(values, [](const auto& value) {\n        return value.empty();\n    });⟧\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Intermediate",
+    "topic": "Optionals",
+    "title": "A safe division",
+    "code": "#include <optional>\nstd::optional<double> divide(double a, double b) {\n    ⟦if (b == 0) return std::nullopt;\n    return a / b;⟧\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Advanced",
+    "topic": "Templates",
+    "title": "Constrain a template",
+    "code": "#include <concepts>\ntemplate <std::integral T>\nT square(T value) {\n    ⟦return value * value;⟧\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Advanced",
+    "topic": "Memory",
+    "title": "Move exclusive ownership",
+    "code": "#include <memory>\n#include <utility>\nstruct Node { int value; };\nint main() {\n    auto first = std::make_unique<Node>(Node{42});\n    ⟦auto second = std::move(first);\n    return second->value == 42 && !first ? 0 : 1;⟧\n}"
+  },
+  {
+    "language": "C#",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Clean a label",
+    "code": "using System;\nstring label = \"  hello world  \";\n⟦string clean = label.Trim().ToUpperInvariant();\nConsole.WriteLine(clean);⟧"
+  },
+  {
+    "language": "C#",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "Find a matching value",
+    "code": "using System;\nint[] scores = { 32, 85, 91, 46 };\n⟦int index = Array.FindIndex(scores, score => score >= 90);\nConsole.WriteLine(index);⟧"
+  },
+  {
+    "language": "C#",
+    "level": "Intermediate",
+    "topic": "Patterns",
+    "title": "Use a switch expression",
+    "code": "static string Describe(int score) =>\n    ⟦score switch\n    {\n        >= 90 => \"Excellent\",\n        >= 50 => \"Passed\",\n        _ => \"Keep practising\",\n    };⟧"
+  },
+  {
+    "language": "C#",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Create a lookup",
+    "code": "using System;\nusing System.Linq;\nvar words = new[] { \"tea\", \"cake\", \"pen\", \"notebook\" };\n⟦var byLength = words.ToLookup(word => word.Length);\nConsole.WriteLine(string.Join(\", \", byLength[3]));⟧"
+  },
+  {
+    "language": "C#",
+    "level": "Advanced",
+    "topic": "Iterators",
+    "title": "Yield a numeric range",
+    "code": "using System.Collections.Generic;\nstatic IEnumerable<int> Squares(int count)\n{\n    ⟦for (int value = 0; value < count; value++)\n    {\n        yield return value * value;\n    }⟧\n}"
+  },
+  {
+    "language": "C#",
+    "level": "Advanced",
+    "topic": "Generics",
+    "title": "A generic result record",
+    "code": "public record Result<T>(T? Value, string? Error)\n{\n    ⟦public bool IsSuccess => Error is null;\n    public static Result<T> Success(T value) => new(value, null);\n    public static Result<T> Failure(string error) => new(default, error);⟧\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Trim a string slice",
+    "code": "fn main() {\n    let input = \"  hello there  \";\n    ⟦let clean = input.trim().to_uppercase();\n    println!(\"{}\", clean);⟧\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "Find a matching value",
+    "code": "fn main() {\n    let values = [12, 18, 25, 30];\n    ⟦let found = values.iter().find(|&&value| value > 20);\n    println!(\"{:?}\", found);⟧\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Intermediate",
+    "topic": "Optionals",
+    "title": "Chain optional values",
+    "code": "fn double_number(text: Option<&str>) -> Option<i32> {\n    ⟦text.and_then(|value| value.parse::<i32>().ok())\n        .and_then(|value| value.checked_mul(2))⟧\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Remove duplicates",
+    "code": "use std::collections::HashSet;\nfn unique(values: &[i32]) -> Vec<i32> {\n    let mut seen = HashSet::new();\n    ⟦values.iter().copied().filter(|value| seen.insert(*value)).collect()⟧\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Advanced",
+    "topic": "Lifetimes",
+    "title": "Return a borrowed slice",
+    "code": "fn longer<'a>(left: &'a str, right: &'a str) -> &'a str {\n    ⟦if left.len() >= right.len() {\n        left\n    } else {\n        right\n    }⟧\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Advanced",
+    "topic": "Iterators",
+    "title": "Implement an iterator",
+    "code": "struct Counter { next: usize, end: usize }\nimpl Iterator for Counter {\n    type Item = usize;\n    ⟦fn next(&mut self) -> Option<Self::Item> {\n        if self.next >= self.end { return None; }\n        let value = self.next;\n        self.next += 1;\n        Some(value)\n    }⟧\n}"
+  },
+  {
+    "language": "Java",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Join a few names",
+    "code": "import java.util.List;\nclass Labels {\n    static String join(List<String> names) {\n        ⟦return String.join(\", \", names);⟧\n    }\n}"
+  },
+  {
+    "language": "Java",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "Find the maximum",
+    "code": "class Scores {\n    static int maximum(int[] values) {\n        if (values.length == 0) throw new IllegalArgumentException(\"empty array\");\n        int best = values[0];\n        ⟦for (int value : values) {\n            if (value > best) best = value;\n        }⟧\n        return best;\n    }\n}"
+  },
+  {
+    "language": "Java",
+    "level": "Intermediate",
+    "topic": "Records",
+    "title": "A compact constructor",
+    "code": "public record User(String name, int score) {\n    ⟦public User {\n        if (name == null || name.isBlank()) {\n            throw new IllegalArgumentException(\"name required\");\n        }\n    }⟧\n}"
+  },
+  {
+    "language": "Java",
+    "level": "Intermediate",
+    "topic": "Optionals",
+    "title": "Map an optional value",
+    "code": "import java.util.Optional;\nclass Names {\n    static String display(Optional<String> name) {\n        ⟦return name.map(String::trim)\n            .filter(value -> !value.isEmpty())\n            .orElse(\"guest\");⟧\n    }\n}"
+  },
+  {
+    "language": "Java",
+    "level": "Advanced",
+    "topic": "Generics",
+    "title": "Map a generic list",
+    "code": "import java.util.List;\nimport java.util.function.Function;\nclass Lists {\n    static <T, R> List<R> map(List<T> values, Function<T, R> transform) {\n        ⟦return values.stream().map(transform).toList();⟧\n    }\n}"
+  },
+  {
+    "language": "Java",
+    "level": "Advanced",
+    "topic": "Concurrency",
+    "title": "Combine two futures",
+    "code": "import java.util.concurrent.CompletableFuture;\nclass Totals {\n    static CompletableFuture<Integer> sum(CompletableFuture<Integer> a, CompletableFuture<Integer> b) {\n        ⟦return a.thenCombine(b, Integer::sum);⟧\n    }\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Join a slice",
+    "code": "package main\nimport (\n    \"fmt\"\n    \"strings\"\n)\nfunc main() {\n    names := []string{\"Ada\", \"Alan\", \"Grace\"}\n    ⟦fmt.Println(strings.Join(names, \", \"))⟧\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Beginner",
+    "topic": "Functions",
+    "title": "Clamp an integer",
+    "code": "package main\nfunc clamp(value, low, high int) int {\n    ⟦if value < low { return low }\n    if value > high { return high }\n    return value⟧\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Intermediate",
+    "topic": "Maps",
+    "title": "Check a map lookup",
+    "code": "package main\nfunc lookup(scores map[string]int, name string) (int, bool) {\n    ⟦score, found := scores[name]\n    return score, found⟧\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Intermediate",
+    "topic": "Slices",
+    "title": "Filter in a new slice",
+    "code": "package main\nfunc positive(values []int) []int {\n    result := make([]int, 0, len(values))\n    ⟦for _, value := range values {\n        if value > 0 { result = append(result, value) }\n    }⟧\n    return result\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Advanced",
+    "topic": "Generics",
+    "title": "Map a generic slice",
+    "code": "package main\nfunc Map[T, U any](items []T, transform func(T) U) []U {\n    result := make([]U, len(items))\n    ⟦for index, value := range items {\n        result[index] = transform(value)\n    }⟧\n    return result\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Advanced",
+    "topic": "Concurrency",
+    "title": "A buffered channel",
+    "code": "package main\nimport \"fmt\"\nfunc main() {\n    values := make(chan int, 3)\n    ⟦for i := 1; i <= 3; i++ { values <- i * i }\n    close(values)\n    for value := range values { fmt.Println(value) }⟧\n}"
+  },
+  {
+    "language": "SQL",
+    "level": "Beginner",
+    "topic": "Filtering",
+    "title": "Find missing values",
+    "code": "SELECT id, name\nFROM users\n⟦WHERE email IS NULL\nORDER BY name;⟧"
+  },
+  {
+    "language": "SQL",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Build a label",
+    "code": "SELECT name,\n       ⟦UPPER(name) AS display_name,\n       LENGTH(name) AS name_length⟧\nFROM products;"
+  },
+  {
+    "language": "SQL",
+    "level": "Intermediate",
+    "topic": "Control flow",
+    "title": "A conditional label",
+    "code": "SELECT name, score,\n       ⟦CASE\n           WHEN score >= 90 THEN 'excellent'\n           WHEN score >= 50 THEN 'passed'\n           ELSE 'practice'\n       END AS grade⟧\nFROM results;"
+  },
+  {
+    "language": "SQL",
+    "level": "Intermediate",
+    "topic": "Joins",
+    "title": "Find unmatched rows",
+    "code": "SELECT c.id, c.name\nFROM customers c\n⟦LEFT JOIN orders o ON o.customer_id = c.id\nWHERE o.id IS NULL;⟧"
+  },
+  {
+    "language": "SQL",
+    "level": "Advanced",
+    "topic": "Window Functions",
+    "title": "A running total",
+    "code": "SELECT created_at, amount,\n       ⟦SUM(amount) OVER (\n           ORDER BY created_at, id\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS running_total⟧\nFROM payments;"
+  },
+  {
+    "language": "SQL",
+    "level": "Advanced",
+    "topic": "Recursion",
+    "title": "Generate a series",
+    "code": "⟦WITH RECURSIVE numbers(n) AS (\n    SELECT 1\n    UNION ALL\n    SELECT n + 1 FROM numbers WHERE n < 10\n)⟧\nSELECT n, n * n AS square FROM numbers;"
+  }
+]

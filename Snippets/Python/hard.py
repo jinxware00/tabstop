@@ -1,6 +1,8 @@
 from functools import wraps
 
 def retry(times):
+    if times < 1:
+        raise ValueError("times must be positive")
     def decorator(fn):
         @wraps(fn)
         ⟦def wrapper(*args, **kwargs):

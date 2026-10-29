@@ -1,0 +1,422 @@
+[
+  {
+    "language": "Lua",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "local name = \"Ada\"",
+    "code": "local name = \"Ada\"\nlocal score = 42\n⟦if score > 40 then\n  print(name .. \" passed\")\nend⟧"
+  },
+  {
+    "language": "Lua",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "local width, height = 8, 5",
+    "code": "local width, height = 8, 5\nlocal area = width * height\n⟦print(\"area:\", area)⟧"
+  },
+  {
+    "language": "Lua",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "local function average(items)",
+    "code": "local function average(items)\n  local total = 0\n  ⟦for _, value in ipairs(items) do\n    total = total + value\n  end⟧\n  return total / #items\nend\n\nlocal scores = { 82, 91, 76 }\nprint(average(scores))"
+  },
+  {
+    "language": "Lua",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "local inventory = { apples = 3, pears = 0, plums = 7 }",
+    "code": "local inventory = { apples = 3, pears = 0, plums = 7 }\nlocal stocked = {}\n⟦for name, count in pairs(inventory) do\n  if count > 0 then\n    table.insert(stocked, name)\n  end\nend⟧\ntable.sort(stocked)\nprint(table.concat(stocked, \", \"))"
+  },
+  {
+    "language": "Lua",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "local function binarySearch(list, target)",
+    "code": "local function binarySearch(list, target)\n  local low, high = 1, #list\n  while low <= high do\n    local mid = (low + high) // 2\n    ⟦if list[mid] == target then\n      return mid\n    elseif list[mid] < target then\n      low = mid + 1\n    else\n      high = mid - 1\n    end⟧\n  end\n  return nil\nend"
+  },
+  {
+    "language": "Lua",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "local Stack = {}",
+    "code": "local Stack = {}\nStack.__index = Stack\n\nfunction Stack.new()\n  return setmetatable({ items = {} }, Stack)\nend\n\n⟦function Stack:push(value)\n  self.items[#self.items + 1] = value\nend\n\nfunction Stack:pop()\n  return table.remove(self.items)\nend⟧"
+  },
+  {
+    "language": "Python",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "price = 24.5",
+    "code": "price = 24.5\nquantity = 3\n⟦total = price * quantity\nprint(f\"Total: {total}\")⟧"
+  },
+  {
+    "language": "Python",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "age = 17",
+    "code": "age = 17\n⟦if age >= 18:\n    print(\"adult\")\nelse:\n    print(\"minor\")⟧"
+  },
+  {
+    "language": "Python",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "def word_counts(text):",
+    "code": "def word_counts(text):\n    counts = {}\n    ⟦for word in text.lower().split():\n        counts[word] = counts.get(word, 0) + 1⟧\n    return counts\n\nprint(word_counts(\"the cat and the hat\"))"
+  },
+  {
+    "language": "Python",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "def chunk(items, size):",
+    "code": "def chunk(items, size):\n    result = []\n    ⟦for start in range(0, len(items), size):\n        result.append(items[start:start + size])⟧\n    return result\n\nprint(chunk([1, 2, 3, 4, 5], 2))"
+  },
+  {
+    "language": "Python",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "from functools import lru_cache",
+    "code": "from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef count_paths(row, col):\n    if row == 0 or col == 0:\n        return 1\n    ⟦return count_paths(row - 1, col) + count_paths(row, col - 1)⟧\n\nprint(count_paths(8, 8))"
+  },
+  {
+    "language": "Python",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "import heapq",
+    "code": "import heapq\n\ndef top_k(values, k):\n    heap = []\n    ⟦for value in values:\n        heapq.heappush(heap, value)\n        if len(heap) > k:\n            heapq.heappop(heap)⟧\n    return sorted(heap, reverse=True)"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "const name = \"Grace\";",
+    "code": "const name = \"Grace\";\nlet visits = 3;\n⟦visits += 1;\nconsole.log(name + \" visited \" + visits + \" times\");⟧"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "const temperature = 28;",
+    "code": "const temperature = 28;\n⟦if (temperature > 25) {\n  console.log(\"warm\");\n} else {\n  console.log(\"cool\");\n}⟧"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "function groupByLength(words) {",
+    "code": "function groupByLength(words) {\n  const groups = {};\n  ⟦for (const word of words) {\n    const key = word.length;\n    (groups[key] ??= []).push(word);\n  }⟧\n  return groups;\n}\n\nconsole.log(groupByLength([\"a\", \"to\", \"be\", \"sky\"]));"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "const orders = [",
+    "code": "const orders = [\n  { id: 1, total: 40, paid: true },\n  { id: 2, total: 15, paid: false },\n];\n\n⟦const revenue = orders\n  .filter((order) => order.paid)\n  .reduce((sum, order) => sum + order.total, 0);⟧\nconsole.log(revenue);"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "function debounce(fn, delay) {",
+    "code": "function debounce(fn, delay) {\n  let timer = null;\n  return (...args) => {\n    ⟦clearTimeout(timer);\n    timer = setTimeout(() => {\n      timer = null;\n      fn(...args);\n    }, delay);⟧\n  };\n}\n\nconst onResize = debounce(() => console.log(\"resized\"), 200);\nwindow.addEventListener(\"resize\", onResize);"
+  },
+  {
+    "language": "JavaScript",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "async function fetchWithRetry(url, attempts = 3) {",
+    "code": "async function fetchWithRetry(url, attempts = 3) {\n  for (let i = 0; i < attempts; i++) {\n    ⟦try {\n      const response = await fetch(url);\n      if (response.ok) return await response.json();\n    } catch (error) {\n      if (i === attempts - 1) throw error;\n    }⟧\n  }\n  throw new Error(\"request failed\");\n}"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "const title: string = \"Report\";",
+    "code": "const title: string = \"Report\";\nlet pages: number = 12;\n⟦pages = pages + 2;\nconsole.log(title, pages);⟧"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "let isReady: boolean = true;",
+    "code": "let isReady: boolean = true;\n⟦if (isReady) {\n  console.log(\"go\");\n}⟧"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "interface User {",
+    "code": "interface User {\n  name: string;\n  age: number;\n}\n\nfunction oldest(users: User[]): User | undefined {\n  ⟦return users.reduce<User | undefined>(\n    (best, user) => (!best || user.age > best.age ? user : best),\n    undefined\n  );⟧\n}"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "type Task = { id: number; done: boolean };",
+    "code": "type Task = { id: number; done: boolean };\n\nfunction pending(tasks: Task[]): number[] {\n  ⟦return tasks\n    .filter((task) => !task.done)\n    .map((task) => task.id);⟧\n}"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "type Result<T> = { ok: true; value: T } | { ok: false; error: string }",
+    "code": "type Result<T> = { ok: true; value: T } | { ok: false; error: string };\n\nfunction parseNumber(input: string): Result<number> {\n  const value = Number(input);\n  ⟦if (Number.isNaN(value)) {\n    return { ok: false, error: \"not a number: \" + input };\n  }\n  return { ok: true, value };⟧\n}"
+  },
+  {
+    "language": "TypeScript",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "function groupBy<T, K extends string | number>(items: T[], key: (item:",
+    "code": "function groupBy<T, K extends string | number>(items: T[], key: (item: T) => K): Record<K, T[]> {\n  const groups = {} as Record<K, T[]>;\n  ⟦for (const item of items) {\n    const group = key(item);\n    (groups[group] ??= []).push(item);\n  }⟧\n  return groups;\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "#include <iostream>",
+    "code": "#include <iostream>\n\nint main() {\n    int apples = 5;\n    ⟦apples += 2;\n    std::cout << apples << std::endl;⟧\n    return 0;\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "#include <iostream>",
+    "code": "#include <iostream>\n\nint main() {\n    int speed = 62;\n    ⟦if (speed > 60) {\n        std::cout << \"slow down\" << std::endl;\n    }⟧\n    return 0;\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "#include <iostream>",
+    "code": "#include <iostream>\n#include <vector>\n\nint main() {\n    std::vector<int> values = {4, 8, 15, 16};\n    int sum = 0;\n    ⟦for (int value : values) {\n        sum += value;\n    }⟧\n    std::cout << sum << std::endl;\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "#include <iostream>",
+    "code": "#include <iostream>\n#include <map>\n#include <string>\n\nint main() {\n    std::map<std::string, int> ages = {{\"Ada\", 36}, {\"Alan\", 41}};\n    ⟦for (const auto& entry : ages) {\n        std::cout << entry.first << \": \" << entry.second << std::endl;\n    }⟧\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "#include <algorithm>",
+    "code": "#include <algorithm>\n#include <string>\n#include <vector>\n\nstd::vector<std::string> sortByLength(std::vector<std::string> words) {\n    ⟦std::sort(words.begin(), words.end(),\n        [](const std::string& a, const std::string& b) {\n            return a.size() < b.size();\n        });⟧\n    return words;\n}"
+  },
+  {
+    "language": "C++",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "#include <memory>",
+    "code": "#include <memory>\n\nstruct Node {\n    int value;\n    std::unique_ptr<Node> next;\n};\n\n⟦std::unique_ptr<Node> push(std::unique_ptr<Node> head, int value) {\n    auto node = std::make_unique<Node>();\n    node->value = value;\n    node->next = std::move(head);\n    return node;\n}⟧"
+  },
+  {
+    "language": "C#",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "string name = \"Linus\";",
+    "code": "string name = \"Linus\";\nint level = 7;\n⟦level++;\nConsole.WriteLine($\"{name} is level {level}\");⟧"
+  },
+  {
+    "language": "C#",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "int count = 3;",
+    "code": "int count = 3;\n⟦if (count > 0)\n{\n    Console.WriteLine(\"items left\");\n}⟧"
+  },
+  {
+    "language": "C#",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "using System;",
+    "code": "using System;\nusing System.Collections.Generic;\n\nvar stock = new Dictionary<string, int> { [\"pens\"] = 12, [\"ink\"] = 0 };\n⟦foreach (var item in stock)\n{\n    Console.WriteLine($\"{item.Key}: {item.Value}\");\n}⟧"
+  },
+  {
+    "language": "C#",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "using System;",
+    "code": "using System;\nusing System.Linq;\n\nint[] numbers = { 3, 8, 12, 5, 20 };\n⟦var evens = numbers.Where(n => n % 2 == 0).ToArray();\nConsole.WriteLine(string.Join(\", \", evens));⟧"
+  },
+  {
+    "language": "C#",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "using System.Linq;",
+    "code": "using System.Linq;\n\npublic static class TextTools\n{\n    public static string LongestWord(string text)\n    {\n        ⟦return text.Split(' ', StringSplitOptions.RemoveEmptyEntries)\n            .OrderByDescending(word => word.Length)\n            .FirstOrDefault() ?? \"\";⟧\n    }\n}"
+  },
+  {
+    "language": "C#",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "public record Point(int X, int Y)",
+    "code": "public record Point(int X, int Y)\n{\n    ⟦public double DistanceTo(Point other)\n    {\n        var dx = X - other.X;\n        var dy = Y - other.Y;\n        return Math.Sqrt(dx * dx + dy * dy);\n    }⟧\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "fn main() {",
+    "code": "fn main() {\n    let mut lives = 3;\n    ⟦lives -= 1;\n    println!(\"lives left: {}\", lives);⟧\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "fn main() {",
+    "code": "fn main() {\n    let temp = 31;\n    ⟦if temp > 30 {\n        println!(\"hot\");\n    } else {\n        println!(\"mild\");\n    }⟧\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "fn main() {",
+    "code": "fn main() {\n    let names = vec![\"Ada\", \"Alan\", \"Grace\"];\n    ⟦for (index, name) in names.iter().enumerate() {\n        println!(\"{}: {}\", index, name);\n    }⟧\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "use std::collections::HashMap;",
+    "code": "use std::collections::HashMap;\n\nfn main() {\n    let mut counts: HashMap<char, usize> = HashMap::new();\n    ⟦for letter in \"banana\".chars() {\n        *counts.entry(letter).or_insert(0) += 1;\n    }⟧\n    println!(\"{:?}\", counts.get(&'a'));\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "#[derive(Debug)]",
+    "code": "#[derive(Debug)]\nstruct Stack<T> {\n    items: Vec<T>,\n}\n\nimpl<T> Stack<T> {\n    fn new() -> Self {\n        Stack { items: Vec::new() }\n    }\n\n    ⟦fn pop(&mut self) -> Option<T> {\n        self.items.pop()\n    }⟧\n}"
+  },
+  {
+    "language": "Rust",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "fn parse_age(input: &str) -> Result<u8, String> {",
+    "code": "fn parse_age(input: &str) -> Result<u8, String> {\n    ⟦let value: i32 = input\n        .trim()\n        .parse()\n        .map_err(|_| format!(\"not a number: {}\", input))?;\n    if !(0..=130).contains(&value) {\n        return Err(String::from(\"age out of range\"));\n    }\n    Ok(value as u8)⟧\n}"
+  },
+  {
+    "language": "Java",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "public class Main {",
+    "code": "public class Main {\n    public static void main(String[] args) {\n        int lives = 3;\n        ⟦lives--;\n        System.out.println(lives);⟧\n    }\n}"
+  },
+  {
+    "language": "Java",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "int score = 88;",
+    "code": "int score = 88;\n⟦if (score >= 50) {\n    System.out.println(\"pass\");\n}⟧"
+  },
+  {
+    "language": "Java",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "import java.util.List;",
+    "code": "import java.util.List;\n\npublic class Totals {\n    static int sumEvens(List<Integer> values) {\n        int total = 0;\n        ⟦for (int value : values) {\n            if (value % 2 == 0) {\n                total += value;\n            }\n        }⟧\n        return total;\n    }\n}"
+  },
+  {
+    "language": "Java",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "import java.util.ArrayList;",
+    "code": "import java.util.ArrayList;\nimport java.util.List;\n\npublic class Names {\n    static List<String> shortNames(List<String> names) {\n        List<String> result = new ArrayList<>();\n        ⟦for (String name : names) {\n            if (name.length() <= 4) {\n                result.add(name.toUpperCase());\n            }\n        }⟧\n        return result;\n    }\n}"
+  },
+  {
+    "language": "Java",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "import java.util.*;",
+    "code": "import java.util.*;\n\npublic class Cache<K, V> extends LinkedHashMap<K, V> {\n    private final int capacity;\n\n    public Cache(int capacity) {\n        super(16, 0.75f, true);\n        this.capacity = capacity;\n    }\n\n    @Override\n    ⟦protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {\n        return size() > capacity;\n    }⟧\n}"
+  },
+  {
+    "language": "Java",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "import java.util.List;",
+    "code": "import java.util.List;\nimport java.util.Optional;\n\npublic class Lookup {\n    record User(int id, String name) {}\n\n    ⟦static Optional<User> find(List<User> users, int id) {\n        return users.stream()\n            .filter(user -> user.id() == id)\n            .findFirst();\n    }⟧\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "package main",
+    "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tscore := 10\n\t⟦score += 5\n\tfmt.Println(\"score:\", score)⟧\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "package main",
+    "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tage := 20\n\t⟦if age >= 18 {\n\t\tfmt.Println(\"adult\")\n\t}⟧\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "package main",
+    "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tprices := map[string]float64{\"tea\": 2.5, \"cake\": 4}\n\t⟦for item, price := range prices {\n\t\tfmt.Println(item, price)\n\t}⟧\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "package main",
+    "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tnumbers := []int{4, 9, 16}\n\tsquares := make([]int, 0, len(numbers))\n\t⟦for _, n := range numbers {\n\t\tsquares = append(squares, n*n)\n\t}⟧\n\tfmt.Println(squares)\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "package main",
+    "code": "package main\n\nimport \"fmt\"\n\nfunc worker(id int, jobs <-chan int, results chan<- int) {\n\t⟦for job := range jobs {\n\t\tresults <- job * job\n\t}⟧\n\tfmt.Println(\"worker\", id, \"done\")\n}"
+  },
+  {
+    "language": "Go",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "package main",
+    "code": "package main\n\nimport (\n\t\"errors\"\n\t\"fmt\"\n)\n\n⟦func divide(a, b float64) (float64, error) {\n\tif b == 0 {\n\t\treturn 0, errors.New(\"division by zero\")\n\t}\n\treturn a / b, nil\n}⟧\n\nfunc main() {\n\tfmt.Println(divide(9, 3))\n}"
+  },
+  {
+    "language": "SQL",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "SELECT name, price",
+    "code": "SELECT name, price\nFROM products\n⟦WHERE price < 20;⟧"
+  },
+  {
+    "language": "SQL",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "SELECT COUNT(*) AS total_users",
+    "code": "SELECT COUNT(*) AS total_users\n⟦FROM users\nWHERE active = 1;⟧"
+  },
+  {
+    "language": "SQL",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "SELECT category, COUNT(*) AS items",
+    "code": "SELECT category, COUNT(*) AS items\nFROM products\n⟦GROUP BY category\nHAVING COUNT(*) > 5\nORDER BY items DESC;⟧"
+  },
+  {
+    "language": "SQL",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "SELECT u.name, COUNT(o.id) AS orders",
+    "code": "SELECT u.name, COUNT(o.id) AS orders\nFROM users u\n⟦LEFT JOIN orders o ON o.user_id = u.id\nGROUP BY u.name\nORDER BY orders DESC;⟧"
+  },
+  {
+    "language": "SQL",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "WITH monthly AS (",
+    "code": "WITH monthly AS (\n  SELECT customer_id, SUM(total) AS spent\n  FROM orders\n  WHERE created_at >= '2026-01-01'\n  GROUP BY customer_id\n)\nSELECT c.name, ⟦m.spent\nFROM monthly m\nJOIN customers c ON c.id = m.customer_id\nORDER BY m.spent DESC\nLIMIT 10;⟧"
+  },
+  {
+    "language": "SQL",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "SELECT name, department, salary,",
+    "code": "SELECT name, department, salary,\n  ⟦RANK() OVER (\n    PARTITION BY department\n    ORDER BY salary DESC\n  ) AS dept_rank⟧\nFROM employees;"
+  }
+]

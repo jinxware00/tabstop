@@ -1,0 +1,506 @@
+[
+  {
+    "language": "R",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "A small calculation",
+    "code": "prices <- c(2.5, 4.0, 1.5)\n⟦total <- sum(prices)\nprint(total)⟧"
+  },
+  {
+    "language": "R",
+    "level": "Beginner",
+    "topic": "Vectors",
+    "title": "Select even values",
+    "code": "values <- 1:10\n⟦evens <- values[values %% 2 == 0]\nprint(evens)⟧"
+  },
+  {
+    "language": "R",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Format a message",
+    "code": "name <- \"Ada\"\nscore <- 42\n⟦message <- sprintf(\"%s scored %d points\", name, score)\nprint(message)⟧"
+  },
+  {
+    "language": "R",
+    "level": "Beginner",
+    "topic": "Loops",
+    "title": "Walk a sequence",
+    "code": "⟦for (index in seq_len(5)) {\n  print(index ^ 2)\n}⟧"
+  },
+  {
+    "language": "R",
+    "level": "Intermediate",
+    "topic": "Data frames",
+    "title": "Filter a data frame",
+    "code": "users <- data.frame(name = c(\"Ada\", \"Alan\"), score = c(80, 45))\n⟦passed <- subset(users, score >= 50)\nprint(passed$name)⟧"
+  },
+  {
+    "language": "R",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "A safe average",
+    "code": "average <- function(values) {\n  ⟦if (length(values) == 0) return(NA_real_)\n  mean(values, na.rm = TRUE)⟧\n}"
+  },
+  {
+    "language": "R",
+    "level": "Intermediate",
+    "topic": "Lists",
+    "title": "Map over a list",
+    "code": "groups <- list(a = c(1, 2), b = c(3, 4, 5))\n⟦totals <- vapply(groups, sum, numeric(1))\nprint(totals)⟧"
+  },
+  {
+    "language": "R",
+    "level": "Intermediate",
+    "topic": "Data",
+    "title": "Group and summarise",
+    "code": "sales <- data.frame(team = c(\"A\", \"B\", \"A\"), total = c(10, 20, 30))\n⟦summary <- aggregate(total ~ team, data = sales, FUN = sum)\nprint(summary)⟧"
+  },
+  {
+    "language": "R",
+    "level": "Advanced",
+    "topic": "Functions",
+    "title": "Capture an environment",
+    "code": "make_counter <- function() {\n  count <- 0L\n  ⟦function() {\n    count <<- count + 1L\n    count\n  }⟧\n}"
+  },
+  {
+    "language": "R",
+    "level": "Advanced",
+    "topic": "Statistics",
+    "title": "Standardise a vector",
+    "code": "standardise <- function(values) {\n  spread <- sd(values, na.rm = TRUE)\n  ⟦if (is.na(spread) || spread == 0) return(rep(0, length(values)))\n  (values - mean(values, na.rm = TRUE)) / spread⟧\n}"
+  },
+  {
+    "language": "R",
+    "level": "Advanced",
+    "topic": "Exceptions",
+    "title": "Handle a failed calculation",
+    "code": "safe_log <- function(value) {\n  ⟦tryCatch({\n    if (value <= 0) stop(\"positive value required\")\n    log(value)\n  }, error = function(error) NA_real_)⟧\n}"
+  },
+  {
+    "language": "R",
+    "level": "Advanced",
+    "topic": "Matrices",
+    "title": "Normalise each column",
+    "code": "normalise_columns <- function(matrix) {\n  totals <- colSums(matrix)\n  ⟦totals[totals == 0] <- 1\n  sweep(matrix, 2, totals, \"/\")⟧\n}"
+  },
+  {
+    "language": "Julia",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "Interpolate a greeting",
+    "code": "name = \"Ada\"\n⟦println(\"Hello, $name!\")⟧"
+  },
+  {
+    "language": "Julia",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "A comprehension",
+    "code": "values = 1:6\n⟦squares = [value^2 for value in values if iseven(value)]\nprintln(squares)⟧"
+  },
+  {
+    "language": "Julia",
+    "level": "Beginner",
+    "topic": "Loops",
+    "title": "Enumerate some names",
+    "code": "names = [\"Ada\", \"Alan\", \"Grace\"]\n⟦for (index, name) in enumerate(names)\n    println(\"$index: $name\")\nend⟧"
+  },
+  {
+    "language": "Julia",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Split and join",
+    "code": "sentence = \"a little practice\"\n⟦words = split(sentence)\nprintln(join(uppercase.(words), \" \"))⟧"
+  },
+  {
+    "language": "Julia",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "A keyword argument",
+    "code": "function greet(name; excited=false)\n    ⟦ending = excited ? \"!\" : \".\"\n    return \"Hello, $name$ending\"⟧\nend"
+  },
+  {
+    "language": "Julia",
+    "level": "Intermediate",
+    "topic": "Structs",
+    "title": "A concrete point",
+    "code": "struct Point\n    x::Float64\n    y::Float64\nend\n⟦distance_squared(point::Point) = point.x^2 + point.y^2⟧"
+  },
+  {
+    "language": "Julia",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Count words",
+    "code": "counts = Dict{String, Int}()\n⟦for word in [\"red\", \"blue\", \"red\"]\n    counts[word] = get(counts, word, 0) + 1\nend⟧"
+  },
+  {
+    "language": "Julia",
+    "level": "Intermediate",
+    "topic": "Arrays",
+    "title": "Broadcast a function",
+    "code": "values = [1.0, 4.0, 9.0]\n⟦roots = sqrt.(values)\nshifted = roots .+ 1\nprintln(shifted)⟧"
+  },
+  {
+    "language": "Julia",
+    "level": "Advanced",
+    "topic": "Generics",
+    "title": "A parametric container",
+    "code": "struct PairBox{T}\n    first::T\n    second::T\nend\n⟦swap(box::PairBox{T}) where {T} = PairBox{T}(box.second, box.first)⟧"
+  },
+  {
+    "language": "Julia",
+    "level": "Advanced",
+    "topic": "Dispatch",
+    "title": "Multiple dispatch",
+    "code": "⟦describe(value::Integer) = \"integer: $value\"\ndescribe(value::AbstractFloat) = \"decimal: $value\"\ndescribe(value::AbstractString) = \"text: $value\"⟧"
+  },
+  {
+    "language": "Julia",
+    "level": "Advanced",
+    "topic": "Iterators",
+    "title": "A generator pipeline",
+    "code": "values = 1:100\n⟦total = sum(value^2 for value in values if value % 3 == 0)\nprintln(total)⟧"
+  },
+  {
+    "language": "Julia",
+    "level": "Advanced",
+    "topic": "Exceptions",
+    "title": "Handle invalid input",
+    "code": "function safe_parse(text)\n    ⟦try\n        return parse(Int, text)\n    catch error\n        error isa ArgumentError || rethrow()\n        return nothing\n    end⟧\nend"
+  },
+  {
+    "language": "Scala",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "A string interpolation",
+    "code": "val name = \"Ada\"\n⟦println(s\"Hello, $name!\")⟧"
+  },
+  {
+    "language": "Scala",
+    "level": "Beginner",
+    "topic": "Lists",
+    "title": "Transform a list",
+    "code": "val values = List(1, 2, 3, 4, 5)\n⟦val squares = values.filter(_ % 2 == 0).map(n => n * n)\nprintln(squares)⟧"
+  },
+  {
+    "language": "Scala",
+    "level": "Beginner",
+    "topic": "Loops",
+    "title": "A for expression",
+    "code": "⟦val squares = for (number <- 1 to 5) yield number * number\nprintln(squares)⟧"
+  },
+  {
+    "language": "Scala",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "An optional name",
+    "code": "val name: Option[String] = None\n⟦println(name.getOrElse(\"guest\"))⟧"
+  },
+  {
+    "language": "Scala",
+    "level": "Intermediate",
+    "topic": "Classes",
+    "title": "A case class",
+    "code": "case class Point(x: Double, y: Double) {\n  ⟦def distanceSquared: Double = x * x + y * y⟧\n}"
+  },
+  {
+    "language": "Scala",
+    "level": "Intermediate",
+    "topic": "Patterns",
+    "title": "Pattern match a list",
+    "code": "def describe(values: List[Int]): String = values match {\n  ⟦case Nil => \"empty\"\n  case head :: Nil => s\"one: $head\"\n  case head :: tail => s\"$head and ${tail.size} more\"⟧\n}"
+  },
+  {
+    "language": "Scala",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Group some words",
+    "code": "val words = List(\"tea\", \"cake\", \"pen\", \"notebook\")\n⟦val groups = words.groupBy(_.length)\nprintln(groups.getOrElse(3, Nil))⟧"
+  },
+  {
+    "language": "Scala",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "Fold a total",
+    "code": "val prices = List(2.5, 4.0, 1.5)\n⟦val total = prices.foldLeft(0.0)((sum, price) => sum + price)\nprintln(total)⟧"
+  },
+  {
+    "language": "Scala",
+    "level": "Advanced",
+    "topic": "Generics",
+    "title": "A generic pair",
+    "code": "case class Pair[A](first: A, second: A) {\n  ⟦def map[B](f: A => B): Pair[B] = Pair(f(first), f(second))⟧\n}"
+  },
+  {
+    "language": "Scala",
+    "level": "Advanced",
+    "topic": "Results",
+    "title": "Parse into an Either",
+    "code": "def parseNumber(text: String): Either[String, Int] = {\n  ⟦text.toIntOption.toRight(s\"Invalid number: $text\")⟧\n}"
+  },
+  {
+    "language": "Scala",
+    "level": "Advanced",
+    "topic": "Recursion",
+    "title": "Tail recursive sum",
+    "code": "import scala.annotation.tailrec\n@tailrec\ndef sum(values: List[Int], total: Int = 0): Int = values match {\n  ⟦case Nil => total\n  case head :: tail => sum(tail, total + head)⟧\n}"
+  },
+  {
+    "language": "Scala",
+    "level": "Advanced",
+    "topic": "Unions",
+    "title": "A sealed expression",
+    "code": "sealed trait Expr\ncase class Number(value: Int) extends Expr\ncase class Add(left: Expr, right: Expr) extends Expr\n⟦def evaluate(expr: Expr): Int = expr match {\n  case Number(value) => value\n  case Add(left, right) => evaluate(left) + evaluate(right)\n}⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "A typed greeting",
+    "code": "greet :: String -> String\n⟦greet name = \"Hello, \" ++ name ++ \"!\"⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Beginner",
+    "topic": "Lists",
+    "title": "Even squares",
+    "code": "⟦squares :: [Int]\nsquares = [n * n | n <- [1..10], even n]⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Beginner",
+    "topic": "Functions",
+    "title": "Function composition",
+    "code": "⟦shout :: String -> String\nshout = (++ \"!\") . reverse⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Beginner",
+    "topic": "Patterns",
+    "title": "A safe first item",
+    "code": "first :: [a] -> Maybe a\n⟦first [] = Nothing\nfirst (x:_) = Just x⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Intermediate",
+    "topic": "Recursion",
+    "title": "Count a list",
+    "code": "count :: [a] -> Int\n⟦count [] = 0\ncount (_:xs) = 1 + count xs⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Intermediate",
+    "topic": "Types",
+    "title": "Describe a shape",
+    "code": "data Shape = Circle Double | Rectangle Double Double\narea :: Shape -> Double\n⟦area (Circle radius) = pi * radius * radius\narea (Rectangle width height) = width * height⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Intermediate",
+    "topic": "Lists",
+    "title": "Partition a sequence",
+    "code": "import Data.List (partition)\n⟦splitEven :: [Int] -> ([Int], [Int])\nsplitEven = partition even⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "Use a local binding",
+    "code": "normalise :: [Double] -> [Double]\nnormalise values =\n  ⟦let total = sum values\n  in if total == 0 then values else map (/ total) values⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Advanced",
+    "topic": "Functors",
+    "title": "Map inside Maybe",
+    "code": "⟦doubleMaybe :: Maybe Int -> Maybe Int\ndoubleMaybe = fmap (* 2)⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Advanced",
+    "topic": "Results",
+    "title": "Validate with Either",
+    "code": "parsePositive :: Int -> Either String Int\n⟦parsePositive value\n  | value > 0 = Right value\n  | otherwise = Left \"Expected a positive number\"⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Advanced",
+    "topic": "Recursion",
+    "title": "An accumulating reverse",
+    "code": "reverseList :: [a] -> [a]\nreverseList = go []\n  where\n    ⟦go result [] = result\n    go result (x:xs) = go (x:result) xs⟧"
+  },
+  {
+    "language": "Haskell",
+    "level": "Advanced",
+    "topic": "Monads",
+    "title": "Combine optional values",
+    "code": "addMaybe :: Maybe Int -> Maybe Int -> Maybe Int\naddMaybe first second = do\n  ⟦a <- first\n  b <- second\n  pure (a + b)⟧"
+  },
+  {
+    "language": "Elixir",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "A string greeting",
+    "code": "name = \"Ada\"\n⟦IO.puts(\"Hello, #{name}!\")⟧"
+  },
+  {
+    "language": "Elixir",
+    "level": "Beginner",
+    "topic": "Lists",
+    "title": "A pipeline of numbers",
+    "code": "⟦1..10\n|> Enum.filter(&rem(&1, 2) == 0)\n|> Enum.map(&(&1 * &1))\n|> IO.inspect()⟧"
+  },
+  {
+    "language": "Elixir",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Clean a handle",
+    "code": "name = \"  JINX_WARE  \"\n⟦name\n|> String.trim()\n|> String.downcase()\n|> String.replace(\"_\", \"-\")⟧"
+  },
+  {
+    "language": "Elixir",
+    "level": "Beginner",
+    "topic": "Maps",
+    "title": "Update a map",
+    "code": "player = %{name: \"Ada\", score: 10}\n⟦updated = %{player | score: player.score + 5}\nIO.inspect(updated)⟧"
+  },
+  {
+    "language": "Elixir",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "A function with a guard",
+    "code": "defmodule Maths do\n  ⟦def positive?(value) when is_number(value), do: value > 0\n  def positive?(_value), do: false⟧\nend"
+  },
+  {
+    "language": "Elixir",
+    "level": "Intermediate",
+    "topic": "Patterns",
+    "title": "Handle a result tuple",
+    "code": "case Integer.parse(\"42\") do\n  ⟦{number, \"\"} -> IO.puts(number)\n  _ -> IO.puts(\"Invalid number\")⟧\nend"
+  },
+  {
+    "language": "Elixir",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Count words",
+    "code": "words = [\"red\", \"blue\", \"red\"]\n⟦counts = Enum.frequencies(words)\nIO.inspect(counts)⟧"
+  },
+  {
+    "language": "Elixir",
+    "level": "Intermediate",
+    "topic": "Structs",
+    "title": "A struct with defaults",
+    "code": "defmodule Player do\n  ⟦defstruct name: \"guest\", score: 0, active: true⟧\nend"
+  },
+  {
+    "language": "Elixir",
+    "level": "Advanced",
+    "topic": "Recursion",
+    "title": "Tail recursive sum",
+    "code": "defmodule Totals do\n  def sum(values), do: sum(values, 0)\n  ⟦defp sum([], total), do: total\n  defp sum([head | tail], total), do: sum(tail, total + head)⟧\nend"
+  },
+  {
+    "language": "Elixir",
+    "level": "Advanced",
+    "topic": "Results",
+    "title": "Chain validation",
+    "code": "defmodule Validation do\n  def parse_age(text) do\n    ⟦with {age, \"\"} <- Integer.parse(text),\n         true <- age in 0..130 do\n      {:ok, age}\n    else\n      _ -> {:error, :invalid_age}\n    end⟧\n  end\nend"
+  },
+  {
+    "language": "Elixir",
+    "level": "Advanced",
+    "topic": "Streams",
+    "title": "A lazy stream",
+    "code": "⟦Stream.iterate(1, &(&1 + 1))\n|> Stream.filter(&(rem(&1, 3) == 0))\n|> Enum.take(5)\n|> IO.inspect()⟧"
+  },
+  {
+    "language": "Elixir",
+    "level": "Advanced",
+    "topic": "Concurrency",
+    "title": "Await a task",
+    "code": "⟦task = Task.async(fn -> Enum.sum(1..100) end)\nresult = Task.await(task)\nIO.puts(result)⟧"
+  },
+  {
+    "language": "Clojure",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "A greeting function",
+    "code": "⟦(defn greet [name]\n  (str \"Hello, \" name \"!\"))⟧\n(println (greet \"Ada\"))"
+  },
+  {
+    "language": "Clojure",
+    "level": "Beginner",
+    "topic": "Lists",
+    "title": "Square a range",
+    "code": "⟦(def squares (map #(* % %) (range 1 6)))\n(println squares)⟧"
+  },
+  {
+    "language": "Clojure",
+    "level": "Beginner",
+    "topic": "Maps",
+    "title": "Read a map",
+    "code": "(def player {:name \"Ada\" :score 10})\n⟦(println (:name player))\n(println (get player :active true))⟧"
+  },
+  {
+    "language": "Clojure",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Join some words",
+    "code": "(require '[clojure.string :as str])\n⟦(println (str/join \", \" [\"red\" \"green\" \"blue\"]))⟧"
+  },
+  {
+    "language": "Clojure",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Update an immutable map",
+    "code": "(def player {:name \"Ada\" :score 10})\n⟦(def updated (update player :score + 5))\n(println updated)⟧"
+  },
+  {
+    "language": "Clojure",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "Destructure an argument",
+    "code": "⟦(defn describe [{:keys [name score] :or {score 0}}]\n  (str name \" scored \" score))⟧"
+  },
+  {
+    "language": "Clojure",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "A threaded pipeline",
+    "code": "⟦(->> (range 1 20)\n     (filter even?)\n     (map #(* % %))\n     (reduce +))⟧"
+  },
+  {
+    "language": "Clojure",
+    "level": "Intermediate",
+    "topic": "Control flow",
+    "title": "A conditional expression",
+    "code": "(defn grade [score]\n  ⟦(cond\n    (>= score 90) :excellent\n    (>= score 50) :passed\n    :else :practice)⟧)"
+  },
+  {
+    "language": "Clojure",
+    "level": "Advanced",
+    "topic": "Recursion",
+    "title": "Recur with an accumulator",
+    "code": "(defn sum-values [values]\n  ⟦(loop [remaining values total 0]\n    (if (empty? remaining)\n      total\n      (recur (rest remaining) (+ total (first remaining)))))⟧)"
+  },
+  {
+    "language": "Clojure",
+    "level": "Advanced",
+    "topic": "Atoms",
+    "title": "Update an atom",
+    "code": "(def state (atom {:count 0}))\n⟦(swap! state update :count inc)\n(println (:count @state))⟧"
+  },
+  {
+    "language": "Clojure",
+    "level": "Advanced",
+    "topic": "Transducers",
+    "title": "Compose a transducer",
+    "code": "⟦(def even-squares\n  (comp (filter even?) (map #(* % %))))\n(transduce even-squares + (range 1 20))⟧"
+  },
+  {
+    "language": "Clojure",
+    "level": "Advanced",
+    "topic": "Functions",
+    "title": "A memoized function",
+    "code": "⟦(def cached-square\n  (memoize (fn [value] (* value value))))⟧\n(println (cached-square 12))"
+  }
+]

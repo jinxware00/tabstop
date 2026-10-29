@@ -1,0 +1,422 @@
+[
+  {
+    "language": "Luau",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "A typed greeting",
+    "code": "local name: string = \"Jinx\"\n⟦local message = \"Hello, \" .. name\nprint(message)⟧"
+  },
+  {
+    "language": "Luau",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Split a command",
+    "code": "local command = \"move north\"\n⟦local parts = string.split(command, \" \")\nprint(parts[1], parts[2])⟧"
+  },
+  {
+    "language": "Luau",
+    "level": "Beginner",
+    "topic": "Loops",
+    "title": "Count down",
+    "code": "⟦for remaining = 5, 1, -1 do\n    print(remaining)\nend⟧"
+  },
+  {
+    "language": "Luau",
+    "level": "Beginner",
+    "topic": "Tables",
+    "title": "A list of scores",
+    "code": "local scores: {number} = {18, 42, 27}\n⟦table.sort(scores)\nprint(scores[#scores])⟧"
+  },
+  {
+    "language": "Luau",
+    "level": "Intermediate",
+    "topic": "Types",
+    "title": "Describe a player",
+    "code": "⟦type PlayerData = {\n    name: string,\n    score: number,\n    active: boolean,\n}⟧\nlocal player: PlayerData = {name = \"Ada\", score = 10, active = true}"
+  },
+  {
+    "language": "Luau",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "Clamp a value",
+    "code": "local function clamp(value: number, low: number, high: number): number\n    ⟦return math.max(low, math.min(high, value))⟧\nend\nprint(clamp(120, 0, 100))"
+  },
+  {
+    "language": "Luau",
+    "level": "Intermediate",
+    "topic": "Tables",
+    "title": "Clone a settings table",
+    "code": "local defaults = {volume = 0.5, muted = false}\n⟦local settings = table.clone(defaults)\nsettings.volume = 0.8\nprint(defaults.volume, settings.volume)⟧"
+  },
+  {
+    "language": "Luau",
+    "level": "Intermediate",
+    "topic": "Unions",
+    "title": "Narrow an optional name",
+    "code": "local function greet(name: string?): string\n    ⟦if name == nil then\n        return \"Hello, guest\"\n    end\n    return \"Hello, \" .. name⟧\nend"
+  },
+  {
+    "language": "Luau",
+    "level": "Advanced",
+    "topic": "Generics",
+    "title": "Map a typed array",
+    "code": "local function map<T, U>(items: {T}, transform: (T) -> U): {U}\n    local result: {U} = {}\n    ⟦for index, value in items do\n        result[index] = transform(value)\n    end⟧\n    return result\nend"
+  },
+  {
+    "language": "Luau",
+    "level": "Advanced",
+    "topic": "Unions",
+    "title": "Handle a tagged result",
+    "code": "type Result = {ok: true, value: number} | {ok: false, error: string}\nlocal function describe(result: Result): string\n    ⟦if result.ok then\n        return tostring(result.value)\n    end\n    return result.error⟧\nend"
+  },
+  {
+    "language": "Luau",
+    "level": "Advanced",
+    "topic": "Functions",
+    "title": "Capture a counter",
+    "code": "local function counter(start: number): () -> number\n    local value = start\n    ⟦return function(): number\n        value += 1\n        return value\n    end⟧\nend"
+  },
+  {
+    "language": "Luau",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "Find the first match",
+    "code": "local function find<T>(items: {T}, predicate: (T) -> boolean): T?\n    ⟦for _, value in items do\n        if predicate(value) then\n            return value\n        end\n    end⟧\n    return nil\nend"
+  },
+  {
+    "language": "Ruby",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "Interpolate a greeting",
+    "code": "name = \"Ada\"\n⟦puts \"Hello, #{name}!\"⟧"
+  },
+  {
+    "language": "Ruby",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "Pick the even numbers",
+    "code": "numbers = [1, 2, 3, 4, 5, 6]\n⟦evens = numbers.select(&:even?)\nputs evens.join(\", \")⟧"
+  },
+  {
+    "language": "Ruby",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Normalise a username",
+    "code": "username = \"  Jinx_Ware  \"\n⟦puts username.strip.downcase.tr(\"_\", \"-\")⟧"
+  },
+  {
+    "language": "Ruby",
+    "level": "Beginner",
+    "topic": "Loops",
+    "title": "Walk through a range",
+    "code": "⟦(1..5).each do |number|\n  puts number * number\nend⟧"
+  },
+  {
+    "language": "Ruby",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "Keyword arguments",
+    "code": "def greet(name, excited: false)\n  ⟦ending = excited ? \"!\" : \".\"\n  \"Hello, #{name}#{ending}\"⟧\nend\nputs greet(\"Ada\", excited: true)"
+  },
+  {
+    "language": "Ruby",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Count each word",
+    "code": "words = %w[red blue red green blue red]\n⟦counts = words.each_with_object(Hash.new(0)) do |word, result|\n  result[word] += 1\nend⟧\np counts"
+  },
+  {
+    "language": "Ruby",
+    "level": "Intermediate",
+    "topic": "Classes",
+    "title": "An immutable point",
+    "code": "class Point\n  attr_reader :x, :y\n  ⟦def initialize(x, y)\n    @x, @y = x, y\n    freeze\n  end⟧\nend"
+  },
+  {
+    "language": "Ruby",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Group words by length",
+    "code": "words = %w[code tea mouse pen]\n⟦groups = words.group_by(&:length)\ngroups.each { |size, items| puts \"#{size}: #{items.join(', ')}\" }⟧"
+  },
+  {
+    "language": "Ruby",
+    "level": "Advanced",
+    "topic": "Iterators",
+    "title": "A lazy sequence",
+    "code": "numbers = (1..Float::INFINITY).lazy\n⟦squares = numbers.select(&:odd?).map { |n| n * n }.take(5)\np squares.force⟧"
+  },
+  {
+    "language": "Ruby",
+    "level": "Advanced",
+    "topic": "Modules",
+    "title": "Include shared behaviour",
+    "code": "module Printable\n  ⟦def print_label\n    puts \"[#{self.class.name}] #{label}\"\n  end⟧\nend\nclass Tag\n  include Printable\n  def label = \"draft\"\nend"
+  },
+  {
+    "language": "Ruby",
+    "level": "Advanced",
+    "topic": "Algorithms",
+    "title": "Recursive flattening",
+    "code": "def flatten(items)\n  ⟦items.flat_map do |item|\n    item.is_a?(Array) ? flatten(item) : [item]\n  end⟧\nend\np flatten([1, [2, [3]], 4])"
+  },
+  {
+    "language": "Ruby",
+    "level": "Advanced",
+    "topic": "Exceptions",
+    "title": "Parse a number safely",
+    "code": "def parse_integer(text)\n  ⟦Integer(text, 10)\nrescue ArgumentError, TypeError\n  nil⟧\nend\np parse_integer(\"42\")"
+  },
+  {
+    "language": "PHP",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "An interpolated greeting",
+    "code": "<?php\n$name = \"Ada\";\n⟦echo \"Hello, {$name}!\\n\";⟧"
+  },
+  {
+    "language": "PHP",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "Print a list",
+    "code": "<?php\n$names = [\"Ada\", \"Alan\", \"Grace\"];\n⟦foreach ($names as $name) {\n    echo $name . PHP_EOL;\n}⟧"
+  },
+  {
+    "language": "PHP",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Trim and split",
+    "code": "<?php\n$input = \"  red,blue,green  \";\n⟦$colours = explode(\",\", trim($input));\necho count($colours);⟧"
+  },
+  {
+    "language": "PHP",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "Default configuration",
+    "code": "<?php\n$options = [\"theme\" => \"dark\"];\n⟦$theme = $options[\"theme\"] ?? \"light\";\necho strtoupper($theme);⟧"
+  },
+  {
+    "language": "PHP",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "Typed parameters",
+    "code": "<?php\nfunction total(array $prices): float {\n    ⟦return array_reduce($prices, fn(float $sum, float $price): float => $sum + $price, 0.0);⟧\n}\necho total([2.5, 4.0]);"
+  },
+  {
+    "language": "PHP",
+    "level": "Intermediate",
+    "topic": "Arrays",
+    "title": "Filter active users",
+    "code": "<?php\n$users = [[\"name\" => \"Ada\", \"active\" => true], [\"name\" => \"Alan\", \"active\" => false]];\n⟦$active = array_filter($users, fn(array $user): bool => $user[\"active\"]);\nprint_r(array_column($active, \"name\"));⟧"
+  },
+  {
+    "language": "PHP",
+    "level": "Intermediate",
+    "topic": "Classes",
+    "title": "Constructor promotion",
+    "code": "<?php\nclass Point {\n    ⟦public function __construct(\n        public readonly float $x,\n        public readonly float $y,\n    ) {}⟧\n}"
+  },
+  {
+    "language": "PHP",
+    "level": "Intermediate",
+    "topic": "Control flow",
+    "title": "A match expression",
+    "code": "<?php\nfunction label(int $status): string {\n    ⟦return match ($status) {\n        200 => \"OK\",\n        404 => \"Not found\",\n        default => \"Unknown\",\n    };⟧\n}"
+  },
+  {
+    "language": "PHP",
+    "level": "Advanced",
+    "topic": "Iterators",
+    "title": "Yield chunks",
+    "code": "<?php\nfunction chunks(array $items, int $size): Generator {\n    if ($size < 1) throw new InvalidArgumentException(\"Positive size required\");\n    ⟦for ($offset = 0; $offset < count($items); $offset += $size) {\n        yield array_slice($items, $offset, $size);\n    }⟧\n}"
+  },
+  {
+    "language": "PHP",
+    "level": "Advanced",
+    "topic": "Exceptions",
+    "title": "Decode JSON safely",
+    "code": "<?php\nfunction decode(string $json): array {\n    ⟦try {\n        return json_decode($json, true, 512, JSON_THROW_ON_ERROR);\n    } catch (JsonException $error) {\n        return [\"error\" => $error->getMessage()];\n    }⟧\n}"
+  },
+  {
+    "language": "PHP",
+    "level": "Advanced",
+    "topic": "Interfaces",
+    "title": "Describe a repository",
+    "code": "<?php\ninterface Repository {\n    ⟦public function find(int $id): ?array;\n    public function all(): iterable;⟧\n}"
+  },
+  {
+    "language": "PHP",
+    "level": "Advanced",
+    "topic": "Enums",
+    "title": "A backed enum",
+    "code": "<?php\nenum Status: string {\n    case Draft = \"draft\";\n    case Published = \"published\";\n    ⟦public function visible(): bool {\n        return $this === self::Published;\n    }⟧\n}"
+  },
+  {
+    "language": "Bash",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "Quote a greeting",
+    "code": "#!/usr/bin/env bash\nname=\"Ada\"\n⟦printf 'Hello, %s!\\n' \"$name\"⟧"
+  },
+  {
+    "language": "Bash",
+    "level": "Beginner",
+    "topic": "Loops",
+    "title": "Loop over arguments",
+    "code": "#!/usr/bin/env bash\n⟦for name in \"Ada\" \"Alan\" \"Grace\"; do\n  printf '%s\\n' \"$name\"\ndone⟧"
+  },
+  {
+    "language": "Bash",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "Read an array",
+    "code": "colours=(\"red\" \"green\" \"blue\")\n⟦printf 'First: %s\\n' \"${colours[0]}\"\nprintf 'Count: %s\\n' \"${#colours[@]}\"⟧"
+  },
+  {
+    "language": "Bash",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "A default value",
+    "code": "⟦greeting=\"${1:-hello}\"\nprintf '%s\\n' \"$greeting\"⟧"
+  },
+  {
+    "language": "Bash",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "Check a file",
+    "code": "is_readable() {\n  ⟦[[ -f \"$1\" && -r \"$1\" ]]⟧\n}\nif is_readable \"README.md\"; then\n  printf 'Ready to read\\n'\nfi"
+  },
+  {
+    "language": "Bash",
+    "level": "Intermediate",
+    "topic": "Strings",
+    "title": "Remove a suffix",
+    "code": "filename=\"report.final.csv\"\n⟦extension=\"${filename##*.}\"\nstem=\"${filename%.*}\"\nprintf '%s (%s)\\n' \"$stem\" \"$extension\"⟧"
+  },
+  {
+    "language": "Bash",
+    "level": "Intermediate",
+    "topic": "Loops",
+    "title": "Read lines safely",
+    "code": "⟦while IFS= read -r line; do\n  printf '> %s\\n' \"$line\"\ndone < \"notes.txt\"⟧"
+  },
+  {
+    "language": "Bash",
+    "level": "Intermediate",
+    "topic": "Control flow",
+    "title": "Choose an action",
+    "code": "action=\"${1:-help}\"\n⟦case \"$action\" in\n  greet) printf 'Hello\\n' ;;\n  help) printf 'Usage: script [greet|help]\\n' ;;\n  *) printf 'Unknown action\\n' >&2 ;;\nesac⟧"
+  },
+  {
+    "language": "Bash",
+    "level": "Advanced",
+    "topic": "Arrays",
+    "title": "Count names",
+    "code": "declare -A counts\n⟦for name in ada alan ada grace; do\n  counts[\"$name\"]=$(( ${counts[\"$name\"]:-0} + 1 ))\ndone⟧\nprintf '%s\\n' \"${counts[ada]}\""
+  },
+  {
+    "language": "Bash",
+    "level": "Advanced",
+    "topic": "Functions",
+    "title": "Validate an integer",
+    "code": "is_integer() {\n  ⟦[[ \"$1\" =~ ^-?[0-9]+$ ]]⟧\n}\nif is_integer \"42\"; then\n  printf 'Valid integer\\n'\nfi"
+  },
+  {
+    "language": "Bash",
+    "level": "Advanced",
+    "topic": "Arrays",
+    "title": "Load sorted values",
+    "code": "⟦mapfile -t names < <(printf '%s\\n' \"Grace\" \"Ada\" \"Alan\" | sort)\nfor index in \"${!names[@]}\"; do\n  printf '%s: %s\\n' \"$index\" \"${names[index]}\"\ndone⟧"
+  },
+  {
+    "language": "Bash",
+    "level": "Advanced",
+    "topic": "Functions",
+    "title": "Join with a delimiter",
+    "code": "join_by() {\n  local separator=\"$1\"\n  shift\n  ⟦local result=\"\"\n  for item in \"$@\"; do\n    result+=\"${result:+$separator}$item\"\n  done\n  printf '%s\\n' \"$result\"⟧\n}\njoin_by \", \" red green blue"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "A formatted greeting",
+    "code": "$name = 'Ada'\n⟦$message = 'Hello, {0}!' -f $name\nWrite-Output $message⟧"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Beginner",
+    "topic": "Loops",
+    "title": "A numeric range",
+    "code": "⟦1..5 | ForEach-Object {\n    Write-Output ($_ * $_)\n}⟧"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Clean up a name",
+    "code": "$name = '  JINX_WARE  '\n⟦$clean = $name.Trim().ToLower().Replace('_', '-')\nWrite-Output $clean⟧"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "Select a few values",
+    "code": "$numbers = @(3, 8, 12, 5, 20)\n⟦$evens = $numbers | Where-Object { $_ % 2 -eq 0 }\n$evens -join ', '⟧"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Intermediate",
+    "topic": "Objects",
+    "title": "Create a record",
+    "code": "⟦$person = [PSCustomObject]@{\n    Name = 'Ada'\n    Language = 'PowerShell'\n    Active = $true\n}⟧\n$person | Select-Object Name, Language"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "A typed function",
+    "code": "function Get-Square {\n    param([int]$Value)\n    ⟦return $Value * $Value⟧\n}\nGet-Square -Value 7"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Group by category",
+    "code": "$items = @(\n    [PSCustomObject]@{ Name = 'Tea'; Kind = 'Drink' }\n    [PSCustomObject]@{ Name = 'Cake'; Kind = 'Food' }\n)\n⟦$items | Group-Object Kind | Select-Object Name, Count⟧"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Intermediate",
+    "topic": "Data",
+    "title": "Round-trip JSON",
+    "code": "$settings = @{ Theme = 'Dark'; FontSize = 18 }\n⟦$json = $settings | ConvertTo-Json\n$restored = $json | ConvertFrom-Json\n$restored.Theme⟧"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Advanced",
+    "topic": "Functions",
+    "title": "Accept pipeline input",
+    "code": "function Get-Double {\n    [CmdletBinding()]\n    param([Parameter(ValueFromPipeline)][int]$Value)\n    ⟦process {\n        $Value * 2\n    }⟧\n}\n1..3 | Get-Double"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Advanced",
+    "topic": "Exceptions",
+    "title": "Parse with a fallback",
+    "code": "function ConvertTo-SafeInteger {\n    param([string]$Text)\n    ⟦$value = 0\n    if ([int]::TryParse($Text, [ref]$value)) {\n        return $value\n    }\n    return $null⟧\n}"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Advanced",
+    "topic": "Classes",
+    "title": "A small counter",
+    "code": "class Counter {\n    [int]$Value\n    Counter([int]$start) { $this.Value = $start }\n    ⟦[int] Next() {\n        $this.Value++\n        return $this.Value\n    }⟧\n}"
+  },
+  {
+    "language": "PowerShell",
+    "level": "Advanced",
+    "topic": "Collections",
+    "title": "Build a lookup",
+    "code": "$users = @(\n    [PSCustomObject]@{ Id = 1; Name = 'Ada' }\n    [PSCustomObject]@{ Id = 2; Name = 'Alan' }\n)\n⟦$lookup = @{}\nforeach ($user in $users) {\n    $lookup[$user.Id] = $user\n}⟧\n$lookup[1].Name"
+  }
+]

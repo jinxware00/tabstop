@@ -7,6 +7,7 @@ WITH weekly AS (
 ),
 ranked AS (
   SELECT customer_id,
+         spent,
          ⟦RANK() OVER (ORDER BY spent DESC) AS spend_rank⟧
   FROM weekly
 )

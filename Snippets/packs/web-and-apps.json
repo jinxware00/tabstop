@@ -1,0 +1,506 @@
+[
+  {
+    "language": "HTML",
+    "level": "Beginner",
+    "topic": "Structure",
+    "title": "A page introduction",
+    "code": "<main>\n  ⟦<h1>Notes from the workshop</h1>\n  <p>A place for small ideas.</p>⟧\n</main>"
+  },
+  {
+    "language": "HTML",
+    "level": "Beginner",
+    "topic": "Links",
+    "title": "A useful link",
+    "code": "<nav aria-label=\"Main\">\n  ⟦<a href=\"#projects\">Projects</a>\n  <a href=\"#contact\">Contact</a>⟧\n</nav>"
+  },
+  {
+    "language": "HTML",
+    "level": "Beginner",
+    "topic": "Lists",
+    "title": "A reading list",
+    "code": "<ul>\n  ⟦<li>Language design</li>\n  <li>Accessible interfaces</li>\n  <li>Small tools</li>⟧\n</ul>"
+  },
+  {
+    "language": "HTML",
+    "level": "Beginner",
+    "topic": "Images",
+    "title": "Describe a photo",
+    "code": "<figure>\n  ⟦<img src=\"workshop.jpg\" alt=\"A desk with a notebook and keyboard\" width=\"640\" height=\"480\">⟧\n  <figcaption>Where the ideas start.</figcaption>\n</figure>"
+  },
+  {
+    "language": "HTML",
+    "level": "Intermediate",
+    "topic": "Forms",
+    "title": "An email field",
+    "code": "<form action=\"/subscribe\" method=\"post\">\n  ⟦<label for=\"email\">Email address</label>\n  <input id=\"email\" name=\"email\" type=\"email\" autocomplete=\"email\" required>⟧\n  <button type=\"submit\">Subscribe</button>\n</form>"
+  },
+  {
+    "language": "HTML",
+    "level": "Intermediate",
+    "topic": "Structure",
+    "title": "A native disclosure",
+    "code": "<details>\n  ⟦<summary>How is progress saved?</summary>\n  <p>Your sessions stay in this browser.</p>⟧\n</details>"
+  },
+  {
+    "language": "HTML",
+    "level": "Intermediate",
+    "topic": "Tables",
+    "title": "A small data table",
+    "code": "<table>\n  <caption>Practice sessions</caption>\n  ⟦<thead><tr><th scope=\"col\">Language</th><th scope=\"col\">WPM</th></tr></thead>\n  <tbody><tr><td>Lua</td><td>72</td></tr></tbody>⟧\n</table>"
+  },
+  {
+    "language": "HTML",
+    "level": "Intermediate",
+    "topic": "Forms",
+    "title": "A grouped choice",
+    "code": "<fieldset>\n  <legend>Theme</legend>\n  ⟦<label><input type=\"radio\" name=\"theme\" value=\"dark\" checked> Dark</label>\n  <label><input type=\"radio\" name=\"theme\" value=\"light\"> Light</label>⟧\n</fieldset>"
+  },
+  {
+    "language": "HTML",
+    "level": "Advanced",
+    "topic": "Images",
+    "title": "Responsive image sources",
+    "code": "<picture>\n  ⟦<source media=\"(min-width: 800px)\" srcset=\"landscape.webp\">\n  <img src=\"portrait.webp\" alt=\"Mountains at sunrise\" width=\"400\" height=\"600\" loading=\"lazy\">⟧\n</picture>"
+  },
+  {
+    "language": "HTML",
+    "level": "Advanced",
+    "topic": "Accessibility",
+    "title": "A described form input",
+    "code": "<label for=\"handle\">Username</label>\n⟦<input id=\"handle\" name=\"handle\" aria-describedby=\"handle-help\" pattern=\"[a-z0-9_]{3,20}\" required>\n<p id=\"handle-help\">Use 3 to 20 lowercase letters, digits, or underscores.</p>⟧"
+  },
+  {
+    "language": "HTML",
+    "level": "Advanced",
+    "topic": "Structure",
+    "title": "A reusable template",
+    "code": "<template id=\"project-template\">\n  ⟦<article class=\"project\">\n    <h2 class=\"project-title\"></h2>\n    <p class=\"project-description\"></p>\n    <a class=\"project-link\">View project</a>\n  </article>⟧\n</template>"
+  },
+  {
+    "language": "HTML",
+    "level": "Advanced",
+    "topic": "Media",
+    "title": "Video with captions",
+    "code": "<video controls preload=\"metadata\" width=\"720\">\n  ⟦<source src=\"demo.webm\" type=\"video/webm\">\n  <track kind=\"captions\" src=\"captions.vtt\" srclang=\"en\" label=\"English\" default>⟧\n  Your browser does not support video.\n</video>"
+  },
+  {
+    "language": "CSS",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "Set the page type",
+    "code": "body {\n  ⟦margin: 0;\n  font-family: system-ui, sans-serif;\n  line-height: 1.6;⟧\n}"
+  },
+  {
+    "language": "CSS",
+    "level": "Beginner",
+    "topic": "Layout",
+    "title": "Centre a container",
+    "code": ".container {\n  ⟦width: min(100% - 2rem, 70rem);\n  margin-inline: auto;⟧\n}"
+  },
+  {
+    "language": "CSS",
+    "level": "Beginner",
+    "topic": "Colour",
+    "title": "A quiet button",
+    "code": ".button {\n  ⟦color: #111827;\n  background: #c4e7b2;\n  border: 0;\n  border-radius: 0.5rem;\n  padding: 0.75rem 1rem;⟧\n}"
+  },
+  {
+    "language": "CSS",
+    "level": "Beginner",
+    "topic": "Typography",
+    "title": "Fluid heading size",
+    "code": "h1 {\n  ⟦font-size: clamp(2rem, 5vw, 4rem);\n  letter-spacing: -0.04em;\n  line-height: 1.1;⟧\n}"
+  },
+  {
+    "language": "CSS",
+    "level": "Intermediate",
+    "topic": "Flexbox",
+    "title": "A wrapping toolbar",
+    "code": ".toolbar {\n  ⟦display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 0.75rem;⟧\n}"
+  },
+  {
+    "language": "CSS",
+    "level": "Intermediate",
+    "topic": "Grid",
+    "title": "An adaptive grid",
+    "code": ".projects {\n  ⟦display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));\n  gap: 1.5rem;⟧\n}"
+  },
+  {
+    "language": "CSS",
+    "level": "Intermediate",
+    "topic": "Accessibility",
+    "title": "Visible keyboard focus",
+    "code": "⟦button:focus-visible,\na:focus-visible {\n  outline: 2px solid currentColor;\n  outline-offset: 4px;\n}⟧"
+  },
+  {
+    "language": "CSS",
+    "level": "Intermediate",
+    "topic": "Variables",
+    "title": "Theme tokens",
+    "code": ":root {\n  --surface: #151819;\n  --text: #e8ede9;\n}\n.card {\n  ⟦background: var(--surface);\n  color: var(--text);⟧\n}"
+  },
+  {
+    "language": "CSS",
+    "level": "Advanced",
+    "topic": "Containers",
+    "title": "A container query",
+    "code": ".card-list { container-type: inline-size; }\n⟦@container (min-width: 40rem) {\n  .card {\n    display: grid;\n    grid-template-columns: 1fr 2fr;\n  }\n}⟧"
+  },
+  {
+    "language": "CSS",
+    "level": "Advanced",
+    "topic": "Motion",
+    "title": "Respect reduced motion",
+    "code": "@media (prefers-reduced-motion: reduce) {\n  ⟦*, *::before, *::after {\n    animation: none !important;\n    transition: none !important;\n    scroll-behavior: auto !important;\n  }⟧\n}"
+  },
+  {
+    "language": "CSS",
+    "level": "Advanced",
+    "topic": "Layers",
+    "title": "Define a cascade order",
+    "code": "⟦@layer reset, base, components, utilities;\n@layer components {\n  .badge {\n    display: inline-flex;\n    padding: 0.25rem 0.5rem;\n    border-radius: 999px;\n  }\n}⟧"
+  },
+  {
+    "language": "CSS",
+    "level": "Advanced",
+    "topic": "Selectors",
+    "title": "Style a parent",
+    "code": ".field:has(input:invalid:not(:placeholder-shown)) {\n  ⟦border-color: #c33;\n  background: color-mix(in srgb, #c33 8%, transparent);⟧\n}"
+  },
+  {
+    "language": "Swift",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "Interpolate a name",
+    "code": "let name = \"Ada\"\n⟦let greeting = \"Hello, \\(name)!\"\nprint(greeting)⟧"
+  },
+  {
+    "language": "Swift",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "Map some values",
+    "code": "let numbers = [1, 2, 3, 4]\n⟦let squares = numbers.map { $0 * $0 }\nprint(squares)⟧"
+  },
+  {
+    "language": "Swift",
+    "level": "Beginner",
+    "topic": "Loops",
+    "title": "Enumerate a list",
+    "code": "let names = [\"Ada\", \"Alan\", \"Grace\"]\n⟦for (index, name) in names.enumerated() {\n    print(\"\\(index): \\(name)\")\n}⟧"
+  },
+  {
+    "language": "Swift",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "An optional name",
+    "code": "let nickname: String? = nil\n⟦print(nickname ?? \"guest\")⟧"
+  },
+  {
+    "language": "Swift",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "Named arguments",
+    "code": "func greet(_ name: String, excited: Bool = false) -> String {\n    ⟦return \"Hello, \\(name)\" + (excited ? \"!\" : \".\")⟧\n}"
+  },
+  {
+    "language": "Swift",
+    "level": "Intermediate",
+    "topic": "Structs",
+    "title": "A computed property",
+    "code": "struct Rectangle {\n    let width: Double\n    let height: Double\n    ⟦var area: Double { width * height }⟧\n}"
+  },
+  {
+    "language": "Swift",
+    "level": "Intermediate",
+    "topic": "Enums",
+    "title": "Switch over state",
+    "code": "enum Status { case idle, running, done }\nfunc label(for status: Status) -> String {\n    ⟦switch status {\n    case .idle: return \"Ready\"\n    case .running: return \"Typing\"\n    case .done: return \"Finished\"\n    }⟧\n}"
+  },
+  {
+    "language": "Swift",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Group names by length",
+    "code": "let names = [\"Ada\", \"Alan\", \"Grace\", \"Lin\"]\n⟦let groups = Dictionary(grouping: names) { $0.count }\nprint(groups[3] ?? [])⟧"
+  },
+  {
+    "language": "Swift",
+    "level": "Advanced",
+    "topic": "Generics",
+    "title": "Find a generic value",
+    "code": "func firstMatch<T>(in items: [T], where predicate: (T) -> Bool) -> T? {\n    ⟦for item in items where predicate(item) {\n        return item\n    }\n    return nil⟧\n}"
+  },
+  {
+    "language": "Swift",
+    "level": "Advanced",
+    "topic": "Protocols",
+    "title": "A printable protocol",
+    "code": "protocol Named { var name: String { get } }\nextension Named {\n    ⟦func greeting() -> String {\n        \"Hello, \\(name)\"\n    }⟧\n}"
+  },
+  {
+    "language": "Swift",
+    "level": "Advanced",
+    "topic": "Exceptions",
+    "title": "Throw a validation error",
+    "code": "enum ParseError: Error { case invalidAge }\nfunc parseAge(_ text: String) throws -> Int {\n    ⟦guard let age = Int(text), (0...130).contains(age) else {\n        throw ParseError.invalidAge\n    }\n    return age⟧\n}"
+  },
+  {
+    "language": "Swift",
+    "level": "Advanced",
+    "topic": "Async",
+    "title": "An isolated counter",
+    "code": "actor Counter {\n    private var value = 0\n    ⟦func next() -> Int {\n        value += 1\n        return value\n    }⟧\n}"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "A string template",
+    "code": "val name = \"Ada\"\n⟦val greeting = \"Hello, $name!\"\nprintln(greeting)⟧"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Beginner",
+    "topic": "Lists",
+    "title": "Filter even values",
+    "code": "val numbers = listOf(1, 2, 3, 4, 5, 6)\n⟦val evens = numbers.filter { it % 2 == 0 }\nprintln(evens)⟧"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Beginner",
+    "topic": "Loops",
+    "title": "Loop through a range",
+    "code": "⟦for (number in 1..5) {\n    println(number * number)\n}⟧"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "A nullable value",
+    "code": "val nickname: String? = null\n⟦val displayName = nickname?.uppercase() ?: \"GUEST\"\nprintln(displayName)⟧"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Intermediate",
+    "topic": "Classes",
+    "title": "A data class",
+    "code": "⟦data class Point(val x: Double, val y: Double) {\n    fun distanceSquared(): Double = x * x + y * y\n}⟧"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "An extension function",
+    "code": "⟦fun String.initials(): String =\n    trim().split(Regex(\"\\\\s+\"))\n        .filter { it.isNotEmpty() }\n        .joinToString(\"\") { it.first().uppercase() }⟧"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Intermediate",
+    "topic": "Control flow",
+    "title": "A when expression",
+    "code": "fun label(score: Int): String =\n    ⟦when {\n        score >= 90 -> \"excellent\"\n        score >= 50 -> \"passed\"\n        else -> \"keep practising\"\n    }⟧"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "Group by category",
+    "code": "data class Item(val name: String, val category: String)\nval items = listOf(Item(\"tea\", \"drink\"), Item(\"cake\", \"food\"))\n⟦val groups = items.groupBy { it.category }\nprintln(groups.keys)⟧"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Advanced",
+    "topic": "Generics",
+    "title": "A generic stack",
+    "code": "class Stack<T> {\n    private val items = mutableListOf<T>()\n    ⟦fun push(item: T) { items.add(item) }\n    fun pop(): T? = if (items.isEmpty()) null else items.removeAt(items.lastIndex)⟧\n}"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Advanced",
+    "topic": "Unions",
+    "title": "A sealed result",
+    "code": "sealed interface Result<out T> {\n    ⟦data class Success<T>(val value: T) : Result<T>\n    data class Failure(val message: String) : Result<Nothing>⟧\n}"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Advanced",
+    "topic": "Sequences",
+    "title": "A lazy pipeline",
+    "code": "⟦val total = generateSequence(1) { it + 1 }\n    .filter { it % 2 == 0 }\n    .take(10)\n    .sum()⟧\nprintln(total)"
+  },
+  {
+    "language": "Kotlin",
+    "level": "Advanced",
+    "topic": "Functions",
+    "title": "Run a callback safely",
+    "code": "inline fun <T> measure(block: () -> T): Pair<T, Long> {\n    val start = System.nanoTime()\n    ⟦val result = block()\n    return result to (System.nanoTime() - start)⟧\n}"
+  },
+  {
+    "language": "Dart",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "A friendly message",
+    "code": "void main() {\n  final name = 'Ada';\n  ⟦print('Hello, $name!');⟧\n}"
+  },
+  {
+    "language": "Dart",
+    "level": "Beginner",
+    "topic": "Lists",
+    "title": "Create some squares",
+    "code": "final numbers = [1, 2, 3, 4];\n⟦final squares = numbers.map((n) => n * n).toList();⟧"
+  },
+  {
+    "language": "Dart",
+    "level": "Beginner",
+    "topic": "Strings",
+    "title": "Use a fallback",
+    "code": "String? nickname;\n⟦final displayName = nickname ?? 'guest';\nprint(displayName);⟧"
+  },
+  {
+    "language": "Dart",
+    "level": "Beginner",
+    "topic": "Loops",
+    "title": "Iterate through names",
+    "code": "final names = ['Ada', 'Alan', 'Grace'];\n⟦for (final name in names) {\n  print(name.toUpperCase());\n}⟧"
+  },
+  {
+    "language": "Dart",
+    "level": "Intermediate",
+    "topic": "Classes",
+    "title": "A constant point",
+    "code": "class Point {\n  final double x;\n  final double y;\n  ⟦const Point(this.x, this.y);\n  double get distanceSquared => x * x + y * y;⟧\n}"
+  },
+  {
+    "language": "Dart",
+    "level": "Intermediate",
+    "topic": "Functions",
+    "title": "Named parameters",
+    "code": "String greet(String name, {bool excited = false}) {\n  ⟦final ending = excited ? '!' : '.';\n  return 'Hello, $name$ending';⟧\n}"
+  },
+  {
+    "language": "Dart",
+    "level": "Intermediate",
+    "topic": "Maps",
+    "title": "Count letters",
+    "code": "final counts = <String, int>{};\n⟦for (final letter in 'banana'.split('')) {\n  counts.update(letter, (value) => value + 1, ifAbsent: () => 1);\n}⟧"
+  },
+  {
+    "language": "Dart",
+    "level": "Intermediate",
+    "topic": "Collections",
+    "title": "A collection if",
+    "code": "final isAdmin = true;\n⟦final links = [\n  'Home',\n  'Projects',\n  if (isAdmin) 'Settings',\n];⟧"
+  },
+  {
+    "language": "Dart",
+    "level": "Advanced",
+    "topic": "Generics",
+    "title": "Find a matching item",
+    "code": "T? firstWhereOrNull<T>(Iterable<T> items, bool Function(T) test) {\n  ⟦for (final item in items) {\n    if (test(item)) return item;\n  }\n  return null;⟧\n}"
+  },
+  {
+    "language": "Dart",
+    "level": "Advanced",
+    "topic": "Async",
+    "title": "Await several futures",
+    "code": "Future<List<int>> loadValues() async {\n  ⟦return await Future.wait([\n    Future.value(10),\n    Future.value(20),\n  ]);⟧\n}"
+  },
+  {
+    "language": "Dart",
+    "level": "Advanced",
+    "topic": "Iterators",
+    "title": "Yield a range",
+    "code": "Iterable<int> range(int start, int end) sync* {\n  ⟦for (var value = start; value < end; value++) {\n    yield value;\n  }⟧\n}"
+  },
+  {
+    "language": "Dart",
+    "level": "Advanced",
+    "topic": "Patterns",
+    "title": "Destructure a record",
+    "code": "String describe((String, int) person) {\n  ⟦final (name, age) = person;\n  return '$name is $age years old';⟧\n}"
+  },
+  {
+    "language": "Zig",
+    "level": "Beginner",
+    "topic": "Basics",
+    "title": "Print a greeting",
+    "code": "const std = @import(\"std\");\npub fn main() void {\n    ⟦std.debug.print(\"Hello, {s}!\\n\", .{\"Ada\"});⟧\n}"
+  },
+  {
+    "language": "Zig",
+    "level": "Beginner",
+    "topic": "Arrays",
+    "title": "Sum an array",
+    "code": "const values = [_]u32{ 1, 2, 3, 4 };\nvar total: u32 = 0;\n⟦for (values) |value| {\n    total += value;\n}⟧"
+  },
+  {
+    "language": "Zig",
+    "level": "Beginner",
+    "topic": "Functions",
+    "title": "A typed function",
+    "code": "fn square(value: i32) i32 {\n    ⟦return value * value;⟧\n}"
+  },
+  {
+    "language": "Zig",
+    "level": "Beginner",
+    "topic": "Control flow",
+    "title": "An if expression",
+    "code": "fn absolute(value: i32) i32 {\n    ⟦return if (value < 0) -value else value;⟧\n}"
+  },
+  {
+    "language": "Zig",
+    "level": "Intermediate",
+    "topic": "Structs",
+    "title": "A point method",
+    "code": "const Point = struct {\n    x: f64,\n    y: f64,\n    ⟦fn distanceSquared(self: Point) f64 {\n        return self.x * self.x + self.y * self.y;\n    }⟧\n};"
+  },
+  {
+    "language": "Zig",
+    "level": "Intermediate",
+    "topic": "Optionals",
+    "title": "Unwrap an optional",
+    "code": "fn valueOrDefault(value: ?u32) u32 {\n    ⟦return value orelse 0;⟧\n}"
+  },
+  {
+    "language": "Zig",
+    "level": "Intermediate",
+    "topic": "Slices",
+    "title": "Find an element",
+    "code": "fn contains(items: []const u8, needle: u8) bool {\n    ⟦for (items) |item| {\n        if (item == needle) return true;\n    }\n    return false;⟧\n}"
+  },
+  {
+    "language": "Zig",
+    "level": "Intermediate",
+    "topic": "Enums",
+    "title": "Switch on an enum",
+    "code": "const Direction = enum { north, south, east, west };\nfn horizontal(direction: Direction) bool {\n    ⟦return switch (direction) {\n        .east, .west => true,\n        else => false,\n    };⟧\n}"
+  },
+  {
+    "language": "Zig",
+    "level": "Advanced",
+    "topic": "Errors",
+    "title": "Return an error union",
+    "code": "fn divide(a: f64, b: f64) error{DivisionByZero}!f64 {\n    ⟦if (b == 0) return error.DivisionByZero;\n    return a / b;⟧\n}"
+  },
+  {
+    "language": "Zig",
+    "level": "Advanced",
+    "topic": "Generics",
+    "title": "A compile-time type",
+    "code": "fn maximum(comptime T: type, a: T, b: T) T {\n    ⟦return if (a > b) a else b;⟧\n}"
+  },
+  {
+    "language": "Zig",
+    "level": "Advanced",
+    "topic": "Testing",
+    "title": "An inline test",
+    "code": "const std = @import(\"std\");\nfn double(value: u32) u32 { return value * 2; }\n⟦test \"double a value\" {\n    try std.testing.expectEqual(@as(u32, 8), double(4));\n}⟧"
+  },
+  {
+    "language": "Zig",
+    "level": "Advanced",
+    "topic": "Memory",
+    "title": "A bounded buffer",
+    "code": "const std = @import(\"std\");\nfn label(buffer: []u8, count: usize) ![]u8 {\n    ⟦return try std.fmt.bufPrint(buffer, \"items: {d}\", .{count});⟧\n}"
+  }
+]
